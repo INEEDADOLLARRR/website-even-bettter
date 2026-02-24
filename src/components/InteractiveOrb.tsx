@@ -19,55 +19,49 @@ export function InteractiveOrb() {
     };
 
     return (
-        <section className="py-32 bg-brand-black text-brand-white relative overflow-hidden flex flex-col items-center min-h-[90vh] justify-center">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
-
-            <div className="text-center mb-32 z-10 max-w-2xl px-6">
+        <section aria-label="Service capabilities" className="py-28 bg-brand-black text-brand-white relative overflow-hidden flex flex-col items-center min-h-[80vh] justify-center">
+            <div className="text-center mb-24 z-10 max-w-xl px-6">
                 <motion.p
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-6 flex items-center justify-center gap-4"
+                    className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-5 flex items-center justify-center gap-4"
                 >
                     <span className="w-8 h-[1px] bg-brand-blue" />
                     Interactive Protocol
                     <span className="w-8 h-[1px] bg-brand-blue" />
                 </motion.p>
-                <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6">
+                <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-5">
                     Precision Ecosystem.
                 </h2>
-                <p className="text-brand-silver font-light leading-relaxed">
-                    Hover the orbital nodes to explore our comprehensive architectural services.
+                <p className="text-brand-silver/50 font-light leading-relaxed text-sm">
+                    Explore our comprehensive architectural services.
                 </p>
             </div>
 
-            <div className="relative w-[300px] h-[300px] md:w-[550px] md:h-[550px] flex items-center justify-center">
-                {/* The Orbiting Ring */}
+            <div className="relative w-[280px] h-[280px] md:w-[480px] md:h-[480px] flex items-center justify-center">
                 <motion.div
-                    className="absolute inset-0 rounded-full border border-brand-white/10"
+                    className="absolute inset-0 rounded-full border border-brand-white/5"
                     animate={{ rotate: rotation }}
                     transition={{ type: "spring", stiffness: 40, damping: 20 }}
                 >
                     {ORB_DATA.map((item, i) => {
                         const isActive = activeIndex === i;
                         return (
-                            <div
-                                key={i}
-                                className="absolute inset-0 pointer-events-none"
-                                style={{ transform: `rotate(${item.angle}deg)` }}
-                            >
+                            <div key={i} className="absolute inset-0 pointer-events-none" style={{ transform: `rotate(${item.angle}deg)` }}>
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
                                     <button
                                         onMouseEnter={() => handleNodeClick(i)}
                                         onClick={() => handleNodeClick(i)}
-                                        className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue ${isActive ? 'bg-brand-white scale-125 shadow-[0_0_40px_rgba(255,255,255,0.6)]' : 'bg-brand-black border border-brand-silver/30 hover:border-brand-white hover:scale-110'}`}
+                                        aria-label={item.title}
+                                        className={`w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 cursor-pointer ${isActive ? 'bg-brand-white scale-110' : 'bg-brand-black border border-brand-silver/20 hover:border-brand-white/50 hover:scale-105'}`}
                                     >
                                         <motion.div
                                             animate={{ rotate: -rotation - item.angle }}
                                             transition={{ type: "spring", stiffness: 40, damping: 20 }}
                                             className="w-full h-full flex items-center justify-center"
                                         >
-                                            <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-colors duration-500 ${isActive ? 'bg-brand-black blur-[1px]' : 'bg-brand-white'}`} />
+                                            <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-colors duration-500 ${isActive ? 'bg-brand-black' : 'bg-brand-white/60'}`} />
                                         </motion.div>
                                     </button>
                                 </div>
@@ -76,20 +70,19 @@ export function InteractiveOrb() {
                     })}
                 </motion.div>
 
-                {/* Center Content */}
-                <div className="absolute w-64 md:w-80 text-center z-10 pointer-events-none">
+                <div className="absolute w-56 md:w-72 text-center z-10 pointer-events-none">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeIndex}
-                            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         >
-                            <h3 className="font-display text-2xl md:text-3xl font-medium tracking-tight mb-4 text-brand-white">
+                            <h3 className="font-display text-xl md:text-2xl font-medium tracking-tight mb-3 text-brand-white">
                                 {ORB_DATA[activeIndex].title}
                             </h3>
-                            <p className="text-sm md:text-base text-brand-silver font-light leading-relaxed">
+                            <p className="text-sm text-brand-silver/50 font-light leading-relaxed">
                                 {ORB_DATA[activeIndex].description}
                             </p>
                         </motion.div>

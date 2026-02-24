@@ -7,27 +7,27 @@ export function LatestArticles() {
     const articles = getAllArticles().slice(0, 3);
 
     return (
-        <section className="py-32 bg-brand-black text-brand-white border-t border-brand-silver/10">
+        <section aria-label="Latest articles" className="py-28 bg-brand-black text-brand-white border-t border-brand-silver/5">
             <div className="container mx-auto px-6 max-w-6xl">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
                     <div className="max-w-xl">
                         <motion.p
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 15 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-6 flex items-center gap-4"
+                            className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-5 flex items-center gap-4"
                         >
                             <span className="w-8 h-[1px] bg-brand-blue" />
                             Latest Insights
                         </motion.p>
                         <motion.h2
-                            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                            className="font-display text-4xl md:text-5xl font-medium tracking-tight"
+                            className="font-display text-3xl md:text-4xl font-medium tracking-tight"
                         >
-                            The Roofing <span className="text-brand-silver">Journal.</span>
+                            The Roofing <span className="text-brand-silver/50">Journal.</span>
                         </motion.h2>
                     </div>
 
