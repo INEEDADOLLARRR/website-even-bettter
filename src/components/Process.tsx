@@ -5,7 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 const PROCESS_STEPS = [
     {
         step: "01",
-        title: "Diagnostic & Vision",
+        title: "Free 50-Point Inspection",
         description: "We begin with an exhaustive structural analysis and aesthetic consultation. Every material limitation and architectural opportunity is mapped out before design begins.",
         image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=800&h=640"
     },
@@ -17,13 +17,13 @@ const PROCESS_STEPS = [
     },
     {
         step: "03",
-        title: "Surgical Installation",
+        title: "Master-Crafted, Zero-Mess Install",
         description: "Execution is paramount. Our master craftsmen operate with surgical precision, ensuring weather-tight integrity without disrupting the estate's ongoing operations.",
         image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&q=80&w=800&h=640"
     },
     {
         step: "04",
-        title: "Generational Turnover",
+        title: "A Lifetime Warranty You Can Trust",
         description: "Upon final inspection, the system is turned over with our uncompromising warranty. The roof is not just replaced; it is architecturally elevated for generations.",
         image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800&h=640"
     }
