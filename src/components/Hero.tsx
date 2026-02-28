@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, Phone } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -89,9 +89,19 @@ export function Hero() {
         </div>
 
         {/* Desktop CTA + Theme Toggle - Pushed to right */}
-        <div className="hidden md:flex md:flex-1 items-center justify-end gap-6">
-          <ThemeToggle />
-          <a href="#consultation" className="px-6 py-2.5 bg-brand-accent text-white text-[10px] font-bold rounded-full hover:brightness-110 transition-all duration-300 uppercase tracking-wider">
+        <div className="flex flex-1 items-center justify-end gap-3 md:gap-6">
+          <a
+            href="tel:18005557663"
+            className="px-4 py-2 md:px-6 md:py-2.5 bg-white text-brand-black text-[10px] font-bold rounded-full hover:bg-brand-silver transition-all duration-300 uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+          >
+            <Phone className="w-3 h-3" aria-hidden="true" />
+            <span className="hidden sm:inline">Call Now: (800) 555-ROOF</span>
+            <span className="sm:hidden">Call Now</span>
+          </a>
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
+          <a href="#consultation" className="hidden md:block px-6 py-2.5 bg-brand-accent text-white text-[10px] font-bold rounded-full hover:brightness-110 transition-all duration-300 uppercase tracking-wider">
             Get Estimate
           </a>
         </div>
@@ -144,7 +154,13 @@ export function Hero() {
               ))}
             </nav>
 
-            <div className="px-8 pb-10">
+            <div className="px-8 pb-10 flex flex-col gap-3">
+              <a
+                href="tel:18005557663"
+                className="flex items-center justify-center gap-3 w-full py-4 bg-white text-brand-black font-bold rounded-xl text-sm"
+              >
+                <Phone className="w-4 h-4" /> Call Now: (800) 555-ROOF
+              </a>
               <a
                 href="#consultation"
                 onClick={() => setMenuOpen(false)}
