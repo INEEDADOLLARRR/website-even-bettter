@@ -38,10 +38,10 @@ export function Footer() {
             className="max-w-3xl"
           >
             <h2 className="font-display text-2xl md:text-4xl lg:text-6xl font-medium tracking-tight mb-5 text-balance text-brand-white">
-              Experience gorgeous designs built on the industry's best frameworks.
+              Protect your estate with the industry's highest standard of craftsmanship.
             </h2>
-            <p className="text-brand-white/50 mb-10 max-w-xl mx-auto font-light text-sm leading-relaxed">
-              Elevate your property with architectural roofing solutions that combine uncompromising aesthetics with generational durability.
+            <p className="text-brand-white/50 mb-10 max-w-xl mx-auto font-light text-sm leading-relaxed text-balance">
+              Elevate your property with elite roofing solutions that combine uncompromising aesthetics with lifetime durability.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href="#consultation" className="group w-full sm:w-auto px-8 py-4 bg-brand-accent text-white font-semibold rounded-full hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 text-sm">
