@@ -161,43 +161,43 @@ export function BentoGrid() {
     const orderedItems = [
         {
             id: 'commercial',
-            title: 'Asset Portfolio Solutions',
-            description: 'Engineered high-performance systems designed for the rigorous demands of institutional and commercial real estate.',
+            title: 'Multi-Property Roof Management',
+            description: 'Streamlined maintenance and high-performance systems for commercial real estate and institutional portfolios.',
             className: 'lg:col-span-2 lg:row-span-1', // Wide Top
             image: 'https://images.unsplash.com/photo-1541888081622-1d542a170564?q=80&w=2940&auto=format&fit=crop'
         },
         {
             id: 'storm',
-            title: 'Post-Event Recovery & Advocacy',
-            description: 'White-glove restoration and strategic insurance claim management to return your estate to pre-loss perfection',
+            title: 'Storm Repair & Insurance Claims',
+            description: 'White-glove restoration after severe weather. We handle the complex insurance negotiations to return your estate to pre-loss perfection.',
             className: 'lg:col-span-1 lg:row-span-2', // Vertical Right
             image: 'https://images.unsplash.com/photo-1527482797697-8795b05a13fe?q=80&w=2940&auto=format&fit=crop'
         },
         {
             id: 'architecture',
-            title: 'Estate Master-Planning',
-            description: 'Bespoke architectural envelopes crafted from slate, zinc, and copper to define the silhouette of your legacy.',
+            title: 'Custom Estate Roofing',
+            description: 'Bespoke architectural designs crafted from slate, zinc, and copper to define the silhouette of your luxury property.',
             className: 'lg:col-span-2 lg:row-span-2 max-h-[500px]', // Large Feature (Left) constrained
             image: 'https://images.unsplash.com/photo-1635424710928-0544e8512eae?q=80&w=2940&auto=format&fit=crop'
         },
         {
             id: 'inspections',
-            title: 'Structural Diagnostics',
-            description: 'Forensic-level analysis of the building envelope to identify latent risks before they become structural liabilities.',
+            title: 'Precision Roof Inspections',
+            description: 'Forensic-level analysis of your building envelope to pinpoint hidden leaks and vulnerabilities before they become costly liabilities.',
             className: 'lg:col-span-1 lg:row-span-1 aspect-square', // Standard 1
-            image: 'https://images.unsplash.com/photo-1504307651254-35680f356f58?q=80&w=2940&auto=format&fit=crop' // Re-used existing good one
+            image: 'https://images.unsplash.com/photo-1504307651254-35680f356f58?q=80&w=2940&auto=format&fit=crop'
         },
         {
             id: 'repair',
-            title: 'Preservation & Stewardship',
-            description: 'Surgical interventions and proactive maintenance programs designed to extend the lifespan of your architectural assets.',
+            title: 'Proactive Maintenance',
+            description: 'Surgical interventions and preventative upkeep designed to drastically extend the lifespan of your roof and protect your investment.',
             className: 'lg:col-span-1 lg:row-span-1 aspect-square', // Standard 2
-            image: 'https://images.unsplash.com/photo-1541888081622-1d542a170564?q=80&w=2940&auto=format&fit=crop' // Re-used existing good one
+            image: 'https://images.unsplash.com/photo-1541888081622-1d542a170564?q=80&w=2940&auto=format&fit=crop'
         },
         {
             id: 'drainage',
-            title: 'Hydraulic Management',
-            description: 'Advanced Drainage Systems',
+            title: 'Advanced Drainage Systems',
+            description: 'Custom-engineered gutter and water diversion integration to prevent pooling, leaks, and foundation damage.',
             className: 'lg:col-span-1 lg:row-span-1 aspect-square', // Standard 3
             image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2924&auto=format&fit=crop'
         }
