@@ -117,7 +117,7 @@ export function ProjectEstimator() {
     };
 
     return (
-        <section aria-label="Architectural Consultation" className="py-24 bg-surface text-surface-text relative overflow-hidden transition-colors duration-300">
+        <section id="consultation" aria-label="Architectural Consultation" className="py-24 bg-surface text-surface-text relative overflow-hidden transition-colors duration-300">
             <div className="container mx-auto px-5 md:px-6 relative z-10 max-w-7xl">
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 glass-panel backdrop-blur-2xl rounded-[2.5rem] overflow-hidden min-h-[700px] bg-white/5 border border-white/10 shadow-3xl">
@@ -309,7 +309,7 @@ export function ProjectEstimator() {
                                         <motion.div variants={childVariants} className="mt-auto pt-8 flex justify-end">
                                             <button
                                                 type="submit"
-                                                className="px-8 py-4 bg-white/5 hover:bg-white text-white hover:text-brand-black rounded-xl font-sans font-medium text-[13px] transition-all duration-300 border border-white/10 hover:border-white w-full md:w-auto"
+                                                className="px-8 py-4 bg-brand-accent hover:brightness-110 text-white rounded-xl font-sans font-medium text-[13px] transition-all duration-300 w-full md:w-auto"
                                             >
                                                 Request Professional Assessment
                                             </button>

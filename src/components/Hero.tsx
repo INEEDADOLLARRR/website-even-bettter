@@ -91,7 +91,7 @@ export function Hero() {
         {/* Desktop CTA + Theme Toggle - Pushed to right */}
         <div className="hidden md:flex md:flex-1 items-center justify-end gap-6">
           <ThemeToggle />
-          <a href="#contact" className="px-6 py-2.5 bg-brand-white text-brand-black text-[10px] font-bold rounded-full hover:bg-brand-silver transition-all duration-300 uppercase tracking-wider">
+          <a href="#consultation" className="px-6 py-2.5 bg-brand-accent text-white text-[10px] font-bold rounded-full hover:brightness-110 transition-all duration-300 uppercase tracking-wider">
             Get Estimate
           </a>
         </div>
@@ -146,9 +146,9 @@ export function Hero() {
 
             <div className="px-8 pb-10">
               <a
-                href="#contact"
+                href="#consultation"
                 onClick={() => setMenuOpen(false)}
-                className="block w-full py-4 bg-brand-white text-brand-black text-center font-semibold rounded-xl text-sm"
+                className="block w-full py-4 bg-brand-accent text-white text-center font-semibold rounded-xl text-sm"
               >
                 Get Your Estimate
               </a>

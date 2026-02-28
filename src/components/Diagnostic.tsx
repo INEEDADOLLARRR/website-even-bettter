@@ -81,7 +81,7 @@ export function Diagnostic() {
             {!calculated ? (
               <button
                 onClick={() => setCalculated(true)}
-                className="relative w-full py-4 bg-white text-brand-black rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer text-sm"
+                className="relative w-full py-4 bg-brand-accent text-white rounded-xl font-semibold hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer text-sm"
               >
                 Reveal Projection <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </button>

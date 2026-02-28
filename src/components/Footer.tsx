@@ -44,7 +44,7 @@ export function Footer() {
               Elevate your property with architectural roofing solutions that combine uncompromising aesthetics with generational durability.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#contact" className="group w-full sm:w-auto px-8 py-4 bg-brand-blue text-brand-white font-semibold rounded-full hover:bg-white hover:text-brand-blue transition-colors duration-300 flex items-center justify-center gap-2 text-sm">
+              <a href="#consultation" className="group w-full sm:w-auto px-8 py-4 bg-brand-accent text-white font-semibold rounded-full hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 text-sm">
                 Get Your Estimate <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
               </a>
               <a href="#expertise" className="w-full sm:w-auto px-8 py-4 bg-brand-white/10 text-brand-white font-semibold rounded-full hover:bg-white hover:text-brand-black transition-colors duration-300 text-sm">
