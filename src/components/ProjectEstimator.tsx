@@ -306,13 +306,16 @@ export function ProjectEstimator() {
                                             </div>
                                         </motion.div>
 
-                                        <motion.div variants={childVariants} className="mt-auto pt-8 flex justify-end">
+                                        <motion.div variants={childVariants} className="mt-auto pt-8 flex flex-col items-end gap-3">
                                             <button
                                                 type="submit"
                                                 className="px-8 py-4 bg-brand-accent hover:brightness-110 text-white rounded-xl font-sans font-medium text-[13px] transition-all duration-300 w-full md:w-auto"
                                             >
                                                 Get My Free Quote
                                             </button>
+                                            <p className="font-sans text-[10px] text-surface-muted/60 text-center md:text-right w-full">
+                                                Your information is 100% secure. No spam, just a fast, accurate quote.
+                                            </p>
                                         </motion.div>
                                     </motion.form>
                                 )}
