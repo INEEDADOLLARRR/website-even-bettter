@@ -48,7 +48,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section aria-label="Client testimonials" className="py-16 md:py-28 bg-brand-black text-brand-white overflow-hidden">
+    <section aria-label="Client testimonials" className="py-16 md:py-28 bg-surface text-surface-text overflow-hidden transition-colors duration-300">
       <div className="container mx-auto px-5 md:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-12 md:mb-20">
           <div className="max-w-2xl">
@@ -76,7 +76,7 @@ export function Testimonials() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="hidden md:block text-brand-silver/50 max-w-sm font-light leading-relaxed text-sm"
+            className="hidden md:block text-surface-muted/50 max-w-sm font-light leading-relaxed text-sm"
           >
             We don't just build roofs; we secure legacies.
           </motion.p>
@@ -85,8 +85,8 @@ export function Testimonials() {
 
       <div className="relative w-full">
         {/* Edge fades */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-r from-brand-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-l from-brand-black to-transparent z-20 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-r from-surface to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 md:w-24 bg-gradient-to-l from-surface to-transparent z-20 pointer-events-none" />
 
         <motion.div
           className="flex gap-4 md:gap-6 px-3 md:px-4 w-max"
@@ -96,7 +96,7 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((testimonial, i) => (
             <article
               key={i}
-              className="flex flex-col p-5 md:p-7 glass-panel rounded-xl hover:border-brand-white/10 transition-colors duration-300 w-[260px] sm:w-[300px] md:w-[360px] shrink-0 hover:bg-brand-white/[0.03] group"
+              className="flex flex-col p-5 md:p-7 glass-panel rounded-xl hover:border-surface-muted/10 transition-colors duration-300 w-[260px] sm:w-[300px] md:w-[360px] shrink-0 group"
             >
               <div className="flex gap-0.5 mb-4" aria-label={`${testimonial.rating} out of 5 stars`}>
                 {[...Array(testimonial.rating)].map((_, j) => (
@@ -105,12 +105,12 @@ export function Testimonials() {
               </div>
 
               <blockquote className="flex-1 mb-6">
-                <p className="font-display text-sm md:text-base leading-relaxed text-brand-silver/70 font-light group-hover:text-brand-white/80 transition-colors duration-300">
+                <p className="font-display text-sm md:text-base leading-relaxed text-surface-muted/70 font-light group-hover:text-surface-text/80 transition-colors duration-300">
                   "{testimonial.content}"
                 </p>
               </blockquote>
 
-              <div className="border-t border-brand-silver/5 pt-4 flex items-center gap-3">
+              <div className="border-t border-surface-muted/5 pt-4 flex items-center gap-3">
                 <img
                   src={testimonial.avatarImage}
                   alt={`${testimonial.name}, ${testimonial.role}`}
@@ -121,8 +121,8 @@ export function Testimonials() {
                   className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
                 />
                 <div>
-                  <p className="font-medium text-brand-white uppercase tracking-wider text-[9px] md:text-[10px] mb-0.5">{testimonial.name}</p>
-                  <p className="text-brand-silver/40 text-[8px] md:text-[9px] uppercase tracking-widest">{testimonial.role}</p>
+                  <p className="font-medium text-surface-text uppercase tracking-wider text-[9px] md:text-[10px] mb-0.5">{testimonial.name}</p>
+                  <p className="text-surface-muted/40 text-[8px] md:text-[9px] uppercase tracking-widest">{testimonial.role}</p>
                 </div>
               </div>
             </article>

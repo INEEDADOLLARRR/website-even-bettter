@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { ThemeToggle } from './ThemeToggle';
 
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -71,24 +72,29 @@ export function Hero() {
         className="absolute top-0 left-0 w-full z-50 px-5 py-5 md:px-10 md:py-8 flex items-center justify-between"
         aria-label="Main navigation"
       >
-        <a href="/" className="flex items-center gap-2" aria-label="Verrazano Roofing home">
-          <div className="w-7 h-7 bg-brand-white rounded-full flex items-center justify-center">
-            <div className="w-2.5 h-2.5 bg-brand-black rounded-full" />
-          </div>
-          <span className="font-display font-semibold text-base tracking-wide">VERRAZANO</span>
-        </a>
+        <div className="md:flex-1 flex items-center">
+          <a href="/" className="flex items-center gap-2" aria-label="Verrazano Roofing home">
+            <div className="w-7 h-7 bg-brand-white rounded-full flex items-center justify-center">
+              <div className="w-2.5 h-2.5 bg-brand-black rounded-full" />
+            </div>
+            <span className="font-display font-semibold text-base tracking-wide">VERRAZANO</span>
+          </a>
+        </div>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest text-brand-silver uppercase">
+        {/* Desktop nav - Centered */}
+        <div className="hidden md:flex items-center gap-8 text-[11px] font-medium tracking-widest text-brand-silver uppercase">
           {NAV_LINKS.map(link => (
             <a key={link.href} href={link.href} className="magnetic-underline hover:text-brand-white transition-colors duration-300 pb-1">{link.label}</a>
           ))}
         </div>
 
-        {/* Desktop CTA */}
-        <a href="#contact" className="hidden md:block px-5 py-2 bg-brand-white text-brand-black text-xs font-semibold rounded-full hover:bg-brand-silver transition-colors duration-300">
-          Get Estimate
-        </a>
+        {/* Desktop CTA + Theme Toggle - Pushed to right */}
+        <div className="hidden md:flex md:flex-1 items-center justify-end gap-6">
+          <ThemeToggle />
+          <a href="#contact" className="px-6 py-2.5 bg-brand-white text-brand-black text-[10px] font-bold rounded-full hover:bg-brand-silver transition-all duration-300 uppercase tracking-wider">
+            Get Estimate
+          </a>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -164,9 +170,9 @@ export function Hero() {
             Signature Roofing Architecture
           </motion.div>
 
-          <motion.h1 variants={fadeUpVariants} className="font-display text-[2rem] leading-[1.1] md:text-5xl lg:text-6xl font-medium tracking-tight mb-7 text-balance">
-            <span className="block text-brand-white">Precision-crafted</span>
-            <span className="block text-brand-silver/60">roofing for modern estates.</span>
+          <motion.h1 variants={fadeUpVariants} className="font-display text-[2.5rem] leading-[1.1] md:text-6xl lg:text-[4.5rem] font-medium tracking-tight mb-7 text-balance">
+            <span className="block text-brand-white">Precision-<span className="italic font-light">crafted</span></span>
+            <span className="block text-brand-silver/60">roofing for <span className="italic font-light">modern</span> estates.</span>
           </motion.h1>
 
           <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8">
@@ -188,7 +194,7 @@ export function Hero() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
         style={{ opacity: textOpacity }}
-        className="absolute bottom-10 right-10 z-20 hidden lg:block"
+        className="absolute xl:bottom-10 lg:bottom-28 right-10 z-20 hidden lg:block"
       >
         <div className="glass-panel-light p-5 rounded-xl w-64 text-sm">
           <div className="flex justify-between items-start mb-3 border-b border-brand-silver/10 pb-3">
@@ -211,7 +217,9 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 pointer-events-none hidden md:flex"
+        // Keep scroll indicator under authority bar visually or fade it out
+        style={{ opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]) }}
+        className="absolute bottom-32 md:bottom-28 lg:bottom-12 xl:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[15] pointer-events-none hidden md:flex"
       >
         <span className="text-[9px] tracking-[0.3em] uppercase text-brand-silver/40">Scroll</span>
         <div className="w-[1px] h-10 bg-gradient-to-b from-brand-silver/25 to-transparent" />

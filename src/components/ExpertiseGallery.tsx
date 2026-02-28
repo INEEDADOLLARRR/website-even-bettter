@@ -65,23 +65,23 @@ function ExpertiseCard({ item, index }: { item: typeof expertiseItems[0], index:
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <div className="flex items-center gap-3 mb-5">
-                        <span className="text-brand-silver/30 font-display text-xs uppercase tracking-widest">0{index + 1}</span>
-                        <div className="h-[1px] w-10 bg-brand-silver/15" />
+                        <span className="text-surface-muted/30 font-display text-xs uppercase tracking-widest">0{index + 1}</span>
+                        <div className="h-[1px] w-10 bg-surface-muted/15" />
                     </div>
 
-                    <h3 className="font-display text-2xl lg:text-4xl font-medium tracking-tight mb-5 text-brand-white">{item.title}</h3>
-                    <p className="text-brand-silver/60 text-sm leading-relaxed mb-7 max-w-lg font-light">{item.description}</p>
+                    <h3 className="font-display text-2xl lg:text-4xl font-medium tracking-tight mb-5 text-surface-text">{item.title}</h3>
+                    <p className="text-surface-muted/60 text-sm leading-relaxed mb-7 max-w-lg font-light">{item.description}</p>
 
                     <ul className="space-y-3 mb-8" role="list">
                         {item.features.map((feature, i) => (
-                            <li key={i} className="flex items-center gap-2.5 text-xs font-medium tracking-wide text-brand-white/80">
+                            <li key={i} className="flex items-center gap-2.5 text-xs font-medium tracking-wide text-surface-text/80">
                                 <div className="w-1 h-1 rounded-full bg-brand-blue" />
                                 {feature}
                             </li>
                         ))}
                     </ul>
 
-                    <a href="#contact" className="group inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-wider text-[10px] md:text-xs hover:text-brand-white transition-colors duration-300">
+                    <a href="#contact" className="group inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-wider text-[10px] md:text-xs hover:text-surface-text transition-colors duration-300">
                         Explore Capabilities
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                     </a>
@@ -93,17 +93,17 @@ function ExpertiseCard({ item, index }: { item: typeof expertiseItems[0], index:
 
 export function ExpertiseGallery() {
     return (
-        <section id="expertise" aria-label="Our expertise" className="py-14 md:py-24 bg-brand-black text-brand-white overflow-hidden relative border-t border-brand-silver/5">
+        <section id="expertise" aria-label="Our expertise" className="py-14 md:py-24 bg-surface text-surface-text overflow-hidden relative border-t border-surface-muted/5 transition-colors duration-300">
             <SectionSettle className="container mx-auto px-5 md:px-6 max-w-6xl">
                 <div className="max-w-2xl mb-12 md:mb-20">
                     <BlurReveal delay={0}>
                         <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight mb-4 text-balance">
                             <span className="block">Uncompromising Quality.</span>
-                            <span className="text-brand-silver/50">Exceptional Execution.</span>
+                            <span className="text-surface-muted/50">Exceptional Execution.</span>
                         </h2>
                     </BlurReveal>
                     <BlurReveal delay={0.1}>
-                        <p className="text-brand-silver/50 text-sm leading-relaxed max-w-lg font-light">
+                        <p className="text-surface-muted/50 text-sm leading-relaxed max-w-lg font-light">
                             We deliver gorgeous designs using the very best frameworks and materials available in the industry.
                         </p>
                     </BlurReveal>

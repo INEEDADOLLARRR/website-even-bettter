@@ -7,7 +7,7 @@ export function LatestArticles() {
     const articles = getAllArticles().slice(0, 3);
 
     return (
-        <section aria-label="Latest articles" className="py-14 md:py-28 bg-brand-black text-brand-white border-t border-brand-silver/5">
+        <section aria-label="Latest articles" className="py-14 md:py-28 bg-surface text-surface-text border-t border-surface-muted/5 transition-colors duration-300">
             <div className="container mx-auto px-5 md:px-6 max-w-6xl">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
                     <div className="max-w-xl">
@@ -27,7 +27,7 @@ export function LatestArticles() {
                             transition={{ delay: 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                             className="font-display text-3xl md:text-4xl font-medium tracking-tight"
                         >
-                            The Roofing <span className="text-brand-silver/50">Journal.</span>
+                            The Roofing <span className="text-surface-muted/50">Journal.</span>
                         </motion.h2>
                     </div>
 
@@ -39,7 +39,7 @@ export function LatestArticles() {
                     >
                         <Link
                             to="/blog"
-                            className="inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-widest text-[10px] md:text-xs hover:text-brand-white transition-colors duration-300 group"
+                            className="inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-widest text-[10px] md:text-xs hover:text-surface-text transition-colors duration-300 group"
                         >
                             View All Articles
                             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -58,7 +58,7 @@ export function LatestArticles() {
                         >
                             <Link
                                 to={`/blog/${article.slug}`}
-                                className="group block glass-panel-light rounded-2xl overflow-hidden hover:bg-brand-white/5 transition-all duration-500 h-full"
+                                className="group block glass-panel-light rounded-2xl overflow-hidden transition-all duration-500 h-full"
                             >
                                 <div className="aspect-[16/9] overflow-hidden relative">
                                     <img
@@ -73,16 +73,16 @@ export function LatestArticles() {
                                 <div className="p-8">
                                     <div className="flex items-center gap-3 mb-4">
                                         <span className="text-brand-blue text-[10px] uppercase tracking-widest font-semibold">{article.category}</span>
-                                        <span className="text-brand-silver/40">·</span>
-                                        <span className="flex items-center gap-1 text-brand-silver/60 text-[10px] uppercase tracking-widest">
+                                        <span className="text-surface-muted/40">·</span>
+                                        <span className="flex items-center gap-1 text-surface-muted/60 text-[10px] uppercase tracking-widest">
                                             <Calendar className="w-3 h-3" />
                                             {new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                         </span>
                                     </div>
-                                    <h3 className="font-display text-lg font-medium tracking-tight mb-3 group-hover:text-brand-white transition-colors leading-snug">
+                                    <h3 className="font-display text-lg font-medium tracking-tight mb-3 group-hover:text-surface-text transition-colors leading-snug">
                                         {article.title}
                                     </h3>
-                                    <p className="text-brand-silver/60 text-sm font-light leading-relaxed line-clamp-2">
+                                    <p className="text-surface-muted/60 text-sm font-light leading-relaxed line-clamp-2">
                                         {article.excerpt}
                                     </p>
                                 </div>

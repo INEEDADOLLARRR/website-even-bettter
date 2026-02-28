@@ -1,18 +1,19 @@
 import { Suspense, lazy } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import { Hero } from './components/Hero';
+import { AuthorityBar } from './components/AuthorityBar';
 import { TrustTicker } from './components/TrustTicker';
 import { ValueGrid } from './components/ValueGrid';
 import { Process } from './components/Process';
-import WhyChooseUs from './components/ConversionBlueprint';
 import { ExpertiseGallery } from './components/ExpertiseGallery';
-import { InteractiveOrb } from './components/InteractiveOrb';
+import { BentoGrid } from './components/BentoGrid';
 import { Testimonials } from './components/Testimonials';
 import { Footer } from './components/Footer';
 import { LatestArticles } from './components/LatestArticles';
 import { SEOHead } from './components/SEOHead';
+import ClickSpark from './components/ClickSpark';
 
-// Lazy-load heavier below-fold sections for performance
-const Diagnostic = lazy(() => import('./components/Diagnostic').then(m => ({ default: m.Diagnostic })));
+const ProjectEstimator = lazy(() => import('./components/ProjectEstimator').then(m => ({ default: m.ProjectEstimator })));
 
 const homepageJsonLd = [
   {
@@ -56,35 +57,41 @@ const homepageJsonLd = [
 
 export default function App() {
   return (
-    <>
+    <ThemeProvider>
       <SEOHead jsonLd={homepageJsonLd} />
-      <div className="bg-brand-black text-brand-white font-sans selection:bg-brand-blue/30 selection:text-brand-white relative">
-        {/* Skip to content for accessibility */}
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand-white focus:text-brand-black focus:rounded-lg focus:text-sm focus:font-semibold">
-          Skip to content
-        </a>
+      <ClickSpark sparkColor="currentColor" sparkSize={12} sparkRadius={20} sparkCount={8} duration={500} extraScale={1.2}>
+        <div className="bg-surface text-surface-text font-sans selection:bg-brand-blue/30 selection:text-surface-text relative transition-colors duration-300">
+          {/* Skip to content for accessibility */}
+          <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-surface-text focus:text-surface focus:rounded-lg focus:text-sm focus:font-semibold">
+            Skip to content
+          </a>
 
-        {/* Hero stays sticky so the next section covers it on scroll */}
-        <div className="sticky top-0 h-screen overflow-hidden z-0">
-          <Hero />
+          {/* Hero wrapper: extra height creates scroll buffer for Authority Bar phase */}
+          {/* The sticky hero sticks for 400px of scroll before main enters viewport */}
+          <div className="sticky top-0 h-screen overflow-hidden z-0">
+            <Hero />
+          </div>
+          {/* 400px of scroll distance before main enters — Authority Bar reveals here */}
+          <div className="h-[400px] relative z-0" aria-hidden="true">
+            <AuthorityBar />
+          </div>
+
+          {/* All remaining sections flow naturally — z-10 covers Authority Bar (z-5) */}
+          <main id="main-content" className="relative z-10 bg-surface transition-colors duration-300">
+            <Process />
+            <TrustTicker />
+            <ValueGrid />
+            <BentoGrid />
+            <ExpertiseGallery />
+            <Testimonials />
+            <Suspense fallback={<div className="min-h-[50vh]" />}>
+              <ProjectEstimator />
+            </Suspense>
+            <LatestArticles />
+            <Footer />
+          </main>
         </div>
-
-        {/* All remaining sections flow naturally */}
-        <main id="main-content" className="relative z-10 bg-brand-black">
-          <Process />
-          <TrustTicker />
-          <ValueGrid />
-          <InteractiveOrb />
-          <ExpertiseGallery />
-          <Suspense fallback={<div className="min-h-[50vh]" />}>
-            <Diagnostic />
-          </Suspense>
-          <Testimonials />
-          <WhyChooseUs />
-          <LatestArticles />
-          <Footer />
-        </main>
-      </div>
-    </>
+      </ClickSpark>
+    </ThemeProvider>
   );
 }
