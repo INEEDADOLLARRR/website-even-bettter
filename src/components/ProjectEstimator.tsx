@@ -151,11 +151,11 @@ export function ProjectEstimator() {
                                 transition={{ delay: 0.5, duration: 0.8 }}
                             >
                                 <h2 className="font-display text-3xl lg:text-4xl font-medium tracking-tight text-white mb-3">
-                                    Begin Your <br />
-                                    Architectural Consultation
+                                    Request Your <br />
+                                    Custom Roof Estimate
                                 </h2>
                                 <p className="font-sans text-white/60 text-xs uppercase tracking-[0.2em] font-medium">
-                                    Average diagnostic response time: 2 hours.
+                                    Average Response Time: Under 2 Hours.
                                 </p>
                             </motion.div>
                         </div>
@@ -311,7 +311,7 @@ export function ProjectEstimator() {
                                                 type="submit"
                                                 className="px-8 py-4 bg-brand-accent hover:brightness-110 text-white rounded-xl font-sans font-medium text-[13px] transition-all duration-300 w-full md:w-auto"
                                             >
-                                                Request Professional Assessment
+                                                Get My Free Quote
                                             </button>
                                         </motion.div>
                                     </motion.form>
