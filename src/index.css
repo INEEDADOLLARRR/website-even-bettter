@@ -19,6 +19,31 @@
   --color-surface-text: #ffffff;
   --color-surface-muted: #A1A1AA;
   --color-surface-subtle: rgba(255, 255, 255, 0.5);
+
+  /* Typography Overscale 
+     Compensates for the 25% root reduction (0.675) to maintain readable text sizes.
+     Formula: standard_rem / 0.75 ≈ new_rem 
+  */
+  --text-xs: 1rem;
+  /* ~10px equivalent to original 0.75rem  */
+  --text-sm: 1.16rem;
+  /* ~12px equivalent to original 0.875rem */
+  --text-base: 1.33rem;
+  /* ~14px equivalent to original 1rem     */
+  --text-lg: 1.5rem;
+  /* ~16px equivalent to original 1.125rem */
+  --text-xl: 1.66rem;
+  /* ~18px equivalent to original 1.25rem  */
+  --text-2xl: 2rem;
+  /* ~21px equivalent to original 1.5rem   */
+  --text-3xl: 2.5rem;
+  /* ~27px equivalent to original 1.875rem */
+  --text-4xl: 3rem;
+  /* ~32px equivalent to original 2.25rem  */
+  --text-5xl: 4rem;
+  /* ~43px equivalent to original 3rem     */
+  --text-6xl: 5rem;
+  /* ~54px equivalent to original 3.75rem  */
 }
 
 /* Light mode overrides */
@@ -33,14 +58,14 @@ html.light {
   html {
     scroll-behavior: smooth;
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* Base scaling calculation - creates a 10% reduction of standard 16px (down to 14.4px) for desktop */
-    font-size: 90%;
+    /* Zoom out layout by 25% (90% * 0.75) */
+    font-size: 67.5%;
   }
 
   /* Prevent over-shrinking on small mobile devices to maintain legibility */
   @media (max-width: 640px) {
     html {
-      font-size: 95%;
+      font-size: 85%;
     }
   }
 
