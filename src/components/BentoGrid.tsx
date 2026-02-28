@@ -232,7 +232,7 @@ export function BentoGrid() {
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ delay: 0.1 }}
                     >
-                        Our Expertise.
+                        Premium Roofing Services.
                     </motion.h2>
                 </div>
 
