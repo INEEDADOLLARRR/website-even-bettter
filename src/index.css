@@ -7,7 +7,7 @@
   --font-display: "Playfair Display", ui-serif, Georgia, serif;
 
   /* Brand accent colors (theme-independent) */
-  --color-brand-black: #050505;
+  --color-brand-black: #0f0f0f;
   --color-brand-silver: #A1A1AA;
   --color-brand-white: #ffffff;
   --color-brand-blue: #00509E;
@@ -15,7 +15,7 @@
   --color-brand-accent: #C5A059;
 
   /* Semantic surface tokens (default = dark) */
-  --color-surface: #050505;
+  --color-surface: #0f0f0f;
   --color-surface-text: #ffffff;
   --color-surface-muted: #A1A1AA;
   --color-surface-subtle: rgba(255, 255, 255, 0.5);
