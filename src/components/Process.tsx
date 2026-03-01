@@ -100,7 +100,7 @@ export function Process() {
                             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                             className="font-display text-3xl font-medium tracking-tight mb-4"
                         >
-                            A Seamless 4-Step Process to a Lifetime Roof.
+                            A Proven 4-Step Engineering Process for Your Estate’s Lifetime Roof.
                         </motion.h2>
                     </div>
 
@@ -155,7 +155,7 @@ export function Process() {
 
             {/* Mobile: Static, High-Contrast Stack (< 1024px) */}
             <div className="container mx-auto px-5 lg:hidden py-20 pb-32">
-                <h2 className="font-display text-3xl font-medium tracking-tight mb-3 text-balance">A Seamless 4-Step Process to a Lifetime Roof.</h2>
+                <h2 className="font-display text-3xl font-medium tracking-tight mb-3 text-balance">A Proven 4-Step Engineering Process for Your Estate’s Lifetime Roof.</h2>
                 <div className="w-12 h-[2px] bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] mb-16" />
 
                 <div className="flex flex-col gap-24">
