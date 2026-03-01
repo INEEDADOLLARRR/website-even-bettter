@@ -92,9 +92,9 @@ export function Hero() {
         <div className="flex flex-1 items-center justify-end gap-3 md:gap-6">
           <a
             href="tel:18005557663"
-            className="px-4 py-2 md:px-6 md:py-2.5 bg-white text-brand-black text-[10px] font-bold rounded-full hover:bg-brand-silver transition-all duration-300 uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+            className="px-6 py-2.5 md:px-8 md:py-3.5 bg-white text-brand-black text-xs font-bold rounded-full hover:bg-brand-silver transition-all duration-300 uppercase tracking-widest flex items-center gap-2.5 shadow-[0_0_25px_rgba(255,255,255,0.2)]"
           >
-            <Phone className="w-3 h-3" aria-hidden="true" />
+            <Phone className="w-3.5 h-3.5" aria-hidden="true" />
             <span className="hidden sm:inline">Call Now: (800) 555-ROOF</span>
             <span className="sm:hidden">Call Now</span>
           </a>
