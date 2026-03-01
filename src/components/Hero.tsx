@@ -187,8 +187,8 @@ export function Hero() {
           </motion.div>
 
           <motion.h1 variants={fadeUpVariants} className="font-display text-[2.5rem] leading-[1.1] md:text-6xl lg:text-[4.5rem] font-medium tracking-tight mb-7 text-balance">
-            <span className="block text-brand-white">The Gold <span className="italic font-light">Standard</span> in</span>
-            <span className="block text-brand-silver/60">Estate Roofing — <span className="italic font-light">Guaranteed</span> for Generations.</span>
+            <span className="block text-brand-white">Protecting Estate <span className="italic font-light">Value</span> for Generations</span>
+            <span className="block text-brand-silver/60 text-[0.8em]">with 24 Years of <span className="italic font-light">Precision</span> Roofing Architecture.</span>
           </motion.h1>
 
           <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8">
