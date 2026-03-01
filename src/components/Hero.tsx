@@ -69,20 +69,20 @@ export function Hero() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         style={{ opacity: textOpacity }}
-        className="absolute top-0 left-0 w-full z-50 px-5 py-5 md:px-10 md:py-8 flex items-center justify-between"
+        className="absolute top-0 left-0 w-full z-50 px-6 py-6 md:px-12 md:py-10 flex items-center justify-between"
         aria-label="Main navigation"
       >
         <div className="md:flex-1 flex items-center">
           <a href="/" className="flex items-center gap-2" aria-label="Verrazano Roofing home">
-            <div className="w-7 h-7 bg-brand-white rounded-full flex items-center justify-center">
-              <div className="w-2.5 h-2.5 bg-brand-black rounded-full" />
+            <div className="w-8 h-8 bg-brand-white rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-105">
+              <div className="w-3 h-3 bg-brand-black rounded-full" />
             </div>
-            <span className="font-display font-semibold text-base tracking-wide">VERRAZANO</span>
+            <span className="font-display font-semibold text-lg tracking-wide">VERRAZANO</span>
           </a>
         </div>
 
         {/* Desktop nav - Centered */}
-        <div className="hidden md:flex items-center gap-8 text-[11px] font-medium tracking-widest text-brand-silver uppercase">
+        <div className="hidden md:flex items-center gap-12 text-xs font-medium tracking-[0.15em] text-brand-silver uppercase">
           {NAV_LINKS.map(link => (
             <a key={link.href} href={link.href} className="magnetic-underline hover:text-brand-white transition-colors duration-300 pb-1">{link.label}</a>
           ))}
@@ -101,7 +101,7 @@ export function Hero() {
           <div className="hidden md:block">
             <ThemeToggle />
           </div>
-          <a href="#consultation" className="hidden md:block px-6 py-2.5 bg-brand-accent text-white text-[10px] font-bold rounded-full hover:brightness-110 transition-all duration-300 uppercase tracking-wider">
+          <a href="#consultation" className="hidden md:block px-8 py-3.5 bg-brand-accent text-white text-xs font-bold rounded-full hover:brightness-110 transition-all duration-300 uppercase tracking-widest shadow-[0_0_20px_rgba(197,160,89,0.2)]">
             Get Estimate
           </a>
         </div>
