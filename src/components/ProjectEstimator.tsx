@@ -137,7 +137,7 @@ export function ProjectEstimator() {
                                 playsInline
                                 className="w-full h-full object-cover"
                             >
-                                <source src="/video for the estimator section.mp4" type="video/mp4" />
+                                <source src="/estimator-video.mp4" type="video/mp4" />
                             </video>
                             {/* Cinematic Overlay */}
                             <div className="absolute inset-0 bg-black/40 lg:bg-black/20" />
