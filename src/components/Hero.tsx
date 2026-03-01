@@ -181,25 +181,37 @@ export function Hero() {
           animate="visible"
           className="max-w-3xl"
         >
-          <motion.div variants={fadeUpVariants} className="text-brand-silver/50 font-medium tracking-[0.2em] text-[9px] md:text-xs uppercase mb-5 flex items-center gap-4">
-            <span className="w-6 h-[1px] bg-brand-silver/30" />
-            Signature Roofing Architecture
+          <motion.div variants={fadeUpVariants} className="text-brand-accent font-semibold tracking-[0.2em] text-[10px] md:text-[11px] uppercase mb-8 flex items-center gap-4">
+            <span className="w-10 h-[2px] bg-brand-accent" />
+            TRUSTED BY HOMEOWNERS ACROSS THE NORTHEAST
           </motion.div>
 
-          <motion.h1 variants={fadeUpVariants} className="font-display text-[2.5rem] leading-[1.1] md:text-6xl lg:text-[4.5rem] font-medium tracking-tight mb-7 text-balance">
-            <span className="block text-brand-white">Protecting Estate <span className="italic font-light">Value</span> for Generations</span>
-            <span className="block text-brand-silver/60 text-[0.8em]">with 24 Years of <span className="italic font-light">Precision</span> Roofing Architecture.</span>
+          <motion.h1 variants={fadeUpVariants} className="font-display text-[3.25rem] leading-[1.05] md:text-[4.5rem] lg:text-[5.5rem] font-medium tracking-tight mb-8 text-balance">
+            <span className="block text-brand-white">Your Home Deserves</span>
+            <span className="block text-brand-white">a Roof Built to</span>
+            <span className="block text-brand-accent italic font-light">Last Decades.</span>
           </motion.h1>
 
-          <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8">
-            <a href="#process" className="group px-7 py-3.5 bg-brand-white text-brand-black font-medium rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg text-sm">
-              <span className="flex items-center gap-2 group-hover:text-brand-blue transition-colors duration-300">
-                View Our Process <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+          <motion.p variants={fadeUpVariants} className="max-w-2xl text-brand-silver/80 text-sm md:text-base leading-relaxed mb-10">
+            Premium materials, expert craftsmanship, and a warranty that actually means something. Free inspection — honest answers, zero pressure.
+          </motion.p>
+
+          <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-2">
+            <a href="#consultation" className="group px-8 py-4 bg-brand-accent text-brand-black shadow-[0_0_20px_rgba(197,160,89,0.3)] font-bold uppercase tracking-widest rounded-full transition-all duration-300 hover:brightness-110 text-xs md:text-sm">
+              <span className="flex items-center gap-2">
+                GET MY FREE INSPECTION <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </span>
             </a>
-            <a href="tel:18005557663" className="flex items-center gap-2 text-brand-silver/60 hover:text-brand-white transition-colors duration-300 text-sm font-medium md:hidden">
-              Call us now
+            <a href="#projects" className="group px-4 py-4 text-brand-silver hover:text-brand-white font-medium uppercase tracking-widest text-xs md:text-sm relative overflow-hidden transition-colors duration-300">
+              <span className="relative z-10 flex items-center gap-2">
+                VIEW OUR WORK <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 opacity-50" />
+              </span>
+              <span className="absolute bottom-2 left-4 right-8 h-[1px] bg-brand-white/20 group-hover:bg-brand-white transition-colors duration-300" />
             </a>
+          </motion.div>
+
+          <motion.div variants={fadeUpVariants} className="mt-8 text-brand-silver/40 tracking-wider text-[9px] md:text-[10px]">
+            No obligation · Licensed &amp; Insured · Response within 24 hrs
           </motion.div>
         </motion.div>
       </motion.div>
