@@ -21,29 +21,29 @@
   --color-surface-subtle: rgba(255, 255, 255, 0.5);
 
   /* Typography Overscale 
-     Compensates for the 25% root reduction (0.675) to maintain readable text sizes.
-     Formula: standard_rem / 0.75 ≈ new_rem 
+     Compensates for the 20% root reduction (0.80) to maintain readable text sizes.
+     Provides a 'refined but readable' feel where layout is efficiently packed but text is clear.
   */
-  --text-xs: 1rem;
-  /* ~10px equivalent to original 0.75rem  */
-  --text-sm: 1.16rem;
-  /* ~12px equivalent to original 0.875rem */
-  --text-base: 1.33rem;
-  /* ~14px equivalent to original 1rem     */
-  --text-lg: 1.5rem;
-  /* ~16px equivalent to original 1.125rem */
-  --text-xl: 1.66rem;
-  /* ~18px equivalent to original 1.25rem  */
-  --text-2xl: 2rem;
-  /* ~21px equivalent to original 1.5rem   */
-  --text-3xl: 2.5rem;
-  /* ~27px equivalent to original 1.875rem */
-  --text-4xl: 3rem;
-  /* ~32px equivalent to original 2.25rem  */
-  --text-5xl: 4rem;
-  /* ~43px equivalent to original 3rem     */
-  --text-6xl: 5rem;
-  /* ~54px equivalent to original 3.75rem  */
+  --text-xs: 0.95rem;
+  /* ~12px equivalent on 16px base, clear for small labels */
+  --text-sm: 1.1rem;
+  /* ~14px equivalent, standard secondary text */
+  --text-base: 1.25rem;
+  /* ~16px equivalent, perfect for primary body reading */
+  --text-lg: 1.4rem;
+  /* ~18px equivalent */
+  --text-xl: 1.55rem;
+  /* ~20px equivalent */
+  --text-2xl: 1.85rem;
+  /* ~24px equivalent */
+  --text-3xl: 2.3rem;
+  /* ~29px equivalent */
+  --text-4xl: 2.8rem;
+  /* ~36px equivalent */
+  --text-5xl: 3.8rem;
+  /* ~48px equivalent */
+  --text-6xl: 4.8rem;
+  /* ~61px equivalent */
 }
 
 /* Light mode overrides */
@@ -58,14 +58,14 @@ html.light {
   html {
     scroll-behavior: smooth;
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* Zoom out layout by 25% (90% * 0.75) */
-    font-size: 67.5%;
+    /* Balanced scale (80%) - preserves high-efficiency layout while allowing text to breathe */
+    font-size: 80%;
   }
 
   /* Prevent over-shrinking on small mobile devices to maintain legibility */
   @media (max-width: 640px) {
     html {
-      font-size: 85%;
+      font-size: 90%;
     }
   }
 
