@@ -187,13 +187,12 @@ export function Hero() {
           </motion.div>
 
           <motion.h1 variants={fadeUpVariants} className="font-display text-[3.25rem] leading-[1.05] md:text-[4.5rem] lg:text-[5.5rem] font-medium tracking-tight mb-8 text-balance">
-            <span className="block text-brand-white">Protect Your Estate</span>
-            <span className="block text-brand-white">Investment with a</span>
-            <span className="block text-brand-accent italic font-light">Guaranteed Lifetime Roof.</span>
+            <span className="block text-brand-white">Find Hidden</span>
+            <span className="block text-brand-accent italic font-light">Roof Damage.</span>
           </motion.h1>
 
           <motion.p variants={fadeUpVariants} className="max-w-2xl text-brand-silver/80 text-sm md:text-base leading-relaxed mb-10">
-            We manage the entire architectural process—from a 50-point structural audit to final zero-mess installation.
+            Get a free 60-second health report. Find leaks before they get expensive.
           </motion.p>
 
           <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-2">
