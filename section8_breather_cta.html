@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── BEFORE/AFTER SCROLL MOCKUP ── */
+  .scroll-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+  .scroll-col { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .scroll-col-bar { padding:7px 12px; font-size:11px; font-weight:500; border-bottom:1px solid var(--color-border-tertiary); }
+  .sc-bad-bar  { background:#FCEBEB; color:#A32D2D; }
+  .sc-good-bar { background:#EAF3DE; color:#3B6D11; }
+  .scroll-col-body { padding:10px; display:flex; flex-direction:column; gap:6px; }
+  .mock-section { border-radius:6px; padding:8px 10px; font-size:11px; font-weight:500; }
+  .ms-white { background:var(--color-background-secondary); color:var(--color-text-secondary); border:1px solid var(--color-border-tertiary); }
+  .ms-white-dense { background:var(--color-background-secondary); color:var(--color-text-secondary); border:1px solid var(--color-border-tertiary); height:40px; display:flex; align-items:center; }
+  .ms-dark  { background:#2C2C2A; color:#D3D1C7; }
+  .ms-arrow { text-align:center; font-size:10px; color:var(--color-text-tertiary); padding:2px 0; }
+
+  /* ── MAIN BREATHER MOCKUP ── */
+  .breather-mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; margin-bottom:6px; }
+  .bm-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  /* the dark section itself */
+  .bm-dark { background:#1a1a18; padding:40px 24px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .bm-eyebrow { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; color:#888780; }
+  .bm-headline { font-size:17px; font-weight:500; color:#F1EFE8; text-align:center; line-height:1.4; max-width:380px; }
+  .bm-sub { font-size:12px; color:#888780; text-align:center; line-height:1.6; max-width:320px; }
+  .bm-btns { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; }
+  .bm-btn-primary { background:#534AB7; color:#fff; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:500; border:none; cursor:pointer; }
+  .bm-btn-secondary { background:transparent; color:#D3D1C7; border:1px solid #444441; border-radius:8px; padding:10px 20px; font-size:13px; cursor:pointer; }
+  .bm-phone { font-size:13px; color:#9FE1CB; font-weight:500; }
+  .bm-note  { font-size:10px; color:#5F5E5A; }
+  .bm-micro { font-size:11px; color:#5F5E5A; text-align:center; }
+
+  /* ── ANATOMY BOX ── */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anatomy-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anatomy-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:110px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-example { font-size:11px; font-style:italic; margin-top:3px; border-radius:5px; padding:5px 8px; }
+
+  .ab-gray { background:#F1EFE8; border-color:#B4B2A9; }
+  .ab-gray .anat-label { color:#5F5E5A; }
+  .ab-gray .anat-desc  { color:#5F5E5A; }
+  .ab-gray .anat-example { background:#D3D1C7; color:#2C2C2A; }
+  @media (prefers-color-scheme:dark){
+    .ab-gray { background:#2C2C2A; border-color:#888780; }
+    .ab-gray .anat-desc { color:#888780; }
+    .ab-gray .anat-example { background:#444441; color:#D3D1C7; }
+  }
+
+  /* ── COPY COMPARISON ── */
+  .copy-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .cc-card { border-radius:10px; border:1px solid; padding:14px; }
+  .cc-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+  .cc-headline { font-size:13px; font-weight:500; border-radius:6px; padding:8px 10px; margin-bottom:6px; line-height:1.5; font-style:italic; }
+  .cc-why { font-size:12px; line-height:1.6; }
+
+  .cc-bad  { background:#FCEBEB; border-color:#F09595; }
+  .cc-bad  .cc-label   { color:#A32D2D; }
+  .cc-bad  .cc-headline{ background:#F7C1C1; color:#501313; }
+  .cc-bad  .cc-why     { color:#A32D2D; }
+  .cc-good { background:#EAF3DE; border-color:#97C459; }
+  .cc-good .cc-label   { color:#3B6D11; }
+  .cc-good .cc-headline{ background:#C0DD97; color:#173404; }
+  .cc-good .cc-why     { color:#3B6D11; }
+  @media (prefers-color-scheme:dark){
+    .cc-bad{background:#501313;border-color:#E24B4A;} .cc-bad .cc-headline{background:#791F1F;color:#F7C1C1;} .cc-bad .cc-why{color:#F09595;}
+    .cc-good{background:#173404;border-color:#639922;} .cc-good .cc-headline{background:#27500A;color:#C0DD97;} .cc-good .cc-why{color:#97C459;}
+  }
+
+  /* ── 15 SEC FORM ── */
+  .form-mockup { border:1px solid var(--color-border-tertiary); border-radius:10px; overflow:hidden; }
+  .fm-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .fm-body { padding:14px; background:var(--color-background-primary); }
+  .fm-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:4px; }
+  .fm-sub   { font-size:11px; color:var(--color-text-secondary); margin-bottom:12px; }
+  .fm-fields { display:flex; flex-direction:column; gap:8px; }
+  .fm-field  { border:1px solid var(--color-border-secondary); border-radius:6px; padding:8px 10px; font-size:12px; color:var(--color-text-tertiary); background:var(--color-background-secondary); }
+  .fm-field.filled { border-color:#0F6E56; color:var(--color-text-primary); background:var(--color-background-primary); }
+  .fm-check-row { display:flex; align-items:center; gap:6px; margin-top:2px; }
+  .fm-check { width:14px; height:14px; border-radius:50%; background:#0F6E56; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .fm-check-text { font-size:10px; color:#0F6E56; }
+  .fm-btn { margin-top:10px; width:100%; background:#534AB7; color:#fff; border:none; border-radius:6px; padding:10px; font-size:12px; font-weight:500; cursor:pointer; }
+  .fm-note { font-size:10px; color:var(--color-text-tertiary); text-align:center; margin-top:6px; }
+
+  /* ── WHITESPACE RULE ── */
+  .ws-demo { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .ws-card { border-radius:10px; border:1px solid; overflow:hidden; }
+  .ws-label-bar { padding:7px 12px; font-size:11px; font-weight:500; border-bottom:1px solid var(--color-border-tertiary); }
+  .ws-bad-bar  { background:#FCEBEB; color:#A32D2D; }
+  .ws-good-bar { background:#EAF3DE; color:#3B6D11; }
+  .ws-body { background:#1a1a18; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .ws-bad-body  { padding:10px; gap:6px; }
+  .ws-good-body { padding:36px 20px; gap:14px; }
+  .ws-el { border-radius:4px; }
+  .ws-h  { height:8px; background:rgba(255,255,255,0.3); }
+  .ws-p  { height:6px; background:rgba(255,255,255,0.15); }
+  .ws-b  { height:24px; background:#534AB7; border-radius:5px; }
+  .ws-b2 { height:24px; background:transparent; border:1px solid rgba(255,255,255,0.2); border-radius:5px; }
+  .ws-label { font-size:10px; color:rgba(255,255,255,0.35); text-align:center; padding:4px 0; }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  /* stat strip */
+  .stat-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .stat-box   { border-radius:10px; border:1px solid; padding:14px; text-align:center; }
+  .stat-num   { font-size:22px; font-weight:500; margin-bottom:4px; }
+  .stat-label { font-size:11px; line-height:1.5; }
+  .sb-teal  { background:#E1F5EE; border-color:#5DCAA5; }
+  .sb-teal  .stat-num,.sb-teal  .stat-label { color:#0F6E56; }
+  .sb-purple{ background:#EEEDFE; border-color:#AFA9EC; }
+  .sb-purple .stat-num,.sb-purple .stat-label{ color:#534AB7; }
+  .sb-amber { background:#FAEEDA; border-color:#EF9F27; }
+  .sb-amber .stat-num,.sb-amber .stat-label { color:#854F0B; }
+  @media (prefers-color-scheme:dark){
+    .sb-teal  { background:#04342C; border-color:#1D9E75; } .sb-teal  .stat-num,.sb-teal  .stat-label { color:#9FE1CB; }
+    .sb-purple{ background:#26215C; border-color:#7F77DD; } .sb-purple .stat-num,.sb-purple .stat-label{ color:#CECBF6; }
+    .sb-amber { background:#412402; border-color:#BA7517; } .sb-amber .stat-num,.sb-amber .stat-label { color:#FAC775; }
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red    { background:#F7C1C1; color:#501313; }
+  .pill-green  { background:#C0DD97; color:#173404; }
+  .pill-blue   { background:#B5D4F4; color:#042C53; }
+  .pill-amber  { background:#FAC775; color:#412402; }
+  .pill-purple { background:#CECBF6; color:#26215C; }
+  @media (prefers-color-scheme:dark){
+    .pill-red   { background:#791F1F; color:#F7C1C1; }
+    .pill-green { background:#27500A; color:#C0DD97; }
+    .pill-blue  { background:#0C447C; color:#B5D4F4; }
+    .pill-amber { background:#633806; color:#FAC775; }
+    .pill-purple{ background:#3C3489; color:#CECBF6; }
+  }
+</style>
+
+<h1>Section 8 — Mid-page breather & CTA</h1>
+<p class="subtitle">The cognitive reset · catches visitors right when their doubts clear<br>Your notes say this type of section drives a disproportionate share of total conversions — do not skip it</p>
+
+<!-- WHY IT EXISTS -->
+<div class="divider-label"><span>Why this section exists — the psychology behind it</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core problem it solves</div>
+  <h3>Dense information creates cognitive fatigue — the brain needs a moment to process before it can decide</h3>
+  <p>By section 8, the visitor has consumed a trust strip, authority badges, local photos, a video, a 3-step process, deep reviews, and a full services section. That is a significant amount of information. The brain doesn't convert when it's full — it converts when it gets a moment of relief. The breather section is a deliberate pause in the scroll. A dark background, massive whitespace, and a simple choice creates a psychological clearing where the visitor's brain can surface the decision it has already made subconsciously and act on it. Without this pause, many convinced visitors scroll right past their own readiness.</p>
+  <div class="why">From your notes: "After heavy white-background sections, insert a dark-background section with massive whitespace to let users take it all in. A late-page breather CTA can account for ~40% of conversions."</div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-box sb-teal">
+    <div class="stat-num">~40%</div>
+    <div class="stat-label">Of total conversions can come from this single section alone</div>
+  </div>
+  <div class="stat-box sb-purple">
+    <div class="stat-num">8</div>
+    <div class="stat-label">Sections of dense content the visitor has just processed before arriving here</div>
+  </div>
+  <div class="stat-box sb-amber">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Competing elements allowed in this section — nothing else lives here</div>
+  </div>
+</div>
+
+<!-- WHY DARK BACKGROUND -->
+<div class="divider-label"><span>Why a dark background — not just stylistic</span></div>
+
+<div class="scroll-compare">
+  <div class="scroll-col">
+    <div class="scroll-col-bar sc-bad-bar">No breather — all white, wall-to-wall content</div>
+    <div class="scroll-col-body">
+      <div class="mock-section ms-white ms-white-dense">Section 5 — how it works</div>
+      <div class="mock-section ms-white ms-white-dense">Section 6 — reviews</div>
+      <div class="mock-section ms-white ms-white-dense">Section 7 — services</div>
+      <div class="mock-section ms-white ms-white-dense">Section 8 — pricing</div>
+      <div class="ms-arrow">↑ Every section looks the same · brain goes numb · convinced visitors scroll past their own readiness</div>
+    </div>
+  </div>
+  <div class="scroll-col">
+    <div class="scroll-col-bar sc-good-bar">With breather — dark section creates a reset point</div>
+    <div class="scroll-col-body">
+      <div class="mock-section ms-white ms-white-dense">Section 5 — how it works</div>
+      <div class="mock-section ms-white ms-white-dense">Section 6 — reviews</div>
+      <div class="mock-section ms-white ms-white-dense">Section 7 — services</div>
+      <div class="mock-section ms-dark" style="text-align:center;padding:14px 10px;font-size:11px;">⬛ Section 8 — dark breather<br><span style="font-size:10px;color:#888;">CTA appears here · brain resets</span></div>
+      <div class="mock-section ms-white ms-white-dense">Section 9 — pricing</div>
+      <div class="ms-arrow">↑ Dark section = visual stop sign · brain pauses · the decision surfaces · they click</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>What the dark background actually does neurologically</h3>
+  <p>The human visual system is wired to respond to contrast. A sudden shift from white to dark is one of the strongest pattern-interrupts on a webpage — it forces the eye to stop and refocus. This momentary stop is exactly what a convinced visitor needs. They have been scrolling continuously, accumulating evidence, and their decision has formed subconsciously without them realising it. The dark section is the moment the brain surfaces that decision and recognises "I'm ready." That's why a CTA here converts so disproportionately — it arrives at exactly the right psychological moment.</p>
+</div>
+
+<!-- THE MOCKUP -->
+<div class="divider-label"><span>What it looks like — the full breather section</span></div>
+
+<div class="breather-mockup">
+  <div class="bm-bar">Section 8 — mid-page breather · dark background · roofing version</div>
+  <div class="bm-dark">
+    <div class="bm-eyebrow">Ready to protect your home?</div>
+    <div class="bm-headline">Most homeowners wait too long.<br>A 5-minute call today can save you thousands.</div>
+    <div class="bm-sub">No sales pressure. No obligation. Just an honest look at what your roof needs — and what it'll cost.</div>
+    <div class="bm-btns">
+      <button class="bm-btn-primary">Call Us Now</button>
+      <button class="bm-btn-secondary">Get a Free Quote</button>
+    </div>
+    <div class="bm-phone">📞 (555) 000-0000</div>
+    <div class="bm-micro">Available Mon–Sat 7am–7pm · Same-day inspections available</div>
+  </div>
+</div>
+
+<!-- ANATOMY -->
+<div class="divider-label"><span>Anatomy — every element and why it's there</span></div>
+
+<div class="anatomy-box ab-gray spacer">
+  <div class="anatomy-row">
+    <div class="anat-label">Dark background</div>
+    <div class="anat-desc">The entire section sits on a near-black background (#1a1a18 or similar). This is the single most important design decision — it creates the visual stop that makes this section work. No other section on the page uses this background.
+      <div class="anat-example">Use a very dark gray (#1a1a18 or #1c1c1a) rather than pure black — pure black feels harsh. A dark warm gray feels premium and intentional.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Massive whitespace</div>
+    <div class="anat-desc">The section needs at least 40px padding top and bottom — more is better. The content should feel like it's floating in the middle of the dark space. Nothing should touch the edges. Your notes said "massive whitespace" specifically — not "a little extra padding."
+      <div class="anat-example">If it feels like too much space, you're close. If it feels like a lot of space, you're there.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Eyebrow line</div>
+    <div class="anat-desc">A small line above the headline in muted uppercase — sets the context before the main message lands. Short, 4–6 words max. Soft colour so it doesn't compete with the headline.
+      <div class="anat-example">"Ready to protect your home?" · "Still thinking it over?" · "Here when you're ready."</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Headline</div>
+    <div class="anat-desc">The one sentence that converts. It must acknowledge the visitor's state ("you've been thinking about this"), give them a reason to act now rather than later, and remove any remaining fear. Never a generic "Contact Us Today."
+      <div class="anat-example">"Most homeowners wait too long. A 5-minute call today can save you thousands." — Acknowledges delay, gives specific stakes, low-risk framing.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Subheadline</div>
+    <div class="anat-desc">1–2 sentences that remove the last fear before they click. The most common fear at this stage is "am I committing to something?" The subheadline must answer that with "no obligation, no pressure."
+      <div class="anat-example">"No sales pressure. No obligation. Just an honest look at what your roof needs — and what it'll cost."</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Two CTA buttons</div>
+    <div class="anat-desc">One primary (call or book), one secondary (quote or email). Two options because some visitors prefer to call immediately and some prefer to submit a form. Both lead to the same outcome — a contact. Never more than two.
+      <div class="anat-example">Primary: "Call Us Now" (dark button or high-contrast colour) · Secondary: "Get a Free Quote" (ghost/outline button)</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Phone number</div>
+    <div class="anat-desc">The actual phone number displayed in plain text — large, clickable on mobile. For roofing especially, many homeowners in an anxious state about a leak or storm damage want to call a human immediately. Don't make them hunt for the number.
+      <div class="anat-example">Show it below the buttons in a distinctive colour (teal or white works well on dark). On mobile it should be a tap-to-call link.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Availability line</div>
+    <div class="anat-desc">One line showing hours and any same-day availability. This removes the fear of "what if I call and nobody answers?" For urgent situations (leaks, storm damage) availability is a major anxiety point.
+      <div class="anat-example">"Available Mon–Sat 7am–7pm · Same-day inspections available" — specific hours build more trust than "we're always available."</div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADLINE OPTIONS -->
+<div class="divider-label"><span>Headline options — the most important copy on this section</span></div>
+
+<div class="copy-compare spacer">
+  <div class="cc-card cc-bad">
+    <div class="cc-label">Weak headlines — miss the moment</div>
+    <div class="cc-headline">"Contact us today for all your roofing needs"</div>
+    <div class="cc-why">Generic, company-focused, no stakes, no emotion. Could appear on any contractor's site. The visitor reads it and feels nothing — no push to act.</div>
+    <div class="cc-headline" style="margin-top:8px;">"Get in touch with our team"</div>
+    <div class="cc-why" style="margin-top:4px;">Vague and passive. "Our team" is corporate language. No urgency, no acknowledgment of the visitor's situation.</div>
+  </div>
+  <div class="cc-card cc-good">
+    <div class="cc-label">Strong headlines — land at the right moment</div>
+    <div class="cc-headline">"Most homeowners wait too long. A 5-minute call today can save you thousands."</div>
+    <div class="cc-why">Acknowledges the tendency to delay, makes the stakes real ($$$), frames the action as tiny (5 minutes). Hits all three conversion triggers.</div>
+    <div class="cc-headline" style="margin-top:8px;">"Your roof won't fix itself — but we can. And we can start today."</div>
+    <div class="cc-why" style="margin-top:4px;">Direct, slightly bold, creates a visual image (the broken roof), ends with "today" as the urgency signal. Memorable.</div>
+  </div>
+</div>
+
+<div class="el-card gray-card spacer">
+  <div class="el-tag">Full library of tested headline options for roofing</div>
+  <h3>Pick the one that matches your brand voice — or use it as a starting model</h3>
+  <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Small leaks don't stay small. A free inspection today costs nothing — ignoring it costs everything."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"You've seen the work. You've read the reviews. The only thing left is one call."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Storm season is here. Same-day slots are available right now — they won't be tomorrow."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Protecting your home takes one call. We'll handle everything else."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Winter doesn't wait. Neither should you."</div>
+  </div>
+</div>
+
+<!-- THE 15-SECOND SCROLL FORM -->
+<div class="divider-label"><span>The 15-second scroll-triggered form — what it is and how it works</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">From your notes — this is the right place to trigger it</div>
+  <h3>A slide-in form that appears after 15 seconds of scrolling — triggered at this section</h3>
+  <p>Your notes said: "Add a timed secondary form that appears after 15 seconds of scrolling to catch interested, engaged visitors who bypassed the hero CTA." The breather section is the ideal trigger point — the visitor has been scrolling for roughly 15–20 seconds by the time they reach section 8. A small slide-in form appearing from the bottom right corner at this moment catches people who are interested but didn't click the hero CTA, without interrupting them mid-section.</p>
+  <div class="why">Key: it must be dismissible with a single click. If it's hard to close it becomes an annoyance that drives the visitor away instead of converting them.</div>
+</div>
+
+<div class="form-mockup spacer">
+  <div class="fm-bar">The 15-second slide-in form — bottom right corner · appears around section 8 scroll depth</div>
+  <div class="fm-body">
+    <div class="fm-title">Get a free roof inspection</div>
+    <div class="fm-sub">Takes 30 seconds · no obligation · same-day available</div>
+    <div class="fm-fields">
+      <div class="fm-field filled">Sarah</div>
+      <div class="fm-check-row"><div class="fm-check">✓</div><div class="fm-check-text">Name looks good</div></div>
+      <div class="fm-field filled">(555) 000-0000</div>
+      <div class="fm-check-row"><div class="fm-check">✓</div><div class="fm-check-text">Phone confirmed</div></div>
+      <div class="fm-field">Zip code</div>
+    </div>
+    <button class="fm-btn">Book My Free Inspection →</button>
+    <div class="fm-note">No spam · no sales calls · just a free honest assessment</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The 3-field maximum rule — from your notes</h3>
+  <p>Name, phone, zip code. That's it. Every additional field drops conversion rate significantly. Your notes said "only collect 2–3 bits of info — you can get everything else over the phone." The green checkmark on validated fields (shown above) is a micro-interaction from your notes that reduces form abandonment by creating small positive moments as the visitor fills each field. It signals "you're doing this right" at every step.</p>
+</div>
+
+<!-- WHITESPACE RULE -->
+<div class="divider-label"><span>The whitespace rule — why "massive" is not an exaggeration</span></div>
+
+<div class="ws-demo spacer">
+  <div class="ws-card">
+    <div class="ws-label-bar ws-bad-bar">Too tight — conversion killer</div>
+    <div class="ws-body ws-bad-body">
+      <div class="ws-el ws-h" style="width:70%;"></div>
+      <div class="ws-el ws-p" style="width:90%;"></div>
+      <div class="ws-el ws-p" style="width:80%;"></div>
+      <div style="display:flex;gap:6px;width:100%;">
+        <div class="ws-el ws-b" style="flex:1;"></div>
+        <div class="ws-el ws-b2" style="flex:1;"></div>
+      </div>
+      <div class="ws-el ws-p" style="width:60%;"></div>
+      <div class="ws-label">Cramped · brain gets no relief · cognitive load stays high</div>
+    </div>
+  </div>
+  <div class="ws-card">
+    <div class="ws-label-bar ws-good-bar">Generous space — converts</div>
+    <div class="ws-body ws-good-body">
+      <div class="ws-el ws-h" style="width:65%;"></div>
+      <div class="ws-el ws-p" style="width:80%;"></div>
+      <div class="ws-el ws-p" style="width:70%;"></div>
+      <div style="display:flex;gap:8px;">
+        <div class="ws-el ws-b" style="width:120px;"></div>
+        <div class="ws-el ws-b2" style="width:120px;"></div>
+      </div>
+      <div class="ws-el ws-p" style="width:55%;"></div>
+      <div class="ws-label">Breathing room · brain relaxes · the decision floats up · they click</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT NOT TO PUT HERE -->
+<div class="divider-label"><span>What must NOT appear in this section</span></div>
+
+<div class="el-card red-card spacer">
+  <div class="el-tag">The one rule that most people break</div>
+  <h3>This section must contain nothing except the headline, subheadline, buttons, phone number, and availability line</h3>
+  <p>No photos. No review quotes. No service descriptions. No navigation links. No trust badges. No pricing. No additional CTAs beyond the two buttons. Every element you add to this section dilutes the moment. The power of the breather is its emptiness — the contrast between the dense sections before it and the spacious calm of this one is what creates the psychological effect. The moment you add a "while you're here, check out our reviews!" widget, the breather stops being a breather and becomes just another section.</p>
+  <div class="why">Your notes said "one primary goal per section — remove competing elements." This section's goal is a single decision: call or get a quote. Everything else is noise.</div>
+</div>
+
+<div class="pills">
+  <span class="pill pill-red">Photos or galleries</span>
+  <span class="pill pill-red">Review quotes</span>
+  <span class="pill pill-red">Navigation links</span>
+  <span class="pill pill-red">Service descriptions</span>
+  <span class="pill pill-red">Pricing info</span>
+  <span class="pill pill-red">Trust badges</span>
+  <span class="pill pill-red">Blog links</span>
+  <span class="pill pill-red">Social media icons</span>
+  <span class="pill pill-red">Third CTA button</span>
+  <span class="pill pill-red">Any animations or moving elements</span>
+</div>
+
+<div class="pills" style="margin-top:8px;">
+  <span class="pill pill-green">Dark background</span>
+  <span class="pill pill-green">Eyebrow line (optional)</span>
+  <span class="pill pill-green">One strong headline</span>
+  <span class="pill pill-green">One subheadline removing fear</span>
+  <span class="pill pill-green">Two CTA buttons max</span>
+  <span class="pill pill-green">Phone number</span>
+  <span class="pill pill-green">Availability hours</span>
+  <span class="pill pill-green">Massive whitespace</span>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use a dark warm-gray background (not pure black)</li>
+      <li>Give it at least 40px padding top and bottom</li>
+      <li>Write a headline that acknowledges delay and stakes</li>
+      <li>Always include "no obligation" in the subheadline</li>
+      <li>Show two buttons: call + quote/email</li>
+      <li>Display the phone number in plain large text</li>
+      <li>Add availability hours below the buttons</li>
+      <li>Trigger the 15-sec slide-in form at this scroll depth</li>
+      <li>Make the slide-in form easily dismissible</li>
+      <li>Keep the form to 3 fields max: name, phone, zip</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Add photos, badges, or reviews to this section</li>
+      <li>Use white or light background — kills the effect</li>
+      <li>Add more than 2 CTA buttons</li>
+      <li>Use generic headline: "Contact Us Today"</li>
+      <li>Make the slide-in form hard to close</li>
+      <li>Put a form with more than 3 fields here</li>
+      <li>Add navigation links or secondary content</li>
+      <li>Use animation or motion in this section</li>
+      <li>Skip this section — it drives ~40% of conversions</li>
+      <li>Place it too early — it must come after the trust build</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why placement after section 7 (not earlier) is non-negotiable</h3>
+  <p>The breather only converts disproportionately because the visitor arrives at it already convinced. If you put it after the hero section, it's just another early CTA — the visitor has no reason to call yet. The psychological sequence is the entire point: 7 sections of trust-building, then a moment of relief, then the invitation to act. Moving the breather earlier in the page collapses that sequence and turns a conversion powerhouse into an ignored button. The 40% conversion figure your notes cite is specifically a function of timing — it catches people at peak conviction, not before it.</p>
+</div>

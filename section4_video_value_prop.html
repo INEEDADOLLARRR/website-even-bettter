@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; }
+  .divider-label span { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--color-text-secondary); }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .el-card { border-radius: 10px; border: 1px solid; padding: 14px; cursor: pointer; transition: transform 0.15s; margin-bottom: 0; }
+  .el-card:hover { transform: translateX(3px); }
+  .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .el-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+  .el-card p { font-size: 12px; line-height: 1.6; }
+  .el-card .why { margin-top: 8px; font-size: 11px; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+  .el-card .tip { margin-top: 6px; font-size: 11px; font-style: italic; }
+
+  .blue-card { background: #E6F1FB; border-color: #85B7EB; }
+  .blue-card .el-tag { color: #185FA5; }
+  .blue-card h3 { color: #042C53; }
+  .blue-card p { color: #185FA5; }
+  .blue-card .why { background: #B5D4F4; color: #042C53; }
+  .blue-card .tip { color: #378ADD; }
+
+  .teal-card { background: #E1F5EE; border-color: #5DCAA5; }
+  .teal-card .el-tag { color: #0F6E56; }
+  .teal-card h3 { color: #04342C; }
+  .teal-card p { color: #0F6E56; }
+  .teal-card .why { background: #9FE1CB; color: #04342C; }
+  .teal-card .tip { color: #0F6E56; }
+
+  .amber-card { background: #FAEEDA; border-color: #EF9F27; }
+  .amber-card .el-tag { color: #854F0B; }
+  .amber-card h3 { color: #412402; }
+  .amber-card p { color: #854F0B; }
+  .amber-card .why { background: #FAC775; color: #412402; }
+  .amber-card .tip { color: #854F0B; }
+
+  .purple-card { background: #EEEDFE; border-color: #AFA9EC; }
+  .purple-card .el-tag { color: #534AB7; }
+  .purple-card h3 { color: #26215C; }
+  .purple-card p { color: #534AB7; }
+  .purple-card .why { background: #CECBF6; color: #26215C; }
+  .purple-card .tip { color: #534AB7; }
+
+  .coral-card { background: #FAECE7; border-color: #F0997B; }
+  .coral-card .el-tag { color: #993C1D; }
+  .coral-card h3 { color: #4A1B0C; }
+  .coral-card p { color: #993C1D; }
+  .coral-card .why { background: #F5C4B3; color: #4A1B0C; }
+  .coral-card .tip { color: #993C1D; }
+
+  .gray-card { background: #F1EFE8; border-color: #B4B2A9; }
+  .gray-card .el-tag { color: #5F5E5A; }
+  .gray-card h3 { color: #2C2C2A; }
+  .gray-card p { color: #5F5E5A; }
+  .gray-card .why { background: #D3D1C7; color: #2C2C2A; }
+
+  .green-card { background: #EAF3DE; border-color: #97C459; }
+  .green-card .el-tag { color: #3B6D11; }
+  .green-card h3 { color: #173404; }
+  .green-card p { color: #3B6D11; }
+  .green-card .why { background: #C0DD97; color: #173404; }
+
+  .red-card { background: #FCEBEB; border-color: #F09595; }
+  .red-card .el-tag { color: #A32D2D; }
+  .red-card h3 { color: #501313; }
+  .red-card p { color: #A32D2D; }
+  .red-card .why { background: #F7C1C1; color: #501313; }
+
+  @media (prefers-color-scheme: dark) {
+    .blue-card { background: #042C53; border-color: #378ADD; }
+    .blue-card h3 { color: #B5D4F4; } .blue-card p { color: #85B7EB; } .blue-card .why { background: #0C447C; color: #B5D4F4; } .blue-card .tip { color: #85B7EB; }
+    .teal-card { background: #04342C; border-color: #1D9E75; }
+    .teal-card h3 { color: #9FE1CB; } .teal-card p { color: #5DCAA5; } .teal-card .why { background: #085041; color: #9FE1CB; } .teal-card .tip { color: #5DCAA5; }
+    .amber-card { background: #412402; border-color: #BA7517; }
+    .amber-card h3 { color: #FAC775; } .amber-card p { color: #EF9F27; } .amber-card .why { background: #633806; color: #FAC775; } .amber-card .tip { color: #EF9F27; }
+    .purple-card { background: #26215C; border-color: #7F77DD; }
+    .purple-card h3 { color: #CECBF6; } .purple-card p { color: #AFA9EC; } .purple-card .why { background: #3C3489; color: #CECBF6; } .purple-card .tip { color: #AFA9EC; }
+    .coral-card { background: #4A1B0C; border-color: #D85A30; }
+    .coral-card h3 { color: #F5C4B3; } .coral-card p { color: #F0997B; } .coral-card .why { background: #711B0C; color: #F5C4B3; }
+    .gray-card { background: #2C2C2A; border-color: #888780; }
+    .gray-card h3 { color: #D3D1C7; } .gray-card p { color: #888780; } .gray-card .why { background: #444441; color: #D3D1C7; }
+    .green-card { background: #173404; border-color: #639922; }
+    .green-card h3 { color: #C0DD97; } .green-card p { color: #97C459; } .green-card .why { background: #27500A; color: #C0DD97; }
+    .red-card { background: #501313; border-color: #E24B4A; }
+    .red-card h3 { color: #F7C1C1; } .red-card p { color: #F09595; } .red-card .why { background: #791F1F; color: #F7C1C1; }
+  }
+
+  /* VIDEO MOCKUP */
+  .video-mockup { border: 1px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; margin-bottom: 6px; }
+  .vm-bar { background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); padding: 7px 12px; font-size: 11px; color: var(--color-text-tertiary); }
+  .vm-body { padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
+  .vm-player { flex-shrink: 0; width: 200px; height: 120px; background: #2C2C2A; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; overflow: hidden; }
+  .vm-play { width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.3); }
+  .vm-play-arrow { width: 0; height: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-left: 12px solid rgba(255,255,255,0.8); margin-left: 3px; }
+  .vm-duration { font-size: 10px; color: rgba(255,255,255,0.5); }
+  .vm-label { position: absolute; bottom: 6px; left: 8px; font-size: 9px; color: rgba(255,255,255,0.5); }
+  .vm-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.1); }
+  .vm-progress-fill { height: 100%; width: 35%; background: #534AB7; }
+  .vm-right { flex: 1; }
+  .vm-right h3 { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+  .vm-right p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .vm-vp-box { background: var(--color-background-secondary); border-radius: 8px; padding: 10px 12px; border: 1px solid var(--color-border-tertiary); }
+  .vm-vp-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .vm-vp-text { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .vm-vp-sub { font-size: 11px; color: var(--color-text-secondary); }
+
+  /* SHOT TYPES */
+  .shot-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .shot-card { border-radius: 10px; border: 1px solid; padding: 12px; text-align: center; }
+  .shot-thumb { width: 100%; height: 54px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; margin-bottom: 8px; }
+  .shot-title { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+  .shot-desc { font-size: 11px; line-height: 1.5; }
+
+  /* VALUE PROP EXAMPLES */
+  .vp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .vp-card { border-radius: 10px; border: 1px solid; padding: 14px; }
+  .vp-bad { background: #FCEBEB; border-color: #F09595; }
+  .vp-bad .vp-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #A32D2D; margin-bottom: 6px; }
+  .vp-bad p { font-size: 12px; color: #A32D2D; line-height: 1.6; }
+  .vp-bad .vp-example { margin-top: 8px; background: #F7C1C1; border-radius: 6px; padding: 8px 10px; font-size: 12px; font-style: italic; color: #501313; }
+  .vp-good { background: #EAF3DE; border-color: #97C459; }
+  .vp-good .vp-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #3B6D11; margin-bottom: 6px; }
+  .vp-good p { font-size: 12px; color: #3B6D11; line-height: 1.6; }
+  .vp-good .vp-example { margin-top: 8px; background: #C0DD97; border-radius: 6px; padding: 8px 10px; font-size: 12px; font-style: italic; color: #173404; }
+  @media (prefers-color-scheme: dark) {
+    .vp-bad { background: #501313; border-color: #E24B4A; }
+    .vp-bad .vp-label { color: #F7C1C1; }
+    .vp-bad p { color: #F09595; }
+    .vp-bad .vp-example { background: #791F1F; color: #F7C1C1; }
+    .vp-good { background: #173404; border-color: #639922; }
+    .vp-good .vp-label { color: #C0DD97; }
+    .vp-good p { color: #97C459; }
+    .vp-good .vp-example { background: #27500A; color: #C0DD97; }
+  }
+
+  /* SCRIPT OUTLINE */
+  .script-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 16px; }
+  .script-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+  .script-row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--color-border-tertiary); }
+  .script-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .script-time { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); min-width: 52px; padding-top: 1px; }
+  .script-content { flex: 1; }
+  .script-content .sc-title { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+  .script-content .sc-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  /* DO/DONT */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .do-box { background: #EAF3DE; border: 1px solid #97C459; border-radius: 10px; padding: 14px; }
+  .do-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #3B6D11; margin-bottom: 8px; }
+  .do-box li { font-size: 12px; color: #3B6D11; line-height: 1.8; margin-left: 14px; }
+  .dont-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 10px; padding: 14px; }
+  .dont-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #A32D2D; margin-bottom: 8px; }
+  .dont-box li { font-size: 12px; color: #A32D2D; line-height: 1.8; margin-left: 14px; }
+  @media (prefers-color-scheme: dark) {
+    .do-box { background: #173404; border-color: #639922; }
+    .do-box .dd-label, .do-box li { color: #C0DD97; }
+    .dont-box { background: #501313; border-color: #E24B4A; }
+    .dont-box .dd-label, .dont-box li { color: #F7C1C1; }
+  }
+
+  .note-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 16px; margin-top: 10px; }
+  .note-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .note-box p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+
+  .spacer { margin-top: 10px; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; }
+  .pill-blue { background: #B5D4F4; color: #042C53; }
+  .pill-teal { background: #9FE1CB; color: #04342C; }
+  .pill-amber { background: #FAC775; color: #412402; }
+  .pill-purple { background: #CECBF6; color: #26215C; }
+  .pill-green { background: #C0DD97; color: #173404; }
+  @media (prefers-color-scheme: dark) {
+    .pill-blue { background: #0C447C; color: #B5D4F4; }
+    .pill-teal { background: #085041; color: #9FE1CB; }
+    .pill-amber { background: #633806; color: #FAC775; }
+    .pill-purple { background: #3C3489; color: #CECBF6; }
+    .pill-green { background: #27500A; color: #C0DD97; }
+  }
+
+  /* LAYOUT MOCKUP */
+  .layout-mock { border: 1px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; }
+  .lm-bar { background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); padding: 7px 12px; font-size: 11px; color: var(--color-text-tertiary); }
+  .lm-body { padding: 14px; display: flex; gap: 14px; align-items: flex-start; }
+  .lm-video { flex-shrink: 0; width: 180px; }
+  .lm-vid-block { height: 100px; background: #2C2C2A; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+  .lm-vid-caption { font-size: 10px; color: var(--color-text-tertiary); text-align: center; }
+  .lm-right { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .lm-headline { height: 10px; border-radius: 4px; background: var(--color-border-secondary); }
+  .lm-sub { height: 8px; border-radius: 4px; background: var(--color-border-tertiary); }
+  .lm-vp { border-radius: 8px; padding: 10px; }
+  .lm-vp-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .lm-vp-row:last-child { margin-bottom: 0; }
+  .lm-icon { width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0; }
+  .lm-vp-text { flex: 1; height: 8px; border-radius: 4px; }
+</style>
+
+<h1>Section 4 — Video demo & unique value proposition</h1>
+<p class="subtitle">The highest-trust element on the entire page · added from their structure<br>A 30–60 second video converts harder than any photo or text because it proves the business is alive, real, and active right now</p>
+
+<!-- WHY THIS SECTION EXISTS -->
+<div class="divider-label"><span>Why this section exists — what it does psychologically</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core reason</div>
+  <h3>Photos prove past work. Video proves a living, breathing business.</h3>
+  <p>By the time a visitor reaches section 4, they've seen your trust strip, authority badges, and before/after photos. They believe you've done good work before. But there's one doubt left that photos can't kill: "Is this company still active? Will they actually answer the phone? Are they real people?"  A short video of the crew working, the owner talking directly to camera, or a drone shot of a freshly finished roof answers all of that in 30 seconds. Movement is life — a static page of photos could be from 5 years ago. A video with today's weather in the background cannot be faked.</p>
+  <div class="why">Why here: This is the peak conviction moment. Sections 1–3 built the case logically. Section 4 seals it emotionally. Your notes said "merging the convincing part with clearing doubts" is the goal — video does both at once.</div>
+</div>
+
+<!-- PAGE LAYOUT -->
+<div class="divider-label"><span>How it looks on the page</span></div>
+
+<div class="layout-mock">
+  <div class="lm-bar">Section 4 layout — video left, value proposition right</div>
+  <div class="lm-body">
+    <div class="lm-video">
+      <div class="lm-vid-block">
+        <div style="width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:18px solid rgba(255,255,255,0.7);margin-left:4px;"></div>
+      </div>
+      <div class="lm-vid-caption">Crew in action · 30–60 sec</div>
+    </div>
+    <div class="lm-right">
+      <div class="lm-headline" style="width:75%;"></div>
+      <div class="lm-sub" style="width:90%;"></div>
+      <div class="lm-sub" style="width:60%;"></div>
+      <div class="lm-vp" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);margin-top:4px;">
+        <div class="lm-vp-row">
+          <div class="lm-icon" style="background:#E1F5EE;"></div>
+          <div class="lm-vp-text" style="background:#9FE1CB;"></div>
+        </div>
+        <div class="lm-vp-row">
+          <div class="lm-icon" style="background:#E6F1FB;"></div>
+          <div class="lm-vp-text" style="background:#B5D4F4;"></div>
+        </div>
+        <div class="lm-vp-row">
+          <div class="lm-icon" style="background:#FAEEDA;"></div>
+          <div class="lm-vp-text" style="background:#FAC775;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Layout rule</h3>
+  <p>Video on the left, value proposition bullet points on the right. This is a proven layout because the eye lands on the video thumbnail first (motion is magnetic), watches or skims it, then naturally moves right to read the benefits. On mobile, stack them vertically — video on top, value prop below. Never put the video at the very bottom of the section where it gets missed.</p>
+</div>
+
+<!-- THE VIDEO ITSELF -->
+<div class="divider-label"><span>Part 1 — the video itself</span></div>
+
+<div class="el-card amber-card" style="margin-bottom:10px;">
+  <div class="el-tag">The single most important rule</div>
+  <h3>30–60 seconds maximum — not a minute more</h3>
+  <p>Roofing homeowners are busy, stressed, and comparing multiple companies. They will not watch a 3-minute company overview. The goal of this video is not to tell your full story — it's to prove you're real and make them feel confident enough to call. 30–60 seconds does that. A longer video has more chances to lose them. Keep it ruthlessly short.</p>
+  <div class="why">Why: Your notes said "most people have an 8-second attention span." A video that auto-plays a 3-minute brand story is the video nobody watches. A tight 45-second clip of a crew finishing a beautiful roof is the one that gets watched to the end.</div>
+</div>
+
+<div class="divider-label"><span>The 3 video types — pick one or combine</span></div>
+
+<div class="shot-grid">
+  <div class="el-card teal-card" onclick="sendPrompt('How do I shoot a drone video for my roofing website?')">
+    <div class="shot-thumb" style="background:#E1F5EE;color:#0F6E56;border:1px solid #5DCAA5;">Drone shot</div>
+    <div class="shot-title" style="color:#04342C;">Drone flyover of finished roof</div>
+    <p class="shot-desc" style="color:#0F6E56;">A slow aerial reveal of a freshly completed roof. Start wide showing the neighborhood, push in on the roof. Incredibly professional-looking with a cheap consumer drone.</p>
+    <div class="why">Best for: showing the full scope of large replacement jobs and making the work look impressive.</div>
+  </div>
+
+  <div class="el-card blue-card" onclick="sendPrompt('How do I film a crew-in-action video for a roofing website?')">
+    <div class="shot-thumb" style="background:#E6F1FB;color:#185FA5;border:1px solid #85B7EB;">Crew in action</div>
+    <div class="shot-title" style="color:#042C53;">Crew working on a live job</div>
+    <p class="shot-desc" style="color:#185FA5;">Handheld or tripod footage of the crew installing shingles, cutting materials, working together. Branded shirts visible. Real job site sounds — no music needed.</p>
+    <div class="why">Best for: proving a real team exists and showing the quality of the physical process, not just the result.</div>
+  </div>
+
+  <div class="el-card purple-card" onclick="sendPrompt('Should the owner speak directly to camera on a roofing website video?')">
+    <div class="shot-thumb" style="background:#EEEDFE;color:#534AB7;border:1px solid #AFA9EC;">Owner to camera</div>
+    <div class="shot-title" style="color:#26215C;">Owner speaking directly to viewer</div>
+    <p class="shot-desc" style="color:#534AB7;">The owner standing at a job site, speaking plainly: who they are, what they guarantee, why they started the company. No script — conversational, honest, direct.</p>
+    <div class="why">Best for: high-ticket sales where trust in a specific person matters. Most powerful trust signal possible.</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The best option if you can do only one</h3>
+  <p>Combine the owner-to-camera opening (10 seconds of "Hi, I'm [Name], owner of [Company], and I want to show you what we do") with crew footage (30 seconds of the team working) and a drone closing shot of a finished roof (10 seconds). That 50-second video hits all three trust triggers: a real person, a real process, and a real result. Film it with a modern smartphone — you do not need a professional videographer.</p>
+</div>
+
+<!-- VIDEO SCRIPT OUTLINE -->
+<div class="divider-label"><span>The 60-second script structure — shot by shot</span></div>
+
+<div class="script-box">
+  <h3>60-second roofing video structure</h3>
+  <div class="script-row">
+    <div class="script-time">0–8 sec</div>
+    <div class="script-content">
+      <div class="sc-title">Owner opens to camera at job site</div>
+      <div class="sc-desc">"Hi, I'm [Name], owner of [Company]. For 20 years we've been protecting homes in [City] — and I want to show you exactly how we work." Outdoors, branded shirt, real job site behind them.</div>
+    </div>
+  </div>
+  <div class="script-row">
+    <div class="script-time">8–30 sec</div>
+    <div class="script-content">
+      <div class="sc-title">Crew footage — real work, real team</div>
+      <div class="sc-desc">B-roll of crew installing shingles, measuring, cutting, working together. No narration needed here — let the work speak. Branded shirts visible in every shot. Natural job site audio.</div>
+    </div>
+  </div>
+  <div class="script-row">
+    <div class="script-time">30–48 sec</div>
+    <div class="script-content">
+      <div class="sc-title">Drone or wide shot of a completed roof</div>
+      <div class="sc-desc">A slow aerial reveal or wide-angle ground shot of a finished, clean roof. If drone isn't available, a wide-angle shot from the street of a recently completed job works just as well.</div>
+    </div>
+  </div>
+  <div class="script-row">
+    <div class="script-time">48–60 sec</div>
+    <div class="script-content">
+      <div class="sc-title">Owner closes — single direct CTA</div>
+      <div class="sc-desc">"If your roof needs attention, call us today — we offer a free inspection and a same-day quote." Show phone number as text overlay. End on owner's face, not a logo card.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 2: VALUE PROP -->
+<div class="divider-label"><span>Part 2 — the unique value proposition (beside the video)</span></div>
+
+<div class="el-card coral-card" style="margin-bottom:10px;">
+  <div class="el-tag">The most important rule for the value prop</div>
+  <h3>Specific promise only — "We fix roofs" is a conversion killer</h3>
+  <p>Your notes were direct: "We fix roofs gives zero reason to choose you." Every roofer on the planet fixes roofs. The value proposition is the specific, concrete, verifiable promise that answers the question "Why should I call YOU instead of the other guy?" It cannot be vague. It cannot use words like "professional," "quality," "reliable," or "experienced" — those are adjectives every competitor uses too.</p>
+  <div class="why">The test: Read your value prop out loud and ask "could my competitor say this exact sentence?" If yes, rewrite it.</div>
+</div>
+
+<div class="vp-grid spacer">
+  <div class="vp-card vp-bad">
+    <div class="vp-label">Generic — kills conversion</div>
+    <p>Empty words any roofer can claim. No specific promise, no reason to choose you, no verifiable commitment. The visitor's brain files this as "just another roofer."</p>
+    <div class="vp-example">"We provide quality roofing services with professional results and great customer service."</div>
+  </div>
+  <div class="vp-card vp-good">
+    <div class="vp-label">Specific — drives conversion</div>
+    <p>A concrete, verifiable, unique promise. The visitor immediately knows what sets you apart and what they're committing to if they call.</p>
+    <div class="vp-example">"24-hour emergency response · 10-year workmanship guarantee · same-day free inspection, every time."</div>
+  </div>
+</div>
+
+<!-- VALUE PROP BULLET EXAMPLES -->
+<div class="divider-label"><span>Strong value prop bullets — real examples to model</span></div>
+
+<div class="grid-2 spacer">
+  <div class="el-card green-card">
+    <div class="el-tag">Speed-based promise</div>
+    <h3>"Emergency repairs within 24 hours — guaranteed"</h3>
+    <p>Time is the #1 stressor for a homeowner with a leaking roof. A guaranteed response window converts faster than any other promise because it directly answers their biggest anxiety.</p>
+    <div class="why">Only use this if it's genuinely true. A broken promise destroys reviews.</div>
+  </div>
+
+  <div class="el-card teal-card">
+    <div class="el-tag">Warranty-based promise</div>
+    <h3>"10-year workmanship guarantee — in writing"</h3>
+    <p>"In writing" is the power phrase. It transforms a claim into a contract. Most roofers offer warranties verbally — putting it in writing makes you immediately different.</p>
+    <div class="why">Pair with the manufacturer's material warranty (e.g. 25-year GAF shingle) to create a "double guarantee" that removes all perceived risk.</div>
+  </div>
+
+  <div class="el-card blue-card">
+    <div class="el-tag">Cleanliness-based promise</div>
+    <h3>"No-mess guarantee — we clean up completely or we come back"</h3>
+    <p>Homeowners dread nails in the driveway and debris in the garden. A no-mess guarantee is highly specific, easy to visualize, and almost nobody else offers it. Instant differentiator.</p>
+    <div class="why">Your notes said to remove all doubt. "What about the mess?" is one of the most common unspoken doubts in roofing.</div>
+  </div>
+
+  <div class="el-card amber-card">
+    <div class="el-tag">Insurance-based promise</div>
+    <h3>"We handle all insurance claims for you — at no extra cost"</h3>
+    <p>For storm damage jobs especially, dealing with insurance adjusters is the homeowner's nightmare. If you handle the paperwork, say it explicitly. This is a massive friction remover for storm season leads.</p>
+    <div class="why">This is a free differentiator for any roofer who already does this but never says it on their site.</div>
+  </div>
+</div>
+
+<!-- WORDS TO AVOID -->
+<div class="divider-label"><span>Words to ruthlessly cut from your value prop copy</span></div>
+
+<div class="pills">
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Professional</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Quality</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Reliable</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Experienced</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Seamless</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Trusted</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Cutting-edge</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Innovative</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Empowering</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Solutions</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">Best-in-class</span>
+  <span class="pill" style="background:#F7C1C1;color:#501313;">World-class</span>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why these words kill conversion — from your notes</h3>
+  <p>Your notes said: "Jargon creates cognitive load — simple language creates trust via Cognitive Fluency." These words are not just vague — they actively make the brain work harder to extract meaning, and when no meaning arrives, trust drops. Every one of these words is something every competitor also claims. Replace each one with a specific number, timeframe, guarantee, or action. "Reliable" becomes "we answer the phone 7am–8pm, 7 days a week." "Quality" becomes "10-year workmanship guarantee in writing."</p>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Keep video to 30–60 seconds max</li>
+      <li>Show the owner's face and name</li>
+      <li>Film on a real active job site</li>
+      <li>Branded shirts in every crew shot</li>
+      <li>End video with a direct CTA + phone number</li>
+      <li>Use natural job site audio — no stock music</li>
+      <li>Make value prop bullets specific and verifiable</li>
+      <li>Include a timeframe or number in each promise</li>
+      <li>Place video left, value prop right on desktop</li>
+      <li>Use a real smartphone — no professional crew needed</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Upload a video longer than 90 seconds</li>
+      <li>Use stock video footage of random roofers</li>
+      <li>Film in a conference room or office</li>
+      <li>Use words like "quality," "reliable," "professional"</li>
+      <li>Put the video at the bottom of the section</li>
+      <li>Make the video autoplay with sound on</li>
+      <li>Write value props your competitor could copy word-for-word</li>
+      <li>Use animated explainer video — it looks cheap for roofing</li>
+      <li>Skip the owner's face — anonymity kills trust</li>
+      <li>End without a CTA — every video needs a next step</li>
+    </ul>
+  </div>
+</div>

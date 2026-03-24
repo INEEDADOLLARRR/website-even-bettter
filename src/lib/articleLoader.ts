@@ -19,7 +19,7 @@ const articles: Article[] = [
         title: "The Complete Guide to Commercial Roofing Systems",
         excerpt: "Explore the engineering behind TPO, EPDM, and liquid-applied membrane systems — and how to select the ideal solution for your commercial property.",
         date: "2026-02-20",
-        author: "Verrazano Editorial",
+        author: "MyRoofTop Editorial",
         category: "Commercial",
         tags: ["commercial roofing", "TPO", "EPDM", "membrane systems"],
         featuredImage: "https://picsum.photos/seed/commercial-roof/1200/630",
@@ -62,7 +62,7 @@ Liquid-applied coatings represent the cutting edge of roofing technology. These 
 
 The selection of a commercial roofing system should never be driven by cost alone. Factors including building use, local climate, structural load capacity, and long-term maintenance strategy all play critical roles in determining the optimal solution.
 
-At Verrazano Roofing, we begin every commercial project with a comprehensive structural analysis to ensure the recommended system delivers maximum performance for your specific application.
+At MyRoofTop, we begin every commercial project with a comprehensive structural analysis to ensure the recommended system delivers maximum performance for your specific application.
     `.trim()
     },
     {
@@ -70,7 +70,7 @@ At Verrazano Roofing, we begin every commercial project with a comprehensive str
         title: "Liquid-Applied Coatings: The Future of Roof Restoration",
         excerpt: "How elastomeric liquid coatings are revolutionizing roof maintenance — eliminating costly tear-offs and extending roof life by decades.",
         date: "2026-02-15",
-        author: "Verrazano Editorial",
+        author: "MyRoofTop Editorial",
         category: "Technology",
         tags: ["liquid coatings", "elastomeric", "roof restoration", "coatings"],
         featuredImage: "https://picsum.photos/seed/liquid-coat/1200/630",
@@ -120,7 +120,7 @@ Liquid coatings are ideal when your existing roof structure is sound but the mem
         title: "The Property Manager's Seasonal Roof Maintenance Checklist",
         excerpt: "A comprehensive season-by-season guide to protecting your commercial roof investment and preventing costly emergency repairs.",
         date: "2026-02-10",
-        author: "Verrazano Editorial",
+        author: "MyRoofTop Editorial",
         category: "Maintenance",
         tags: ["maintenance", "property management", "checklist", "seasonal"],
         featuredImage: "https://picsum.photos/seed/maintenance/1200/630",

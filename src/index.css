@@ -14,44 +14,92 @@
   --color-brand-yellow: #FFB800;
   --color-brand-accent: #C5A059;
 
-  /* Semantic surface tokens (default = dark) */
-  --color-surface: #0f0f0f;
-  --color-surface-text: #ffffff;
-  --color-surface-muted: #A1A1AA;
-  --color-surface-subtle: rgba(255, 255, 255, 0.5);
+  /* 5-Level Background System */
+  --color-bg-base: #050505;
+  --color-bg-lift: #0a0a0a;
+  --color-bg-card: #111111;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-hover: #222222;
+
+  /* Text Opacity System */
+  --color-text-primary: #F5F5F0;
+  --color-text-secondary: rgba(255, 255, 255, 0.55);
+  --color-text-muted: rgba(255, 255, 255, 0.30);
+
+  /* Border Opacity System */
+  --color-border-default: rgba(255, 255, 255, 0.06);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
+
+  /* General Theme Color (Silver) */
+  --color-theme: #A3A3A3;
+  --color-theme-dark: #8a8a8a;
+  --color-theme-glow: rgba(163, 163, 163, 0.12);
+
+  /* Primary Accent System (Gold for CTAs) */
+  --color-accent: #C5A059;
+  --color-accent-dark: #b08d4f;
+  --color-accent-glow: rgba(197, 160, 89, 0.15);
+  --color-accent-text: #111111;
+
+  /* Urgency Accent */
+  --color-urgency: #E8A020;
+
+  /* Premium utilities */
+  --glow-white: 0 0 15px rgba(255, 255, 255, 0.4);
 
   /* Typography Overscale 
      Compensates for the 20% root reduction (0.80) to maintain readable text sizes.
      Provides a 'refined but readable' feel where layout is efficiently packed but text is clear.
   */
-  --text-xs: 0.95rem;
-  /* ~12px equivalent on 16px base, clear for small labels */
-  --text-sm: 1.1rem;
-  /* ~14px equivalent, standard secondary text */
-  --text-base: 1.25rem;
-  /* ~16px equivalent, perfect for primary body reading */
-  --text-lg: 1.4rem;
-  /* ~18px equivalent */
-  --text-xl: 1.55rem;
-  /* ~20px equivalent */
-  --text-2xl: 1.85rem;
-  /* ~24px equivalent */
-  --text-3xl: 2.3rem;
-  /* ~29px equivalent */
-  --text-4xl: 2.8rem;
-  /* ~36px equivalent */
-  --text-5xl: 3.8rem;
-  /* ~48px equivalent */
-  --text-6xl: 4.8rem;
-  /* ~61px equivalent */
+  --text-xs: 0.95rem; /* ~12px equivalent on 16px base, clear for small labels */
+  --text-sm: 1.1rem; /* ~14px equivalent, standard secondary text */
+  --text-base: 1.25rem; /* ~16px equivalent, perfect for primary body reading */
+  --text-lg: 1.4rem; /* ~18px equivalent */
+  --text-xl: 1.55rem; /* ~20px equivalent */
+  --text-2xl: 1.85rem; /* ~24px equivalent */
+  --text-3xl: 2.3rem; /* ~29px equivalent */
+  --text-4xl: 2.8rem; /* ~36px equivalent */
+  --text-5xl: 3.8rem; /* ~48px equivalent */
+  --text-6xl: 4.8rem; /* ~61px equivalent */
+
+  /* Whitespace Mastery - Core Spacing Scale */
+  --spacing-sp-1: 4px;
+  --spacing-sp-2: 8px;
+  --spacing-sp-3: 12px;
+  --spacing-sp-4: 16px;
+  --spacing-sp-5: 24px;
+  --spacing-sp-6: 32px;
+  --spacing-sp-7: 48px;
+  --spacing-sp-8: 64px;
+  --spacing-sp-9: 96px;
+  --spacing-sp-10: 120px;
 }
 
-/* Light mode overrides */
+/* Tweak 1: Global font-smoothing — sharper serif rendering on dark backgrounds */
+*,
+*::before,
+*::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.text-glow-white {
+  text-shadow: var(--glow-white);
+  color: #ffffff;
+}
+
+.bg-premium-dark {
+  background: radial-gradient(circle at top right, #1a1a1c 0%, #050505 100%);
+}
+
+
+
+/* Light mode overrides (kept for future proofing but default is dark) */
 html.light {
-  --color-surface: #FAFAFA;
-  --color-surface-text: #18181B;
-  --color-surface-muted: #52525B;
-  --color-surface-subtle: rgba(0, 0, 0, 0.4);
+  --color-bg-base: #FAFAFA;
+  --color-text-primary: #18181B;
+  --color-text-secondary: #52525B;
+  --color-text-muted: rgba(0, 0, 0, 0.4);
 }
 
 @layer base {
@@ -70,11 +118,12 @@ html.light {
   }
 
   body {
-    background-color: var(--color-surface);
-    color: var(--color-surface-text);
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7; /* Whitespace #1 Rule */
   }
 
   ::-webkit-scrollbar {
@@ -82,7 +131,7 @@ html.light {
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--color-surface);
+    background: var(--color-bg-base);
   }
 
   ::-webkit-scrollbar-thumb {
@@ -185,6 +234,48 @@ html.light {
 
   .pulse-dot-ring {
     animation: pulseExpand 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  /* Advanced CTA Styles */
+  .cta-primary {
+    @apply relative overflow-hidden transition-all duration-500 hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-brand-accent/40;
+  }
+
+  .cta-secondary {
+    @apply relative overflow-hidden bg-brand-white text-brand-black font-bold transition-all duration-500 hover:scale-[1.03] active:scale-[0.98] shadow-md hover:shadow-white/20;
+  }
+
+  .cta-secondary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full transition-transform duration-1000 ease-in-out;
+  }
+
+  .cta-secondary:hover::before {
+    @apply translate-x-full;
+  }
+
+  .cta-secondary:hover {
+    animation: hueRotate 3s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes hueRotate {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+
+    100% {
+      filter: hue-rotate(360deg);
+    }
   }
 }
 
@@ -315,4 +406,13 @@ html.light {
   .pulse-dot-ring {
     animation: none !important;
   }
+}
+
+/* Forced 75% Scale Fix */
+body {
+    zoom: 0.75 !important;
+    -moz-transform: scale(0.75);
+    -moz-transform-origin: top center;
+    width: 100%;
+    overflow-x: hidden;
 }

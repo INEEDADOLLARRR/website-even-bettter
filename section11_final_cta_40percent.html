@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── FULL SECTION MOCKUP ── */
+  .mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .mockup-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+
+  /* the actual final CTA section — light bg version */
+  .final-cta-light { padding:48px 24px; display:flex; flex-direction:column; align-items:center; gap:14px; background:var(--color-background-primary); }
+  .fcl-eyebrow { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.08em; color:var(--color-text-tertiary); }
+  .fcl-headline { font-size:18px; font-weight:500; color:var(--color-text-primary); text-align:center; line-height:1.4; max-width:400px; }
+  .fcl-sub { font-size:12px; color:var(--color-text-secondary); text-align:center; line-height:1.7; max-width:340px; }
+  .fcl-btns { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+  .fcl-btn-p { background:#0F6E56; color:#fff; border-radius:8px; padding:12px 24px; font-size:13px; font-weight:500; border:none; cursor:pointer; }
+  .fcl-btn-s { background:transparent; color:var(--color-text-primary); border:1.5px solid var(--color-border-secondary); border-radius:8px; padding:12px 24px; font-size:13px; cursor:pointer; }
+  .fcl-phone { font-size:14px; font-weight:500; color:#0F6E56; margin-top:4px; }
+  .fcl-trust-row { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+  .fcl-trust-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--color-text-tertiary); }
+  .fcl-trust-dot  { width:5px; height:5px; border-radius:50%; background:#0F6E56; flex-shrink:0; }
+  .fcl-avail { font-size:11px; color:var(--color-text-tertiary); }
+
+  /* ── VISITOR JOURNEY ── */
+  .journey-strip { display:flex; gap:0; align-items:stretch; overflow:hidden; border-radius:10px; border:1px solid var(--color-border-tertiary); }
+  .js-step { flex:1; padding:12px 10px; text-align:center; border-right:1px solid var(--color-border-tertiary); }
+  .js-step:last-child { border-right:none; }
+  .js-num  { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px; }
+  .js-label{ font-size:11px; font-weight:500; margin-bottom:3px; }
+  .js-desc { font-size:10px; line-height:1.5; }
+  .js-1 { background:#E6F1FB; }
+  .js-1 .js-num,.js-1 .js-label,.js-1 .js-desc { color:#185FA5; }
+  .js-2 { background:#E1F5EE; }
+  .js-2 .js-num,.js-2 .js-label,.js-2 .js-desc { color:#0F6E56; }
+  .js-3 { background:#FAEEDA; }
+  .js-3 .js-num,.js-3 .js-label,.js-3 .js-desc { color:#854F0B; }
+  .js-4 { background:#EEEDFE; }
+  .js-4 .js-num,.js-4 .js-label,.js-4 .js-desc { color:#534AB7; }
+  .js-5 { background:#EAF3DE; }
+  .js-5 .js-num,.js-5 .js-label,.js-5 .js-desc { color:#3B6D11; }
+  @media (prefers-color-scheme:dark){
+    .js-1{background:#042C53;} .js-1 .js-num,.js-1 .js-label,.js-1 .js-desc{color:#B5D4F4;}
+    .js-2{background:#04342C;} .js-2 .js-num,.js-2 .js-label,.js-2 .js-desc{color:#9FE1CB;}
+    .js-3{background:#412402;} .js-3 .js-num,.js-3 .js-label,.js-3 .js-desc{color:#FAC775;}
+    .js-4{background:#26215C;} .js-4 .js-num,.js-4 .js-label,.js-4 .js-desc{color:#CECBF6;}
+    .js-5{background:#173404;} .js-5 .js-num,.js-5 .js-label,.js-5 .js-desc{color:#C0DD97;}
+  }
+
+  /* ── ANATOMY ── */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anat-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anat-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:110px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-ex    { font-size:11px; font-style:italic; margin-top:3px; border-radius:5px; padding:5px 8px; }
+
+  .ab-coral { background:#FAECE7; border-color:#F0997B; }
+  .ab-coral .anat-label{color:#993C1D;} .ab-coral .anat-desc{color:#993C1D;} .ab-coral .anat-ex{background:#F5C4B3;color:#4A1B0C;}
+  @media (prefers-color-scheme:dark){
+    .ab-coral{background:#4A1B0C;border-color:#D85A30;} .ab-coral .anat-desc{color:#F0997B;} .ab-coral .anat-ex{background:#711B0C;color:#F5C4B3;}
+  }
+
+  /* ── TWO PATHS ── */
+  .paths-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .path-card { border-radius:10px; border:1px solid; padding:14px; }
+  .path-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+  .path-btn   { display:block; border-radius:7px; padding:10px 14px; font-size:13px; font-weight:500; text-align:center; margin-bottom:8px; }
+  .path-desc  { font-size:12px; line-height:1.6; margin-bottom:6px; }
+  .path-why   { font-size:11px; border-radius:5px; padding:5px 8px; line-height:1.5; }
+
+  .pc-call  { background:#E1F5EE; border-color:#5DCAA5; }
+  .pc-call  .path-label{color:#0F6E56;}
+  .pc-call  .path-btn  {background:#0F6E56;color:#fff;}
+  .pc-call  .path-desc {color:#0F6E56;}
+  .pc-call  .path-why  {background:#9FE1CB;color:#04342C;}
+
+  .pc-email { background:#E6F1FB; border-color:#85B7EB; }
+  .pc-email .path-label{color:#185FA5;}
+  .pc-email .path-btn  {background:transparent;color:#185FA5;border:1.5px solid #85B7EB;}
+  .pc-email .path-desc {color:#185FA5;}
+  .pc-email .path-why  {background:#B5D4F4;color:#042C53;}
+
+  @media (prefers-color-scheme:dark){
+    .pc-call{background:#04342C;border-color:#1D9E75;} .pc-call .path-desc{color:#5DCAA5;} .pc-call .path-why{background:#085041;color:#9FE1CB;}
+    .pc-email{background:#042C53;border-color:#378ADD;} .pc-email .path-btn{color:#85B7EB;border-color:#378ADD;} .pc-email .path-desc{color:#85B7EB;} .pc-email .path-why{background:#0C447C;color:#B5D4F4;}
+  }
+
+  /* ── HEADLINE COMPARISON ── */
+  .hl-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .hlc-card { border-radius:10px; border:1px solid; padding:14px; }
+  .hlc-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+  .hlc-example { font-size:13px; font-weight:500; border-radius:6px; padding:8px 10px; margin-bottom:6px; line-height:1.5; font-style:italic; }
+  .hlc-why    { font-size:12px; line-height:1.6; }
+
+  .hlc-bad  { background:#FCEBEB; border-color:#F09595; }
+  .hlc-bad  .hlc-label{color:#A32D2D;} .hlc-bad .hlc-example{background:#F7C1C1;color:#501313;} .hlc-bad .hlc-why{color:#A32D2D;}
+  .hlc-good { background:#EAF3DE; border-color:#97C459; }
+  .hlc-good .hlc-label{color:#3B6D11;} .hlc-good .hlc-example{background:#C0DD97;color:#173404;} .hlc-good .hlc-why{color:#3B6D11;}
+  @media (prefers-color-scheme:dark){
+    .hlc-bad{background:#501313;border-color:#E24B4A;} .hlc-bad .hlc-example{background:#791F1F;color:#F7C1C1;} .hlc-bad .hlc-why{color:#F09595;}
+    .hlc-good{background:#173404;border-color:#639922;} .hlc-good .hlc-example{background:#27500A;color:#C0DD97;} .hlc-good .hlc-why{color:#97C459;}
+  }
+
+  /* ── VISITOR TYPES ── */
+  .vtype-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .vt-card { border-radius:10px; border:1px solid; padding:12px; }
+  .vt-type  { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px; }
+  .vt-label { font-size:12px; font-weight:500; margin-bottom:4px; }
+  .vt-desc  { font-size:11px; line-height:1.5; margin-bottom:6px; }
+  .vt-serves{ font-size:10px; border-radius:5px; padding:4px 8px; }
+
+  .vt-1 { background:#E1F5EE; border-color:#5DCAA5; }
+  .vt-1 .vt-type{color:#0F6E56;} .vt-1 .vt-label{color:#04342C;} .vt-1 .vt-desc{color:#0F6E56;} .vt-1 .vt-serves{background:#9FE1CB;color:#04342C;}
+  .vt-2 { background:#E6F1FB; border-color:#85B7EB; }
+  .vt-2 .vt-type{color:#185FA5;} .vt-2 .vt-label{color:#042C53;} .vt-2 .vt-desc{color:#185FA5;} .vt-2 .vt-serves{background:#B5D4F4;color:#042C53;}
+  .vt-3 { background:#FAEEDA; border-color:#EF9F27; }
+  .vt-3 .vt-type{color:#854F0B;} .vt-3 .vt-label{color:#412402;} .vt-3 .vt-desc{color:#854F0B;} .vt-3 .vt-serves{background:#FAC775;color:#412402;}
+  @media (prefers-color-scheme:dark){
+    .vt-1{background:#04342C;border-color:#1D9E75;} .vt-1 .vt-label{color:#9FE1CB;} .vt-1 .vt-desc{color:#5DCAA5;} .vt-1 .vt-serves{background:#085041;color:#9FE1CB;}
+    .vt-2{background:#042C53;border-color:#378ADD;} .vt-2 .vt-label{color:#B5D4F4;} .vt-2 .vt-desc{color:#85B7EB;} .vt-2 .vt-serves{background:#0C447C;color:#B5D4F4;}
+    .vt-3{background:#412402;border-color:#BA7517;} .vt-3 .vt-label{color:#FAC775;} .vt-3 .vt-desc{color:#EF9F27;} .vt-3 .vt-serves{background:#633806;color:#FAC775;}
+  }
+
+  /* ── TRUST MICRO ELEMENTS ── */
+  .trust-micro { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .tm-card { border-radius:10px; border:1px solid; padding:12px; }
+  .tm-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px; }
+  .tm-text  { font-size:12px; line-height:1.6; }
+  .tm-ex    { font-size:11px; font-style:italic; margin-top:5px; border-radius:5px; padding:4px 8px; }
+
+  .tm-1 { background:#E1F5EE; border-color:#5DCAA5; }
+  .tm-1 .tm-label{color:#0F6E56;} .tm-1 .tm-text{color:#0F6E56;} .tm-1 .tm-ex{background:#9FE1CB;color:#04342C;}
+  .tm-2 { background:#EEEDFE; border-color:#AFA9EC; }
+  .tm-2 .tm-label{color:#534AB7;} .tm-2 .tm-text{color:#534AB7;} .tm-2 .tm-ex{background:#CECBF6;color:#26215C;}
+  .tm-3 { background:#FAEEDA; border-color:#EF9F27; }
+  .tm-3 .tm-label{color:#854F0B;} .tm-3 .tm-text{color:#854F0B;} .tm-3 .tm-ex{background:#FAC775;color:#412402;}
+  .tm-4 { background:#EAF3DE; border-color:#97C459; }
+  .tm-4 .tm-label{color:#3B6D11;} .tm-4 .tm-text{color:#3B6D11;} .tm-4 .tm-ex{background:#C0DD97;color:#173404;}
+  @media (prefers-color-scheme:dark){
+    .tm-1{background:#04342C;border-color:#1D9E75;} .tm-1 .tm-text{color:#5DCAA5;} .tm-1 .tm-ex{background:#085041;color:#9FE1CB;}
+    .tm-2{background:#26215C;border-color:#7F77DD;} .tm-2 .tm-text{color:#AFA9EC;} .tm-2 .tm-ex{background:#3C3489;color:#CECBF6;}
+    .tm-3{background:#412402;border-color:#BA7517;} .tm-3 .tm-text{color:#EF9F27;} .tm-3 .tm-ex{background:#633806;color:#FAC775;}
+    .tm-4{background:#173404;border-color:#639922;} .tm-4 .tm-text{color:#97C459;} .tm-4 .tm-ex{background:#27500A;color:#C0DD97;}
+  }
+
+  /* stat strip */
+  .stat-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .stat-box   { border-radius:10px; border:1px solid; padding:14px; text-align:center; }
+  .stat-num   { font-size:22px; font-weight:500; margin-bottom:4px; }
+  .stat-lbl   { font-size:11px; line-height:1.5; }
+  .sb-coral   { background:#FAECE7; border-color:#F0997B; }
+  .sb-coral   .stat-num,.sb-coral  .stat-lbl{color:#993C1D;}
+  .sb-teal    { background:#E1F5EE; border-color:#5DCAA5; }
+  .sb-teal    .stat-num,.sb-teal   .stat-lbl{color:#0F6E56;}
+  .sb-purple  { background:#EEEDFE; border-color:#AFA9EC; }
+  .sb-purple  .stat-num,.sb-purple .stat-lbl{color:#534AB7;}
+  @media (prefers-color-scheme:dark){
+    .sb-coral{background:#4A1B0C;border-color:#D85A30;} .sb-coral .stat-num,.sb-coral .stat-lbl{color:#F5C4B3;}
+    .sb-teal{background:#04342C;border-color:#1D9E75;} .sb-teal .stat-num,.sb-teal .stat-lbl{color:#9FE1CB;}
+    .sb-purple{background:#26215C;border-color:#7F77DD;} .sb-purple .stat-num,.sb-purple .stat-lbl{color:#CECBF6;}
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-teal  { background:#9FE1CB; color:#04342C; }
+  .pill-blue  { background:#B5D4F4; color:#042C53; }
+  @media (prefers-color-scheme:dark){
+    .pill-red{background:#791F1F;color:#F7C1C1;} .pill-green{background:#27500A;color:#C0DD97;}
+    .pill-teal{background:#085041;color:#9FE1CB;} .pill-blue{background:#0C447C;color:#B5D4F4;}
+  }
+</style>
+
+<h1>Section 11 — The final CTA ("the 40% section")</h1>
+<p class="subtitle">The last section before the footer · catches the fully-convinced visitor<br>Your notes say this single section can drive ~40% of all page conversions — it deserves to be built perfectly</p>
+
+<!-- WHY IT CONVERTS SO MUCH -->
+<div class="divider-label"><span>Why this section converts disproportionately — the psychology</span></div>
+
+<div class="el-card coral-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core reason it works</div>
+  <h3>A visitor who reaches the bottom of the page is not a random visitor — they are the most convinced person on your site</h3>
+  <p>Think about what it takes to reach section 11. The visitor had to scroll through 10 full sections — the trust strip, photos, video, process, reviews, services, breather, pricing, and FAQ. Nobody does that casually. The visitor who arrives here has done the equivalent of reading every page of a brochure, watching the video, checking the credentials, reading the reviews, understanding the pricing, and having every question answered. They are not on the fence. They have already decided. All they need is a calm, clear, low-pressure invitation to take the final step — and this section provides exactly that.</p>
+  <div class="why">From your notes: "A late-page breather section with 'Book a call' + 'Write an email' options accounts for 40% of total conversions because it catches users after their doubts are cleared." The 40% is not magic — it's the inevitable result of putting the right invitation in front of the most ready person.</div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-box sb-coral">
+    <div class="stat-num">~40%</div>
+    <div class="stat-lbl">Of total page conversions come from this single section alone</div>
+  </div>
+  <div class="stat-box sb-teal">
+    <div class="stat-num">0</div>
+    <div class="stat-lbl">Remaining doubts the visitor has when they arrive here — all cleared by sections 1–10</div>
+  </div>
+  <div class="stat-box sb-purple">
+    <div class="stat-num">2</div>
+    <div class="stat-lbl">Paths offered — call or email. Never one, never three. Always exactly two.</div>
+  </div>
+</div>
+
+<!-- THE VISITOR JOURNEY TO THIS POINT -->
+<div class="divider-label"><span>Who arrives at section 11 — understanding the visitor's mental state</span></div>
+
+<div class="journey-strip spacer">
+  <div class="js-step js-1">
+    <div class="js-num">Sections 1–2</div>
+    <div class="js-label">First impression</div>
+    <div class="js-desc">Stopped the bounce. Built initial trust. Not convinced yet.</div>
+  </div>
+  <div class="js-step js-2">
+    <div class="js-num">Sections 3–5</div>
+    <div class="js-label">Evidence builds</div>
+    <div class="js-desc">Photos, video, process. Logical conviction forms slowly.</div>
+  </div>
+  <div class="js-step js-3">
+    <div class="js-num">Sections 6–7</div>
+    <div class="js-label">Emotional proof</div>
+    <div class="js-desc">Reviews seal emotional trust. Services confirm fit.</div>
+  </div>
+  <div class="js-step js-4">
+    <div class="js-num">Sections 8–10</div>
+    <div class="js-label">Final barriers</div>
+    <div class="js-desc">Breather, pricing, FAQ. Every last doubt answered.</div>
+  </div>
+  <div class="js-step js-5">
+    <div class="js-num">Section 11</div>
+    <div class="js-label">Fully convinced</div>
+    <div class="js-desc">Zero doubts. Ready to act. Just needs the invitation.</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The difference between section 8 (breather) and section 11 (final CTA)</h3>
+  <p>Both sections have a CTA, but they serve different visitors at different stages. The section 8 breather catches visitors who have become convinced mid-scroll — they've seen enough and are ready to act before reading everything. Section 11 catches the thorough visitor who reads everything before deciding — they need to process all the evidence before committing. These are two genuinely different personality types, and you need both sections to catch both of them. Removing section 11 because "section 8 already has a CTA" loses the entire segment of thorough, deliberate decision-makers — who, for a high-ticket service like roofing, are often the highest-value customers.</p>
+</div>
+
+<!-- THE FULL MOCKUP -->
+<div class="divider-label"><span>What it looks like on the page — the complete section</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 11 — final CTA · light background · generous whitespace · two clear paths</div>
+  <div class="final-cta-light">
+    <div class="fcl-eyebrow">Ready when you are</div>
+    <div class="fcl-headline">Your roof deserves a proper look.<br>Let's start with a free inspection — today.</div>
+    <div class="fcl-sub">No sales pitch. No obligation. Just an honest assessment of what your roof needs and exactly what it will cost. We serve [City] and surrounding areas.</div>
+    <div class="fcl-btns">
+      <button class="fcl-btn-p">Book a Free Inspection →</button>
+      <button class="fcl-btn-s">Send Us a Message</button>
+    </div>
+    <div class="fcl-phone">📞 (555) 000-0000 · Available Mon–Sat 7am–7pm</div>
+    <div class="fcl-trust-row">
+      <div class="fcl-trust-item"><div class="fcl-trust-dot"></div>Free inspection, no commitment</div>
+      <div class="fcl-trust-item"><div class="fcl-trust-dot"></div>Same-day available</div>
+      <div class="fcl-trust-item"><div class="fcl-trust-dot"></div>Licensed · insured · guaranteed</div>
+    </div>
+  </div>
+</div>
+
+<!-- ANATOMY -->
+<div class="divider-label"><span>Anatomy — every element, what it does, and why it's there</span></div>
+
+<div class="anatomy-box ab-coral spacer">
+  <div class="anat-row">
+    <div class="anat-label">Background</div>
+    <div class="anat-desc">Unlike the section 8 breather which used a dark background, section 11 typically works on a clean light background. You've already used the dark-background pattern — using it again here diminishes the contrast effect. A clean white or very light gray with generous padding creates a sense of arrival and finality.
+      <div class="anat-ex">Alternative: a very subtle tinted background (the lightest stop of your brand color, e.g. teal-50) to signal this is a distinct section without the heaviness of dark.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Generous whitespace</div>
+    <div class="anat-desc">At least 48–60px padding top and bottom. More than any other section on the page. This is the most important visual element in section 11 — the spaciousness signals "we're not rushing you" and creates the calm, low-pressure atmosphere that makes final conversions happen.
+      <div class="anat-ex">If it looks like too much empty space, you're probably close to right. This section should feel like breathing room after a full page of content.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Eyebrow line</div>
+    <div class="anat-desc">4–6 words in small uppercase above the headline. Sets the emotional tone before the main message. Should communicate acceptance, patience, and readiness — not urgency.
+      <div class="anat-ex">"Ready when you are" · "Here when you need us" · "Your next step is simple" — never "Act now!" or "Don't wait!"</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Headline</div>
+    <div class="anat-desc">The last piece of copy the visitor reads before making their decision. It must simultaneously confirm the value (free inspection), reduce the commitment (today), and speak to their specific situation (their roof). Two lines maximum. No jargon. No pressure.
+      <div class="anat-ex">"Your roof deserves a proper look. Let's start with a free inspection — today." — Speaks to their home, confirms free, grounds it in today without being pushy.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Subheadline</div>
+    <div class="anat-desc">2–3 sentences that do three jobs: remove the fear of commitment ("no sales pitch, no obligation"), describe exactly what happens ("honest assessment, exact cost"), and confirm local relevance ("we serve [City]"). All three must be in these sentences.
+      <div class="anat-ex">"No sales pitch. No obligation. Just an honest assessment of what your roof needs and exactly what it will cost. We serve [City] and surrounding areas."</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Two CTA buttons</div>
+    <div class="anat-desc">Primary button (book/call) in your brand's action color — solid fill, clear text, slightly larger. Secondary button (message/email) in a ghost/outline style. The visual hierarchy makes the primary choice obvious without making the secondary feel wrong.
+      <div class="anat-ex">Primary: "Book a Free Inspection →" · Secondary: "Send Us a Message" — never "Submit" or "Go" as button text</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Phone number</div>
+    <div class="anat-desc">The actual number in plain, large text directly below the buttons. For roofing, phone calls are the highest-converting contact method — many homeowners (especially older ones) will only ever call, never fill a form. Showing the number here catches them.
+      <div class="anat-ex">"📞 (555) 000-0000 · Available Mon–Sat 7am–7pm" — the hours are critical, they remove the fear of calling and nobody answering</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Trust micro-elements</div>
+    <div class="anat-desc">3–4 small dot-separated trust signals below the phone number. These are the final reassurances — tiny, scannable, and powerful because they arrive exactly when the visitor is about to commit.
+      <div class="anat-ex">"Free inspection, no commitment · Same-day available · Licensed · insured · guaranteed"</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE TWO PATHS -->
+<div class="divider-label"><span>The two paths — why both are essential and what each one serves</span></div>
+
+<div class="paths-row spacer">
+  <div class="path-card pc-call">
+    <div class="path-label">Path 1 — primary</div>
+    <div class="path-btn">Book a Free Inspection →</div>
+    <div class="path-desc">For visitors who are ready to commit to a specific action. They've decided, they know what they want, and they want to lock in a time. This is the highest-value conversion — it creates an appointment on the calendar immediately.</div>
+    <div class="path-why">Who takes this: decisive homeowners, people with an urgent problem (active leak, storm damage), homeowners who have already called around and are now choosing you specifically.</div>
+  </div>
+  <div class="path-card pc-email">
+    <div class="path-label">Path 2 — secondary</div>
+    <div class="path-btn">Send Us a Message</div>
+    <div class="path-desc">For visitors who are convinced but not quite ready to commit to a call or specific time. They want to make first contact on their own terms — send a message, wait for a response, stay in control of the pace. This is still a high-value conversion.</div>
+    <div class="path-why">Who takes this: introverted homeowners, people who want to explain their situation in writing first, homeowners comparing multiple companies and not ready to commit to a call with any of them yet.</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why exactly two — never one, never three</h3>
+  <p>One path forces everyone into the same action — and a significant portion of convinced visitors will leave rather than use a path that doesn't match their preference. Three paths reintroduce analysis paralysis at the worst possible moment — the visitor who just cleared every doubt now has to decide between three options again. Two paths is the exact right number: it covers every visitor type (decisive callers and cautious messagers) while keeping the decision binary and effortless. Your notes were explicit about this — "Book a Call" and "Write an Email" are the two paths, and nothing else.</p>
+</div>
+
+<!-- VISITOR TYPES SERVED -->
+<div class="divider-label"><span>The 3 visitor types this section catches — and how it serves each one</span></div>
+
+<div class="vtype-grid spacer">
+  <div class="vt-card vt-1">
+    <div class="vt-type">Visitor type 1</div>
+    <div class="vt-label">The thorough reader</div>
+    <div class="vt-desc">Read every section top to bottom. Checked credentials. Watched the video. Read the FAQ. Made a deliberate, fully-informed decision.</div>
+    <div class="vt-serves">Served by: the calm, low-pressure tone that respects their thoroughness</div>
+  </div>
+  <div class="vt-card vt-2">
+    <div class="vt-type">Visitor type 2</div>
+    <div class="vt-label">The scroller who missed section 8</div>
+    <div class="vt-desc">Was in scroll momentum through the breather section. Didn't click section 8's CTA but kept reading. Arrived here with the same readiness.</div>
+    <div class="vt-serves">Served by: a second chance to act without having to scroll back up</div>
+  </div>
+  <div class="vt-card vt-3">
+    <div class="vt-type">Visitor type 3</div>
+    <div class="vt-label">The phone-call avoider</div>
+    <div class="vt-desc">Fully convinced but doesn't want to call. Wants to make first contact by message and control the pace of the conversation themselves.</div>
+    <div class="vt-serves">Served by: the "Send Us a Message" secondary button that validates their preference</div>
+  </div>
+</div>
+
+<!-- TRUST MICRO-ELEMENTS -->
+<div class="divider-label"><span>The trust micro-elements — the 4 lines that go below the buttons</span></div>
+
+<div class="trust-micro spacer">
+  <div class="tm-card tm-1">
+    <div class="tm-label">No-commitment signal</div>
+    <div class="tm-text">Removes the final fear that clicking means buying. Must appear on or near the buttons.</div>
+    <div class="tm-ex">"Free inspection, no commitment" · "No obligation, ever"</div>
+  </div>
+  <div class="tm-card tm-2">
+    <div class="tm-label">Speed signal</div>
+    <div class="tm-text">Removes the fear of a long wait. For urgent situations this is the deciding factor.</div>
+    <div class="tm-ex">"Same-day available" · "Respond within 2 hours"</div>
+  </div>
+  <div class="tm-card tm-3">
+    <div class="tm-label">Local signal</div>
+    <div class="tm-text">Confirms they're booking with someone who actually works in their area. Critical for trust.</div>
+    <div class="tm-ex">"Serving [City] and surrounding areas" · "Local team, local knowledge"</div>
+  </div>
+  <div class="tm-card tm-4">
+    <div class="tm-label">Credential signal</div>
+    <div class="tm-text">A final reminder of legitimacy at the exact moment of commitment. Kills last-second doubt.</div>
+    <div class="tm-ex">"Licensed · insured · guaranteed" · "State license CR-12345"</div>
+  </div>
+</div>
+
+<!-- HEADLINE LIBRARY -->
+<div class="divider-label"><span>Headline options — ranked from best to worst conversion impact</span></div>
+
+<div class="hl-compare spacer">
+  <div class="hlc-card hlc-bad">
+    <div class="hlc-label">Weak headlines — miss the moment</div>
+    <div class="hlc-example">"Contact us today for all your roofing needs"</div>
+    <div class="hlc-why">Generic, company-focused, no warmth, no acknowledgment of the visitor's journey. Could be on any contractor site. The visitor feels nothing.</div>
+    <div class="hlc-example" style="margin-top:8px;">"Get in touch with our expert team"</div>
+    <div class="hlc-why" style="margin-top:4px;">"Expert team" is hollow. "Get in touch" is passive. Zero emotional resonance at the moment it matters most.</div>
+  </div>
+  <div class="hlc-card hlc-good">
+    <div class="hlc-label">Strong headlines — land perfectly</div>
+    <div class="hlc-example">"Your roof deserves a proper look. Let's start with a free inspection — today."</div>
+    <div class="hlc-why">Speaks to their home (emotional ownership), "proper look" signals care not sales, "free" removes commitment, "today" creates gentle timing without pressure.</div>
+    <div class="hlc-example" style="margin-top:8px;">"You've done your homework. One call is all it takes."</div>
+    <div class="hlc-why" style="margin-top:4px;">Acknowledges the thorough reader, validates their process, reduces the final action to its smallest possible description: "one call."</div>
+  </div>
+</div>
+
+<div class="el-card gray-card spacer">
+  <div class="el-tag">Full headline library — all tested for roofing</div>
+  <h3>Pick the one that matches your brand voice and the visitor's emotional state at the bottom of the page</h3>
+  <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Your roof deserves a proper look. Let's start with a free inspection — today."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"You've done your homework. One call is all it takes."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Protecting your home starts with one free inspection. We're ready when you are."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Still thinking it over? A free inspection costs nothing and tells you everything."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"Don't let a small problem become a big one. Book your free inspection today."</div>
+    <div style="background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--color-text-primary);font-style:italic;">"20 years protecting homes in [City]. Let's protect yours next."</div>
+  </div>
+</div>
+
+<!-- WHAT NOT TO DO -->
+<div class="divider-label"><span>What must NOT appear in this section</span></div>
+
+<div class="pills">
+  <span class="pill pill-red">Photos or galleries</span>
+  <span class="pill pill-red">Review quotes</span>
+  <span class="pill pill-red">Service descriptions</span>
+  <span class="pill pill-red">Pricing information</span>
+  <span class="pill pill-red">Navigation links</span>
+  <span class="pill pill-red">Blog or social links</span>
+  <span class="pill pill-red">Countdown timers</span>
+  <span class="pill pill-red">Fake urgency copy</span>
+  <span class="pill pill-red">More than 2 CTA buttons</span>
+  <span class="pill pill-red">Any animations or motion</span>
+  <span class="pill pill-red">Long paragraphs of copy</span>
+  <span class="pill pill-red">A contact form with more than 3 fields</span>
+</div>
+
+<div class="pills" style="margin-top:8px;">
+  <span class="pill pill-green">Clean background</span>
+  <span class="pill pill-teal">Generous whitespace (48px+ padding)</span>
+  <span class="pill pill-teal">Soft eyebrow line</span>
+  <span class="pill pill-green">One warm, patient headline</span>
+  <span class="pill pill-green">2–3 sentence subheadline</span>
+  <span class="pill pill-teal">Primary CTA button (book/call)</span>
+  <span class="pill pill-teal">Secondary CTA button (message)</span>
+  <span class="pill pill-blue">Phone number + hours</span>
+  <span class="pill pill-blue">3–4 trust micro-signals</span>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use generous whitespace — 48px+ padding top and bottom</li>
+      <li>Write a headline that acknowledges the visitor's journey</li>
+      <li>Always include "no obligation" in the subheadline</li>
+      <li>Mention your city/service area in the subheadline</li>
+      <li>Show exactly two buttons: primary + secondary</li>
+      <li>Display the phone number in large plain text</li>
+      <li>Show availability hours next to the phone number</li>
+      <li>Add 3–4 trust micro-signals below the buttons</li>
+      <li>Use "free inspection" as the primary CTA framing</li>
+      <li>Keep the tone calm, warm, patient — not urgent</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Add photos, reviews, or badges — this section is empty by design</li>
+      <li>Use fake urgency: "Act now!", "Limited slots!"</li>
+      <li>Have more than 2 CTA buttons</li>
+      <li>Use generic headline: "Contact Us Today"</li>
+      <li>Skip the phone number — callers are your best leads</li>
+      <li>Use a contact form with more than 3 fields here</li>
+      <li>Add navigation or secondary links that take visitors away</li>
+      <li>Use the same dark background as section 8 — dilutes both</li>
+      <li>Skip this section — it drives ~40% of conversions</li>
+      <li>Crowd the section — every element added reduces conversion</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The complete picture — how sections 8 and 11 work together as a system</h3>
+  <p>Section 8 (breather) and section 11 (final CTA) are not redundant — they are a two-net system designed to catch every convinced visitor regardless of when in the scroll they reach peak readiness. Section 8 catches the impulsive and mid-convinced visitor who has seen enough. Section 11 catches the thorough and deliberate visitor who needed to see everything. Together they cover the full spectrum of buying behavior. The visitors caught by section 8 tend to be faster, more urgent decision-makers (often with active problems like leaks). The visitors caught by section 11 tend to be more planned, research-driven buyers (often planning a replacement before the problem becomes urgent). Both are valuable. Neither section alone captures both.</p>
+</div>

@@ -11,10 +11,6 @@ const ARTICLES_PER_PAGE = 6;
 function ArticleCard({ article, index }: { article: Article; index: number }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
             <Link
                 to={`/blog/${article.slug}`}
@@ -93,9 +89,6 @@ export default function BlogIndex() {
             <div className="container mx-auto px-6 max-w-6xl pb-32">
                 {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="max-w-3xl mb-20 pt-8"
                 >
                     <p className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] md:text-xs uppercase mb-6 flex items-center gap-4">
@@ -112,9 +105,6 @@ export default function BlogIndex() {
 
                 {/* Category Filters */}
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     className="flex flex-wrap gap-3 mb-16"
                 >
                     <button

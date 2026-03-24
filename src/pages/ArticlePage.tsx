@@ -82,12 +82,12 @@ export default function ArticlePage() {
         author: { '@type': 'Person', name: article.author },
         publisher: {
             '@type': 'Organization',
-            name: 'Verrazano Roofing',
-            logo: { '@type': 'ImageObject', url: 'https://verrazanoroofing.com/logo.png' },
+            name: 'MyRoofTop',
+            logo: { '@type': 'ImageObject', url: 'https://myrooftop.com/logo.png' },
         },
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://verrazanoroofing.com/blog/${article.slug}`,
+            '@id': `https://myrooftop.com/blog/${article.slug}`,
         },
     };
 
@@ -112,9 +112,6 @@ export default function ArticlePage() {
             <article className="container mx-auto px-6 max-w-4xl pb-32">
                 {/* Back link */}
                 <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <Link
                         to="/blog"
@@ -127,9 +124,6 @@ export default function ArticlePage() {
                 {/* Article Header */}
                 <header className="mb-16">
                     <motion.div
-                        initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <div className="flex flex-wrap items-center gap-4 mb-6">
                             <span className="px-3 py-1 glass-panel-light rounded-full text-[10px] uppercase tracking-widest text-brand-blue font-semibold">
@@ -156,9 +150,6 @@ export default function ArticlePage() {
 
                     {/* Author */}
                     <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                         className="flex items-center gap-4 mt-8 pt-8 border-t border-brand-silver/10"
                     >
                         <div className="w-10 h-10 rounded-full bg-brand-white/10 flex items-center justify-center">
@@ -166,16 +157,13 @@ export default function ArticlePage() {
                         </div>
                         <div>
                             <p className="text-brand-white text-sm font-medium">{article.author}</p>
-                            <p className="text-brand-silver text-[10px] uppercase tracking-widest">Verrazano Roofing</p>
+                            <p className="text-brand-silver text-[10px] uppercase tracking-widest">MyRoofTop</p>
                         </div>
                     </motion.div>
                 </header>
 
                 {/* Featured Image */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-16"
                 >
                     <img
@@ -193,9 +181,6 @@ export default function ArticlePage() {
 
                 {/* Article Content */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="prose-article"
                     dangerouslySetInnerHTML={{ __html: renderedContent }}
                 />

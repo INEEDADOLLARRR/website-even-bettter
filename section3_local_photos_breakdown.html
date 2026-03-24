@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; }
+  .divider-label span { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--color-text-secondary); }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  /* ── PHOTO TYPES GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .el-card { border-radius: 10px; border: 1px solid; padding: 14px; cursor: pointer; transition: transform 0.15s; }
+  .el-card:hover { transform: translateX(3px); }
+  .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .el-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+  .el-card p { font-size: 12px; line-height: 1.6; }
+  .el-card .why { margin-top: 8px; font-size: 11px; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+  .el-card .tip { margin-top: 6px; font-size: 11px; font-style: italic; }
+
+  .blue-card { background: #E6F1FB; border-color: #85B7EB; }
+  .blue-card .el-tag { color: #185FA5; }
+  .blue-card h3 { color: #042C53; }
+  .blue-card p { color: #185FA5; }
+  .blue-card .why { background: #B5D4F4; color: #042C53; }
+  .blue-card .tip { color: #185FA5; }
+
+  .teal-card { background: #E1F5EE; border-color: #5DCAA5; }
+  .teal-card .el-tag { color: #0F6E56; }
+  .teal-card h3 { color: #04342C; }
+  .teal-card p { color: #0F6E56; }
+  .teal-card .why { background: #9FE1CB; color: #04342C; }
+  .teal-card .tip { color: #0F6E56; }
+
+  .amber-card { background: #FAEEDA; border-color: #EF9F27; }
+  .amber-card .el-tag { color: #854F0B; }
+  .amber-card h3 { color: #412402; }
+  .amber-card p { color: #854F0B; }
+  .amber-card .why { background: #FAC775; color: #412402; }
+  .amber-card .tip { color: #854F0B; }
+
+  .purple-card { background: #EEEDFE; border-color: #AFA9EC; }
+  .purple-card .el-tag { color: #534AB7; }
+  .purple-card h3 { color: #26215C; }
+  .purple-card p { color: #534AB7; }
+  .purple-card .why { background: #CECBF6; color: #26215C; }
+  .purple-card .tip { color: #534AB7; }
+
+  .gray-card { background: #F1EFE8; border-color: #B4B2A9; }
+  .gray-card .el-tag { color: #5F5E5A; }
+  .gray-card h3 { color: #2C2C2A; }
+  .gray-card p { color: #5F5E5A; }
+  .gray-card .why { background: #D3D1C7; color: #2C2C2A; }
+
+  .coral-card { background: #FAECE7; border-color: #F0997B; }
+  .coral-card .el-tag { color: #993C1D; }
+  .coral-card h3 { color: #4A1B0C; }
+  .coral-card p { color: #993C1D; }
+  .coral-card .why { background: #F5C4B3; color: #4A1B0C; }
+
+  .red-card { background: #FCEBEB; border-color: #F09595; }
+  .red-card .el-tag { color: #A32D2D; }
+  .red-card h3 { color: #501313; }
+  .red-card p { color: #A32D2D; }
+  .red-card .why { background: #F7C1C1; color: #501313; }
+
+  .green-card { background: #EAF3DE; border-color: #97C459; }
+  .green-card .el-tag { color: #3B6D11; }
+  .green-card h3 { color: #173404; }
+  .green-card p { color: #3B6D11; }
+  .green-card .why { background: #C0DD97; color: #173404; }
+
+  @media (prefers-color-scheme: dark) {
+    .blue-card { background: #042C53; border-color: #378ADD; }
+    .blue-card h3 { color: #B5D4F4; } .blue-card p { color: #85B7EB; } .blue-card .why { background: #0C447C; color: #B5D4F4; } .blue-card .tip { color: #85B7EB; }
+    .teal-card { background: #04342C; border-color: #1D9E75; }
+    .teal-card h3 { color: #9FE1CB; } .teal-card p { color: #5DCAA5; } .teal-card .why { background: #085041; color: #9FE1CB; } .teal-card .tip { color: #5DCAA5; }
+    .amber-card { background: #412402; border-color: #BA7517; }
+    .amber-card h3 { color: #FAC775; } .amber-card p { color: #EF9F27; } .amber-card .why { background: #633806; color: #FAC775; } .amber-card .tip { color: #EF9F27; }
+    .purple-card { background: #26215C; border-color: #7F77DD; }
+    .purple-card h3 { color: #CECBF6; } .purple-card p { color: #AFA9EC; } .purple-card .why { background: #3C3489; color: #CECBF6; } .purple-card .tip { color: #AFA9EC; }
+    .gray-card { background: #2C2C2A; border-color: #888780; }
+    .gray-card h3 { color: #D3D1C7; } .gray-card p { color: #888780; } .gray-card .why { background: #444441; color: #D3D1C7; }
+    .coral-card { background: #4A1B0C; border-color: #D85A30; }
+    .coral-card h3 { color: #F5C4B3; } .coral-card p { color: #F0997B; } .coral-card .why { background: #711B0C; color: #F5C4B3; }
+    .red-card { background: #501313; border-color: #E24B4A; }
+    .red-card h3 { color: #F7C1C1; } .red-card p { color: #F09595; } .red-card .why { background: #791F1F; color: #F7C1C1; }
+    .green-card { background: #173404; border-color: #639922; }
+    .green-card h3 { color: #C0DD97; } .green-card p { color: #97C459; } .green-card .why { background: #27500A; color: #C0DD97; }
+  }
+
+  /* ── GRID MOCKUP ── */
+  .grid-mockup { border: 1px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; margin-bottom: 6px; }
+  .gm-bar { background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); padding: 7px 12px; font-size: 11px; color: var(--color-text-tertiary); }
+  .gm-body { padding: 12px; display: grid; gap: 6px; }
+  .gm-row-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 6px; }
+  .gm-row-2 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .gm-row-3 { display: grid; grid-template-columns: 1fr 2fr; gap: 6px; }
+  .gm-cell { border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; }
+  .gm-cell.large { height: 72px; }
+  .gm-cell.medium { height: 72px; }
+  .gm-cell.small { height: 52px; }
+
+  .photo-ba { background: #E6F1FB; color: #185FA5; border: 1px solid #85B7EB; }
+  .photo-crew { background: #E1F5EE; color: #0F6E56; border: 1px solid #5DCAA5; }
+  .photo-hw { background: #EEEDFE; color: #534AB7; border: 1px solid #AFA9EC; }
+  .photo-truck { background: #FAEEDA; color: #854F0B; border: 1px solid #EF9F27; }
+  .photo-material { background: #FCEBEB; color: #A32D2D; border: 1px solid #F09595; }
+  .photo-smile { background: #EAF3DE; color: #3B6D11; border: 1px solid #97C459; }
+
+  @media (prefers-color-scheme: dark) {
+    .photo-ba { background: #042C53; color: #B5D4F4; border-color: #378ADD; }
+    .photo-crew { background: #04342C; color: #9FE1CB; border-color: #1D9E75; }
+    .photo-hw { background: #26215C; color: #CECBF6; border-color: #7F77DD; }
+    .photo-truck { background: #412402; color: #FAC775; border-color: #BA7517; }
+    .photo-material { background: #501313; color: #F7C1C1; border-color: #E24B4A; }
+    .photo-smile { background: #173404; color: #C0DD97; border-color: #639922; }
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .do-box { background: #EAF3DE; border: 1px solid #97C459; border-radius: 10px; padding: 14px; }
+  .do-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #3B6D11; margin-bottom: 8px; }
+  .do-box li { font-size: 12px; color: #3B6D11; line-height: 1.8; margin-left: 14px; }
+  .dont-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 10px; padding: 14px; }
+  .dont-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #A32D2D; margin-bottom: 8px; }
+  .dont-box li { font-size: 12px; color: #A32D2D; line-height: 1.8; margin-left: 14px; }
+  @media (prefers-color-scheme: dark) {
+    .do-box { background: #173404; border-color: #639922; }
+    .do-box .dd-label, .do-box li { color: #C0DD97; }
+    .dont-box { background: #501313; border-color: #E24B4A; }
+    .dont-box .dd-label, .dont-box li { color: #F7C1C1; }
+  }
+
+  /* ── METRICS STRIP ── */
+  .metrics-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .metric-box { border-radius: 10px; border: 1px solid; padding: 14px; text-align: center; }
+  .metric-num { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+  .metric-label { font-size: 11px; line-height: 1.5; }
+
+  .m-blue { background: #E6F1FB; border-color: #85B7EB; }
+  .m-blue .metric-num { color: #185FA5; }
+  .m-blue .metric-label { color: #185FA5; }
+  .m-teal { background: #E1F5EE; border-color: #5DCAA5; }
+  .m-teal .metric-num { color: #0F6E56; }
+  .m-teal .metric-label { color: #0F6E56; }
+  .m-amber { background: #FAEEDA; border-color: #EF9F27; }
+  .m-amber .metric-num { color: #854F0B; }
+  .m-amber .metric-label { color: #854F0B; }
+  @media (prefers-color-scheme: dark) {
+    .m-blue { background: #042C53; border-color: #378ADD; }
+    .m-blue .metric-num, .m-blue .metric-label { color: #B5D4F4; }
+    .m-teal { background: #04342C; border-color: #1D9E75; }
+    .m-teal .metric-num, .m-teal .metric-label { color: #9FE1CB; }
+    .m-amber { background: #412402; border-color: #BA7517; }
+    .m-amber .metric-num, .m-amber .metric-label { color: #FAC775; }
+  }
+
+  .note-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 16px; margin-top: 10px; }
+  .note-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .note-box p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+
+  .full-blue { background: #E6F1FB; border-color: #85B7EB; }
+  .full-blue h3 { color: #042C53; }
+  .full-blue p { color: #185FA5; }
+  @media (prefers-color-scheme: dark) {
+    .full-blue { background: #042C53; border-color: #378ADD; }
+    .full-blue h3 { color: #B5D4F4; }
+    .full-blue p { color: #85B7EB; }
+  }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 20px; }
+  .pill-blue { background: #B5D4F4; color: #042C53; }
+  .pill-teal { background: #9FE1CB; color: #04342C; }
+  .pill-amber { background: #FAC775; color: #412402; }
+  .pill-purple { background: #CECBF6; color: #26215C; }
+  @media (prefers-color-scheme: dark) {
+    .pill-blue { background: #0C447C; color: #B5D4F4; }
+    .pill-teal { background: #085041; color: #9FE1CB; }
+    .pill-amber { background: #633806; color: #FAC775; }
+    .pill-purple { background: #3C3489; color: #CECBF6; }
+  }
+</style>
+
+<h1>Section 3 — Local before/after photos & live metrics</h1>
+<p class="subtitle">8–12 real photos · alternating grid layout · zero AI or stock images<br>This is the #1 trust signal for any local service business</p>
+
+<!-- WHAT PHOTOS TO SHOOT -->
+<div class="divider-label"><span>The 6 photo types you need — shoot all of these</span></div>
+
+<div class="grid-2">
+  <div class="el-card blue-card" onclick="sendPrompt('How do I shoot before and after roofing photos that convert well on a website?')">
+    <div class="el-tag">Photo type 1 — most important</div>
+    <h3>Before & after of the same roof</h3>
+    <p>Same angle, same time of day, same framing. The contrast does all the selling for you. Shoot from the street at eye level so it looks like what the homeowner will see pulling into their driveway.</p>
+    <div class="why">Why: Side-by-side before/after is the single most convincing visual proof of competence — no copy needed.</div>
+    <p class="tip">Tip: Shoot the "after" while the crew is still there — the light is the same and you won't forget.</p>
+  </div>
+
+  <div class="el-card teal-card" onclick="sendPrompt('What crew photos should I take for a roofing website?')">
+    <div class="el-tag">Photo type 2</div>
+    <h3>Crew actively working on a job</h3>
+    <p>Candid shots of the crew mid-work — installing shingles, on the roof, using equipment. Everyone in branded shirts with the company logo visible. Action shots feel more authentic than posed ones.</p>
+    <div class="why">Why: Proves a real crew exists. "Cowboy contractors" don't have branded uniforms or real teams on site.</div>
+    <p class="tip">Tip: Shoot from slightly below — makes the crew look competent and the roof look impressive.</p>
+  </div>
+
+  <div class="el-card amber-card" onclick="sendPrompt('Should I photograph homeowners for my roofing website?')">
+    <div class="el-tag">Photo type 3</div>
+    <h3>Smiling homeowner in context</h3>
+    <p>The homeowner standing in front of their finished roof or shaking hands with your rep. Get their permission and use their first name and street/neighborhood in the caption. Never use a stock "happy customer."</p>
+    <div class="why">Why: A real local face with a real name is the most verifiable trust signal possible. Visitors think "I could find this person."</div>
+    <p class="tip">Tip: Ask right when you hand them the completion paperwork — they're happiest in that moment.</p>
+  </div>
+
+  <div class="el-card purple-card" onclick="sendPrompt('Should I photograph my company truck for my roofing website?')">
+    <div class="el-tag">Photo type 4</div>
+    <h3>Branded company truck at a job site</h3>
+    <p>The truck parked in front of a completed job — clean, branded, with the company name and number clearly visible. This is the exact visual the homeowner will see pulling up to their house on job day.</p>
+    <div class="why">Why: A branded truck signals an established business. It also pre-answers "what will it look like when they arrive?"</div>
+    <p class="tip">Tip: Park it so the house and roof are visible in the background — one shot, two proof points.</p>
+  </div>
+
+  <div class="el-card blue-card" onclick="sendPrompt('What material close-up shots should I take for a roofing website?')">
+    <div class="el-tag">Photo type 5</div>
+    <h3>Material close-ups and detail shots</h3>
+    <p>Tight shots of installed shingles, flashing, ridge caps, or gutters. Show the quality of the work up close. Your notes specifically mentioned showing the product at "4× zoom" to make material and craftsmanship visible.</p>
+    <div class="why">Why: Homeowners can't evaluate roofing quality from street level. Close-ups prove the finish work is clean and professional.</div>
+    <p class="tip">Tip: Shoot in direct sunlight — it shows texture and depth that flat light hides.</p>
+  </div>
+
+  <div class="el-card teal-card" onclick="sendPrompt('Should I photograph my leadership team for my roofing website?')">
+    <div class="el-tag">Photo type 6</div>
+    <h3>Leadership team / owner headshot</h3>
+    <p>A real photo of the owner or key team members — not a group shot in front of an office. Outdoors at a job site is ideal. This person will answer the phone when the homeowner calls. Putting a real face on it matters enormously.</p>
+    <div class="why">Why: People buy from people. A named, real owner signals accountability — they can't disappear if their face is on the website.</div>
+    <p class="tip">Tip: Use the same photo in the "why choose us" section and the footer for recognition.</p>
+  </div>
+</div>
+
+<!-- GRID LAYOUT -->
+<div class="divider-label"><span>How to display them — the alternating dynamic grid</span></div>
+
+<div class="grid-mockup">
+  <div class="gm-bar">Alternating grid layout — keeps attention, prevents "boring gallery" feeling</div>
+  <div class="gm-body">
+    <div class="gm-row-1">
+      <div class="gm-cell large photo-ba">Before/After (large)</div>
+      <div class="gm-cell large photo-crew">Crew working</div>
+    </div>
+    <div class="gm-row-2">
+      <div class="gm-cell small photo-material">Material close-up</div>
+      <div class="gm-cell small photo-smile">Happy homeowner</div>
+      <div class="gm-cell small photo-truck">Branded truck</div>
+    </div>
+    <div class="gm-row-3">
+      <div class="gm-cell medium photo-hw">Leadership / owner</div>
+      <div class="gm-cell medium photo-ba">Before/After (large)</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box full-blue">
+  <h3>The rule behind the alternating grid</h3>
+  <p>Your notes said "uniform grids feel monotonous — variation keeps attention and makes scanning easier." A grid where every photo is the same size looks like a stock gallery. An alternating grid — some large, some small, some wide — feels curated and intentional, which your brain reads as professional. It also lets you make the most powerful photos (before/after, crew action) larger, and supporting evidence (close-ups, truck) smaller.</p>
+</div>
+
+<!-- LIVE METRICS -->
+<div class="divider-label"><span>Live proof metrics — display these alongside the photos</span></div>
+
+<div class="metrics-strip">
+  <div class="metric-box m-blue">
+    <div class="metric-num">500+</div>
+    <div class="metric-label">Roofs completed in [City]</div>
+  </div>
+  <div class="metric-box m-teal">
+    <div class="metric-num">20</div>
+    <div class="metric-label">Years serving [Neighborhood]</div>
+  </div>
+  <div class="metric-box m-amber">
+    <div class="metric-num">4.9★</div>
+    <div class="metric-label">Average Google rating</div>
+  </div>
+</div>
+
+<div class="note-box" style="margin-top:10px;">
+  <h3>Why metrics go here, not just the trust strip</h3>
+  <p>Repeating the numbers next to real photo evidence doubles their impact. A visitor who sees "500+ roofs completed" in the trust strip at the top, then sees photo after photo of real local work, then sees that number again — their brain treats it as confirmed fact, not a claim. The photos are the evidence. The number is the conclusion.</p>
+</div>
+
+<!-- NEIGHBOURHOOD COPY -->
+<div class="divider-label"><span>The neighborhood copy rule — prove you're truly local</span></div>
+
+<div class="el-card teal-card" style="margin-bottom:10px;">
+  <div class="el-tag">The local legitimacy signal</div>
+  <h3>Caption every photo with a real neighborhood name</h3>
+  <p>Under each photo, add a line like: "Oak Park, [City] · Installed July 2024" or "Completed in Riverside Heights — full replacement after storm damage." Mentioning specific local areas — streets, neighborhoods, suburbs — is what makes a visitor think "these people actually work near me" instead of "this could be anyone anywhere."</p>
+  <div class="why">Why: Your notes said "neighborhood context proves you are local and legit." A homeowner in Oak Park who sees "Oak Park, 3 jobs this summer" is not calling anyone else.</div>
+</div>
+
+<div class="pills">
+  <span class="pill pill-teal">Oak Park, [City]</span>
+  <span class="pill pill-teal">Riverside Heights</span>
+  <span class="pill pill-teal">Downtown [City] area</span>
+  <span class="pill pill-teal">Near [Local Landmark]</span>
+  <span class="pill pill-blue">Installed June 2024</span>
+  <span class="pill pill-blue">After storm damage</span>
+  <span class="pill pill-blue">Full replacement · 3 days</span>
+  <span class="pill pill-amber">Owner: "Best decision I made"</span>
+</div>
+
+<!-- DO / DON'T -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Shoot 8–12 photos minimum</li>
+      <li>Use before/after pairs from same angle</li>
+      <li>Caption with real neighborhood names</li>
+      <li>Branded shirts on every crew member</li>
+      <li>Use an alternating grid — vary sizes</li>
+      <li>Show the truck at the job site</li>
+      <li>Put metrics directly below the grid</li>
+      <li>Get homeowner permission + first name</li>
+      <li>Shoot in natural daylight — no flash</li>
+      <li>Include at least 1 close-up detail shot</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Use any stock or AI-generated photos</li>
+      <li>Use a uniform grid — all same size</li>
+      <li>Caption photos with just "Roofing job"</li>
+      <li>Show crew in plain clothes, no branding</li>
+      <li>Use blurry or poorly lit phone photos</li>
+      <li>Use "Anonymous homeowner" in captions</li>
+      <li>Show only finished photos — skip the before</li>
+      <li>Use photos from another city or state</li>
+      <li>Show tiny repair jobs if you want big jobs</li>
+      <li>Include generic house photos without context</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WHAT TO SHOW PRINCIPLE -->
+<div class="note-box" style="margin-top:14px;">
+  <h3>The "show what you want to grow" principle — from your notes</h3>
+  <p>Your notes said explicitly: "Don't just upload pictures of every tiny repair job you do, unless that's all you want to attract." If you want full replacements at $15,000–$20,000, show full replacements. If you want emergency repairs, show emergency repairs. The type of work you photograph is the type of client you will attract. Curate the gallery to match your most profitable and desirable jobs — not just whatever photos you happen to have on your phone.</p>
+</div>

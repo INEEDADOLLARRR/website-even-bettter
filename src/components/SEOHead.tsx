@@ -15,10 +15,10 @@ interface SEOProps {
     jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const SITE_NAME = 'Verrazano Roofing';
-const DEFAULT_DESCRIPTION = 'Verrazano Roofing provides elite commercial roofing services, specializing in premium performance coatings and comprehensive structural repairs in Brooklyn, NY.';
+const SITE_NAME = 'MyRoofTop';
+const DEFAULT_DESCRIPTION = 'MyRoofTop provides elite commercial roofing services, specializing in premium performance coatings and comprehensive structural repairs in Brooklyn, NY.';
 const DEFAULT_IMAGE = 'https://picsum.photos/seed/verrazano-og/1200/630';
-const BASE_URL = 'https://verrazanoroofing.com';
+const BASE_URL = 'https://myrooftop.com';
 
 export function SEOHead({
     title,

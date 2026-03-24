@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── FAQ MOCKUP ── */
+  .mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .mockup-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .mockup-body { padding:18px 16px; }
+  .mock-headline { font-size:15px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:4px; }
+  .mock-sub { font-size:12px; color:var(--color-text-secondary); text-align:center; margin-bottom:18px; }
+
+  /* FAQ accordion items */
+  .faq-list { display:flex; flex-direction:column; gap:8px; }
+  .faq-item { border:1px solid var(--color-border-tertiary); border-radius:8px; overflow:hidden; }
+  .faq-q { padding:12px 14px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:var(--color-background-primary); }
+  .faq-q-text { font-size:13px; font-weight:500; color:var(--color-text-primary); flex:1; }
+  .faq-chevron { font-size:12px; color:var(--color-text-tertiary); flex-shrink:0; margin-left:8px; }
+  .faq-a { padding:0 14px 12px; font-size:12px; color:var(--color-text-secondary); line-height:1.7; background:var(--color-background-primary); border-top:1px solid var(--color-border-tertiary); padding-top:10px; }
+  .faq-a strong { color:var(--color-text-primary); font-weight:500; }
+
+  /* promoted visual section mock */
+  .promoted-section { border:2px solid #5DCAA5; border-radius:10px; padding:14px; margin-bottom:8px; background:#E1F5EE; }
+  .ps-badge { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:#0F6E56; margin-bottom:6px; }
+  .ps-q { font-size:13px; font-weight:500; color:#04342C; margin-bottom:8px; }
+  .ps-answer { font-size:12px; color:#0F6E56; line-height:1.6; margin-bottom:8px; }
+  .ps-badge-row { display:flex; gap:6px; flex-wrap:wrap; }
+  .ps-pill { font-size:10px; background:#9FE1CB; color:#04342C; padding:3px 8px; border-radius:20px; }
+  @media (prefers-color-scheme:dark){
+    .promoted-section { background:#04342C; border-color:#1D9E75; }
+    .ps-badge { color:#9FE1CB; }
+    .ps-q { color:#9FE1CB; }
+    .ps-answer { color:#5DCAA5; }
+    .ps-pill { background:#085041; color:#9FE1CB; }
+  }
+
+  /* ── THE 10 REAL QUESTIONS ── */
+  .q-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .q-card { border-radius:10px; border:1px solid; padding:14px; }
+  .q-num  { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .q-question { font-size:13px; font-weight:500; margin-bottom:6px; }
+  .q-fear     { font-size:11px; margin-bottom:6px; border-radius:5px; padding:5px 8px; }
+  .q-answer   { font-size:12px; line-height:1.6; }
+
+  .qc-1 { background:#E6F1FB; border-color:#85B7EB; }
+  .qc-1 .q-num{color:#185FA5;} .qc-1 .q-question{color:#042C53;} .qc-1 .q-answer{color:#185FA5;} .qc-1 .q-fear{background:#B5D4F4;color:#042C53;}
+  .qc-2 { background:#E1F5EE; border-color:#5DCAA5; }
+  .qc-2 .q-num{color:#0F6E56;} .qc-2 .q-question{color:#04342C;} .qc-2 .q-answer{color:#0F6E56;} .qc-2 .q-fear{background:#9FE1CB;color:#04342C;}
+  .qc-3 { background:#FAEEDA; border-color:#EF9F27; }
+  .qc-3 .q-num{color:#854F0B;} .qc-3 .q-question{color:#412402;} .qc-3 .q-answer{color:#854F0B;} .qc-3 .q-fear{background:#FAC775;color:#412402;}
+  .qc-4 { background:#EEEDFE; border-color:#AFA9EC; }
+  .qc-4 .q-num{color:#534AB7;} .qc-4 .q-question{color:#26215C;} .qc-4 .q-answer{color:#534AB7;} .qc-4 .q-fear{background:#CECBF6;color:#26215C;}
+  .qc-5 { background:#EAF3DE; border-color:#97C459; }
+  .qc-5 .q-num{color:#3B6D11;} .qc-5 .q-question{color:#173404;} .qc-5 .q-answer{color:#3B6D11;} .qc-5 .q-fear{background:#C0DD97;color:#173404;}
+  .qc-6 { background:#FAECE7; border-color:#F0997B; }
+  .qc-6 .q-num{color:#993C1D;} .qc-6 .q-question{color:#4A1B0C;} .qc-6 .q-answer{color:#993C1D;} .qc-6 .q-fear{background:#F5C4B3;color:#4A1B0C;}
+  .qc-7 { background:#F1EFE8; border-color:#B4B2A9; }
+  .qc-7 .q-num{color:#5F5E5A;} .qc-7 .q-question{color:#2C2C2A;} .qc-7 .q-answer{color:#5F5E5A;} .qc-7 .q-fear{background:#D3D1C7;color:#2C2C2A;}
+  .qc-8 { background:#FCEBEB; border-color:#F09595; }
+  .qc-8 .q-num{color:#A32D2D;} .qc-8 .q-question{color:#501313;} .qc-8 .q-answer{color:#A32D2D;} .qc-8 .q-fear{background:#F7C1C1;color:#501313;}
+  .qc-9 { background:#E6F1FB; border-color:#85B7EB; }
+  .qc-9 .q-num{color:#185FA5;} .qc-9 .q-question{color:#042C53;} .qc-9 .q-answer{color:#185FA5;} .qc-9 .q-fear{background:#B5D4F4;color:#042C53;}
+  .qc-10 { background:#E1F5EE; border-color:#5DCAA5; }
+  .qc-10 .q-num{color:#0F6E56;} .qc-10 .q-question{color:#04342C;} .qc-10 .q-answer{color:#0F6E56;} .qc-10 .q-fear{background:#9FE1CB;color:#04342C;}
+
+  @media (prefers-color-scheme:dark){
+    .qc-1{background:#042C53;border-color:#378ADD;} .qc-1 .q-question{color:#B5D4F4;} .qc-1 .q-answer{color:#85B7EB;} .qc-1 .q-fear{background:#0C447C;color:#B5D4F4;}
+    .qc-2{background:#04342C;border-color:#1D9E75;} .qc-2 .q-question{color:#9FE1CB;} .qc-2 .q-answer{color:#5DCAA5;} .qc-2 .q-fear{background:#085041;color:#9FE1CB;}
+    .qc-3{background:#412402;border-color:#BA7517;} .qc-3 .q-question{color:#FAC775;} .qc-3 .q-answer{color:#EF9F27;} .qc-3 .q-fear{background:#633806;color:#FAC775;}
+    .qc-4{background:#26215C;border-color:#7F77DD;} .qc-4 .q-question{color:#CECBF6;} .qc-4 .q-answer{color:#AFA9EC;} .qc-4 .q-fear{background:#3C3489;color:#CECBF6;}
+    .qc-5{background:#173404;border-color:#639922;} .qc-5 .q-question{color:#C0DD97;} .qc-5 .q-answer{color:#97C459;} .qc-5 .q-fear{background:#27500A;color:#C0DD97;}
+    .qc-6{background:#4A1B0C;border-color:#D85A30;} .qc-6 .q-question{color:#F5C4B3;} .qc-6 .q-answer{color:#F0997B;} .qc-6 .q-fear{background:#711B0C;color:#F5C4B3;}
+    .qc-7{background:#2C2C2A;border-color:#888780;} .qc-7 .q-question{color:#D3D1C7;} .qc-7 .q-answer{color:#888780;} .qc-7 .q-fear{background:#444441;color:#D3D1C7;}
+    .qc-8{background:#501313;border-color:#E24B4A;} .qc-8 .q-question{color:#F7C1C1;} .qc-8 .q-answer{color:#F09595;} .qc-8 .q-fear{background:#791F1F;color:#F7C1C1;}
+    .qc-9{background:#042C53;border-color:#378ADD;} .qc-9 .q-question{color:#B5D4F4;} .qc-9 .q-answer{color:#85B7EB;} .qc-9 .q-fear{background:#0C447C;color:#B5D4F4;}
+    .qc-10{background:#04342C;border-color:#1D9E75;} .qc-10 .q-question{color:#9FE1CB;} .qc-10 .q-answer{color:#5DCAA5;} .qc-10 .q-fear{background:#085041;color:#9FE1CB;}
+  }
+
+  /* ── PROMOTION RULE ── */
+  .promo-flow { display:flex; flex-direction:column; gap:8px; }
+  .pf-row { display:flex; gap:10px; align-items:center; }
+  .pf-box { flex:1; border-radius:8px; border:1px solid; padding:10px 12px; }
+  .pf-arrow { font-size:16px; color:var(--color-text-tertiary); flex-shrink:0; }
+  .pf-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px; }
+  .pf-text  { font-size:12px; line-height:1.5; }
+
+  .pf-faq    { background:#F1EFE8; border-color:#B4B2A9; }
+  .pf-faq    .pf-label{color:#5F5E5A;} .pf-faq .pf-text{color:#5F5E5A;}
+  .pf-visual { background:#E1F5EE; border-color:#5DCAA5; }
+  .pf-visual .pf-label{color:#0F6E56;} .pf-visual .pf-text{color:#0F6E56;}
+  @media (prefers-color-scheme:dark){
+    .pf-faq{background:#2C2C2A;border-color:#888780;} .pf-faq .pf-label{color:#D3D1C7;} .pf-faq .pf-text{color:#888780;}
+    .pf-visual{background:#04342C;border-color:#1D9E75;} .pf-visual .pf-label{color:#9FE1CB;} .pf-visual .pf-text{color:#5DCAA5;}
+  }
+
+  /* ── WEAK VS STRONG ANSWER ── */
+  .ans-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .ac-card { border-radius:10px; border:1px solid; padding:14px; }
+  .ac-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .ac-q     { font-size:12px; font-weight:500; margin-bottom:8px; }
+  .ac-a     { font-size:12px; line-height:1.6; border-radius:6px; padding:8px 10px; }
+  .ac-why   { font-size:11px; margin-top:8px; line-height:1.5; }
+
+  .ac-bad  { background:#FCEBEB; border-color:#F09595; }
+  .ac-bad  .ac-label{color:#A32D2D;} .ac-bad .ac-q{color:#501313;} .ac-bad .ac-a{background:#F7C1C1;color:#501313;} .ac-bad .ac-why{color:#A32D2D;}
+  .ac-good { background:#EAF3DE; border-color:#97C459; }
+  .ac-good .ac-label{color:#3B6D11;} .ac-good .ac-q{color:#173404;} .ac-good .ac-a{background:#C0DD97;color:#173404;} .ac-good .ac-why{color:#3B6D11;}
+  @media (prefers-color-scheme:dark){
+    .ac-bad{background:#501313;border-color:#E24B4A;} .ac-bad .ac-q{color:#F7C1C1;} .ac-bad .ac-a{background:#791F1F;color:#F7C1C1;} .ac-bad .ac-why{color:#F09595;}
+    .ac-good{background:#173404;border-color:#639922;} .ac-good .ac-q{color:#C0DD97;} .ac-good .ac-a{background:#27500A;color:#C0DD97;} .ac-good .ac-why{color:#97C459;}
+  }
+
+  /* ── FEEDBACK LOOP ── */
+  .feedback-box { background:#26215C; border-radius:10px; padding:16px; }
+  .fb-title { font-size:14px; font-weight:500; color:#EEEDFE; margin-bottom:10px; }
+  .fb-row   { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .fb-row:last-child { border-bottom:none; padding-bottom:0; }
+  .fb-num   { width:22px; height:22px; border-radius:50%; background:#534AB7; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:500; flex-shrink:0; }
+  .fb-text  { font-size:12px; color:#CECBF6; line-height:1.6; }
+  .fb-q     { font-size:11px; font-style:italic; color:#AFA9EC; margin-top:3px; }
+  @media (prefers-color-scheme:dark){
+    .feedback-box { background:#26215C; }
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red    { background:#F7C1C1; color:#501313; }
+  .pill-green  { background:#C0DD97; color:#173404; }
+  .pill-purple { background:#CECBF6; color:#26215C; }
+  .pill-amber  { background:#FAC775; color:#412402; }
+  .pill-teal   { background:#9FE1CB; color:#04342C; }
+  @media (prefers-color-scheme:dark){
+    .pill-red{background:#791F1F;color:#F7C1C1;} .pill-green{background:#27500A;color:#C0DD97;}
+    .pill-purple{background:#3C3489;color:#CECBF6;} .pill-amber{background:#633806;color:#FAC775;} .pill-teal{background:#085041;color:#9FE1CB;}
+  }
+
+  /* stat strip */
+  .stat-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .stat-box   { border-radius:10px; border:1px solid; padding:14px; text-align:center; }
+  .stat-num   { font-size:22px; font-weight:500; margin-bottom:4px; }
+  .stat-lbl   { font-size:11px; line-height:1.5; }
+  .sb-blue    { background:#E6F1FB; border-color:#85B7EB; }
+  .sb-blue    .stat-num,.sb-blue  .stat-lbl{color:#185FA5;}
+  .sb-purple  { background:#EEEDFE; border-color:#AFA9EC; }
+  .sb-purple  .stat-num,.sb-purple .stat-lbl{color:#534AB7;}
+  .sb-teal    { background:#E1F5EE; border-color:#5DCAA5; }
+  .sb-teal    .stat-num,.sb-teal  .stat-lbl{color:#0F6E56;}
+  @media (prefers-color-scheme:dark){
+    .sb-blue{background:#042C53;border-color:#378ADD;} .sb-blue .stat-num,.sb-blue .stat-lbl{color:#B5D4F4;}
+    .sb-purple{background:#26215C;border-color:#7F77DD;} .sb-purple .stat-num,.sb-purple .stat-lbl{color:#CECBF6;}
+    .sb-teal{background:#04342C;border-color:#1D9E75;} .sb-teal .stat-num,.sb-teal .stat-lbl{color:#9FE1CB;}
+  }
+</style>
+
+<h1>Section 10 — FAQ (objection handling)</h1>
+<p class="subtitle">Your last line of defence before the final CTA · clears every remaining doubt<br>Not a list of random questions — a precision tool built from real discovery calls</p>
+
+<!-- WHY IT EXISTS -->
+<div class="divider-label"><span>Why this section exists — the psychology</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core job this section does</div>
+  <h3>Every visitor who reaches section 10 has one or two final doubts stopping them from calling — this section exists to kill those doubts by name</h3>
+  <p>By section 10 the visitor has been through 9 sections of trust-building. They've seen the badges, the photos, the video, the process, the reviews, the services, the breather, and the pricing. Logically they are convinced. But there is always a small cluster of specific, practical doubts that haven't been addressed yet — things like "does my insurance cover this?", "how messy will it be?", "what if something goes wrong after they leave?" These aren't abstract fears. They are concrete, answerable questions. The FAQ is the section that answers them directly and preemptively, so the visitor never has to pick up the phone just to get basic information.</p>
+  <div class="why">From your notes: "The FAQ is not a list of random questions — it is a list of the exact doubts clients raised during previous discovery calls." Build it from real conversations, not guesses.</div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-box sb-blue">
+    <div class="stat-num">Real</div>
+    <div class="stat-lbl">Every question must come from an actual discovery call or customer conversation</div>
+  </div>
+  <div class="stat-box sb-purple">
+    <div class="stat-num">6–8</div>
+    <div class="stat-lbl">Ideal number of FAQ items — enough to be thorough, not so many it feels like avoidance</div>
+  </div>
+  <div class="stat-box sb-teal">
+    <div class="stat-num">1</div>
+    <div class="stat-lbl">Frequently asked question gets promoted to its own full visual section above the FAQ</div>
+  </div>
+</div>
+
+<!-- MOCKUP -->
+<div class="divider-label"><span>What it looks like on the page</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 10 — FAQ with one promoted visual section above the accordion</div>
+  <div class="mockup-body">
+
+    <!-- promoted visual section -->
+    <div class="promoted-section">
+      <div class="ps-badge">Asked on almost every call — answered here</div>
+      <div class="ps-q">Does my homeowner's insurance cover roof damage?</div>
+      <div class="ps-answer">In most cases, yes — if the damage was caused by a storm, hail, wind, or fallen tree, your insurance will cover it. We work directly with insurance adjusters and handle the entire claims process for you at no extra cost. Most homeowners pay only their deductible.</div>
+      <div class="ps-badge-row">
+        <div class="ps-pill">We handle the claim</div>
+        <div class="ps-pill">You pay deductible only</div>
+        <div class="ps-pill">Storm damage covered</div>
+        <div class="ps-pill">Free insurance inspection</div>
+      </div>
+    </div>
+
+    <div class="mock-headline" style="font-size:14px;margin-bottom:12px;">More questions answered</div>
+
+    <!-- FAQ accordion -->
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-text">How long does a full roof replacement take?</div>
+          <div class="faq-chevron">▾</div>
+        </div>
+        <div class="faq-a">Most full replacements are completed in <strong>1–2 days</strong>. We start early, work through the day, and clean up completely before leaving. You'll have a weather-tight roof by evening of day one.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-text">Will there be a mess left on my property?</div>
+          <div class="faq-chevron">▾</div>
+        </div>
+        <div class="faq-a"><strong>Full clean-up is included on every job</strong> — we use magnetic nail sweepers on driveways and lawn areas, collect all debris, and do a final walkthrough with you before leaving.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-text">What warranty do you offer on your work?</div>
+          <div class="faq-chevron">▾</div>
+        </div>
+        <div class="faq-a">We offer a <strong>10-year workmanship warranty</strong> in writing on all full replacements, plus the manufacturer's material warranty (typically 25–50 years for premium shingles). Both are transferable if you sell the home.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-text">Are you licensed and insured?</div>
+          <div class="faq-chevron">▾</div>
+        </div>
+        <div class="faq-a">Yes. We carry <strong>full general liability and workers' compensation insurance</strong>, and our state contractor license number is CR-12345. You can verify both at any time — we're happy to provide certificates on request.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE 10 REAL QUESTIONS FOR ROOFING -->
+<div class="divider-label"><span>The 10 questions roofing homeowners actually ask — use these as your base</span></div>
+
+<div class="q-grid">
+  <div class="q-card qc-1" onclick="sendPrompt('How should I answer the insurance question in my roofing FAQ?')">
+    <div class="q-num">Question 1 — promote to visual section</div>
+    <div class="q-question">"Does my insurance cover this?"</div>
+    <div class="q-fear">Fear: I'll have to pay everything out of pocket</div>
+    <div class="q-answer">The single most asked question in roofing. Promote this above the FAQ as its own visual section. Answer: yes for storm/hail/wind damage, you handle the claim, they pay the deductible only.</div>
+  </div>
+  <div class="q-card qc-2" onclick="sendPrompt('How should I answer the mess question in my roofing FAQ?')">
+    <div class="q-num">Question 2</div>
+    <div class="q-question">"Will there be a huge mess on my property?"</div>
+    <div class="q-fear">Fear: Nails in the driveway, debris everywhere for days</div>
+    <div class="q-answer">Answer specifically: magnetic nail sweepers on all surfaces, full debris removal, final walkthrough before leaving. "Clean-up is included on every job — no exceptions."</div>
+  </div>
+  <div class="q-card qc-3" onclick="sendPrompt('How should I answer the timeline question in my roofing FAQ?')">
+    <div class="q-num">Question 3</div>
+    <div class="q-question">"How long will the job take?"</div>
+    <div class="q-fear">Fear: Workers will be on my property for a week disrupting my life</div>
+    <div class="q-answer">Give specific timeframes by job type: inspections take 45 minutes, repairs 1–4 hours, full replacements 1–2 days. Specificity removes the fear of an open-ended disruption.</div>
+  </div>
+  <div class="q-card qc-4" onclick="sendPrompt('How should I answer the warranty question in my roofing FAQ?')">
+    <div class="q-num">Question 4</div>
+    <div class="q-question">"What warranty do you offer?"</div>
+    <div class="q-fear">Fear: They'll do the job and disappear if something goes wrong</div>
+    <div class="q-answer">State both warranties: your workmanship warranty (10 years in writing) AND the manufacturer's material warranty (25–50 years). Mention it's transferable on home sale — this adds unexpected value.</div>
+  </div>
+  <div class="q-card qc-5" onclick="sendPrompt('How should I answer the licensing question in my roofing FAQ?')">
+    <div class="q-num">Question 5</div>
+    <div class="q-question">"Are you licensed and insured?"</div>
+    <div class="q-fear">Fear: Cowboy contractor who takes money and disappears or leaves me liable</div>
+    <div class="q-answer">Show the actual license number and both insurance types (general liability + workers' comp). Say "you can verify both at any time" — the offer to verify is itself a trust signal even if they never do.</div>
+  </div>
+  <div class="q-card qc-6" onclick="sendPrompt('How should I answer the pricing transparency question in my roofing FAQ?')">
+    <div class="q-num">Question 6</div>
+    <div class="q-question">"Will there be hidden costs after the quote?"</div>
+    <div class="q-fear">Fear: Getting an invoice with surprise charges I didn't agree to</div>
+    <div class="q-answer">"Your written quote is the final price — no surprises. If we find unexpected damage during the job, we stop, call you, and get approval before proceeding. Nothing added without your sign-off."</div>
+  </div>
+  <div class="q-card qc-7" onclick="sendPrompt('How should I answer the material choice question in my roofing FAQ?')">
+    <div class="q-num">Question 7</div>
+    <div class="q-question">"Can I choose my own materials / shingle colour?"</div>
+    <div class="q-fear">Fear: Being forced into whatever is cheapest or easiest for the contractor</div>
+    <div class="q-answer">"Yes — we walk you through all available options at your free inspection. We work with [brands] and can match existing shingles or choose from a full colour range."</div>
+  </div>
+  <div class="q-card qc-8" onclick="sendPrompt('How should I answer the do I need to be home question in my roofing FAQ?')">
+    <div class="q-num">Question 8</div>
+    <div class="q-question">"Do I need to be home during the work?"</div>
+    <div class="q-fear">Fear: Having to take time off work or rearrange my schedule</div>
+    <div class="q-answer">"You don't need to be home for the repair itself — just for the initial walkthrough and final inspection. We'll send you photos throughout the day and call when we're done."</div>
+  </div>
+  <div class="q-card qc-9" onclick="sendPrompt('How should I answer the how soon can you start question in my roofing FAQ?')">
+    <div class="q-num">Question 9</div>
+    <div class="q-question">"How soon can you start?"</div>
+    <div class="q-fear">Fear: Being put on a waitlist for weeks while the leak gets worse</div>
+    <div class="q-answer">Be specific: "Inspections available same-day or next morning. Emergency repairs within 24 hours. Full replacements typically scheduled within 3–5 business days." Vague answers here kill urgency.</div>
+  </div>
+  <div class="q-card qc-10" onclick="sendPrompt('How should I answer the do you work with my insurance company question in my roofing FAQ?')">
+    <div class="q-num">Question 10</div>
+    <div class="q-question">"Do you work with my specific insurance company?"</div>
+    <div class="q-fear">Fear: My insurer and the contractor will conflict and I'll be stuck in the middle</div>
+    <div class="q-answer">"We work with all major insurers — [list top 3-4 local companies by name]. We handle all communication with the adjuster directly. You don't need to be in the middle of any of it."</div>
+  </div>
+</div>
+
+<!-- THE PROMOTION RULE -->
+<div class="divider-label"><span>The promotion rule — when a question gets its own visual section</span></div>
+
+<div class="el-card teal-card spacer">
+  <div class="el-tag">From your notes — the most important FAQ rule</div>
+  <h3>If one question is asked on almost every call, it leaves the FAQ and becomes its own full visual section above it</h3>
+  <p>Your notes said: "If a question is asked frequently enough, turn it into its own visual section on the main page rather than hiding it in the FAQ." For roofing, the insurance question meets this bar on almost every site. It's asked so consistently and has such a high conversion impact that leaving it buried in an accordion is a significant missed opportunity. A promoted visual section gets read — an accordion item only gets clicked by visitors who think to look for it.</p>
+  <div class="why">The promoted section appears immediately above the FAQ accordion with a teal border, a "Asked on almost every call" badge, a full answer, and trust pills. It cannot be missed. The FAQ then handles the remaining 5–7 questions below it.</div>
+</div>
+
+<div class="promo-flow spacer">
+  <div class="pf-row">
+    <div class="pf-box pf-faq">
+      <div class="pf-label">Starts in FAQ</div>
+      <div class="pf-text">"Does insurance cover this?" first appears as an accordion FAQ item</div>
+    </div>
+    <div class="pf-arrow">→</div>
+    <div class="pf-box pf-faq">
+      <div class="pf-label">Gets asked constantly</div>
+      <div class="pf-text">You notice it on every call. It's the first thing people ask. It's clearly the biggest fear.</div>
+    </div>
+    <div class="pf-arrow">→</div>
+    <div class="pf-box pf-visual">
+      <div class="pf-label">Gets promoted</div>
+      <div class="pf-text">It leaves the accordion and becomes a standalone visual section above the FAQ with full treatment</div>
+    </div>
+  </div>
+</div>
+
+<!-- WEAK VS STRONG ANSWERS -->
+<div class="divider-label"><span>Weak answer vs strong answer — the difference in conversion impact</span></div>
+
+<div class="ans-compare spacer">
+  <div class="ac-card ac-bad">
+    <div class="ac-label">Weak answer — adds no value</div>
+    <div class="ac-q">"How long does a roof replacement take?"</div>
+    <div class="ac-a">"It depends on the size and complexity of the job. Contact us for more information."</div>
+    <div class="ac-why">Answers nothing. Sends the visitor to a phone call just to get basic information. Frustrating, not reassuring. This is the equivalent of "it varies" — it doesn't clear the doubt, it creates a new one.</div>
+  </div>
+  <div class="ac-card ac-good">
+    <div class="ac-label">Strong answer — clears the doubt completely</div>
+    <div class="ac-q">"How long does a roof replacement take?"</div>
+    <div class="ac-a">"Most full replacements are completed in 1–2 days. We start at 7am, work straight through, and do a full clean-up before leaving. You'll have a weather-tight roof by day one evening."</div>
+    <div class="ac-why">Specific timeframe, specific start time, clean-up mentioned, weather protection addressed. Every fear about the timeline is killed in three sentences. The visitor has nothing left to wonder about.</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The rule for every FAQ answer</h3>
+  <p>Read each answer and ask: "After reading this, does the visitor still have any version of this question?" If yes, the answer is incomplete. A good FAQ answer is one where the question genuinely disappears after reading it — not one that redirects to a phone call. "Contact us for more details" is never an acceptable FAQ answer. If the answer requires a call, the question doesn't belong in the FAQ.</p>
+</div>
+
+<!-- HOW TO BUILD IT -->
+<div class="divider-label"><span>How to actually build your FAQ — the data-driven process</span></div>
+
+<div class="feedback-box spacer">
+  <div class="fb-title">The 3-question feedback loop — from your notes</div>
+  <div class="fb-row">
+    <div class="fb-num">1</div>
+    <div>
+      <div class="fb-text">Ask every new caller: "How did you find us?"</div>
+      <div class="fb-q">Tells you which traffic source brings the most qualified leads — informs your SEO and ads strategy.</div>
+    </div>
+  </div>
+  <div class="fb-row">
+    <div class="fb-num">2</div>
+    <div>
+      <div class="fb-text">Ask every new caller: "What convinced you to call?"</div>
+      <div class="fb-q">Tells you which section of your website is doing the most conversion work — double down on it.</div>
+    </div>
+  </div>
+  <div class="fb-row">
+    <div class="fb-num">3</div>
+    <div>
+      <div class="fb-text">Ask every new caller: "What was missing from the site? What question did you have that wasn't answered?"</div>
+      <div class="fb-q">This is your FAQ source. Every unanswered question becomes a new FAQ item. Every item asked on 3+ calls gets reviewed for promotion to a visual section.</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Your FAQ should never be "finished"</h3>
+  <p>Your notes said to treat the FAQ as a continuously updated conversion tool, not a static page element. Every month you should review discovery call notes and add any new questions that appeared more than twice. Every quarter, review which FAQ items are clicked most (using heat maps) and consider promoting the top ones to visual sections. A FAQ built in month one from guesses will always underperform a FAQ built in month six from 50 real discovery calls.</p>
+</div>
+
+<!-- SECTION HEADLINE -->
+<div class="divider-label"><span>Section headline — don't call it "FAQ"</span></div>
+
+<div class="el-card gray-card spacer">
+  <div class="el-tag">Headline options ranked</div>
+  <h3>The headline should signal that these are real questions, not generic filler</h3>
+  <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Best:</strong> "Questions we get on almost every call" — signals real conversations, not guesses</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Strong:</strong> "Everything homeowners ask before booking" — sets expectation that answers are here</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Good:</strong> "No surprises — here are the answers" — directly kills the hidden cost fear</div>
+    <div style="background:#FAC775;border-radius:6px;padding:8px 12px;font-size:12px;color:#412402;"><strong>Weak:</strong> "Frequently Asked Questions" — generic, corporate, nobody is excited to read it</div>
+    <div style="background:#F7C1C1;border-radius:6px;padding:8px 12px;font-size:12px;color:#501313;"><strong>Worst:</strong> "FAQ" as the only heading — a label that communicates nothing</div>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Build every question from real discovery calls</li>
+      <li>Promote the #1 most-asked question to a visual section</li>
+      <li>Give specific, complete answers — no "contact us"</li>
+      <li>Include actual numbers and timeframes in answers</li>
+      <li>Show your license number in the licensing answer</li>
+      <li>Mention "in writing" for warranty answers</li>
+      <li>Keep 6–8 items — thorough but not exhaustive</li>
+      <li>Update the FAQ quarterly using call notes</li>
+      <li>Use heat maps to track which items are clicked most</li>
+      <li>Write the headline as a promise, not a label</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Make up questions you think sound reasonable</li>
+      <li>Answer any question with "contact us for details"</li>
+      <li>Use vague answers: "it depends on the job"</li>
+      <li>List more than 10 items — feels like you're hiding things</li>
+      <li>Title it just "FAQ" with nothing else</li>
+      <li>Leave the insurance question buried in the accordion</li>
+      <li>Write answers in corporate third-person language</li>
+      <li>Use a design that collapses all items by default</li>
+      <li>Put the FAQ before the pricing — pricing creates new questions the FAQ must answer</li>
+      <li>Treat the FAQ as finished — it needs constant updating</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WHAT COMES NEXT -->
+<div class="note-box spacer">
+  <h3>Why the FAQ goes after pricing and before the final CTA</h3>
+  <p>Pricing creates new questions. The moment a visitor sees "full replacement — free estimate" they immediately think "what does that typically cost?", "is there a warranty?", "will insurance help?" These are exactly the questions the FAQ answers. Placing the FAQ before pricing means it can't address the questions that pricing raises. Placing it after pricing means every question the visitor formed while reading the tier cards gets answered before they hit the final CTA. They arrive at section 11 with zero remaining doubts — which is the exact mental state that produces the highest-converting final CTA clicks.</p>
+</div>

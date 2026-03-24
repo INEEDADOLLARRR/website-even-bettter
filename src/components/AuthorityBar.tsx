@@ -33,10 +33,10 @@ function AnimatedStat({ value, suffix, label, hasRevealed }: {
 
     return (
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <span className="font-display text-[1.75rem] md:text-3xl tracking-tight font-bold text-white leading-none tabular-nums">
+            <span className="font-display text-[1.75rem] md:text-3xl tracking-tight font-bold text-text-primary leading-none tabular-nums">
                 {count.toLocaleString()}{suffix}
             </span>
-            <span className="text-[9px] uppercase tracking-[0.2em] text-white/70 mt-1.5 font-medium">
+            <span className="text-[9px] uppercase tracking-[0.2em] text-text-primary/70 mt-1.5 font-medium">
                 {label}
             </span>
         </div>
@@ -65,7 +65,7 @@ export function AuthorityBar() {
             style={{ opacity: barOpacity, y: barY, scale: 1.125 }}
             className="fixed bottom-24 left-0 right-0 z-[5] flex justify-center px-4 pointer-events-none"
         >
-            <div className="pointer-events-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-14 w-full max-w-5xl bg-white/10 backdrop-blur-2xl border border-white/5 border-t border-t-white/20 rounded-2xl md:rounded-full px-10 py-5 shadow-2xl">
+            <div className="pointer-events-auto flex flex-col md:flex-row items-center justify-between gap-sp-5 md:gap-14 w-full max-w-5xl bg-white/10 backdrop-blur-2xl border border-border-default border-t border-t-white/20 rounded-2xl md:rounded-full px-[40px] py-[20px] shadow-2xl">
                 <AnimatedStat value={2500} suffix="+" label="Projects Completed" hasRevealed={countersTriggered} />
                 <div className="hidden md:block w-px h-10 bg-white/10" />
 

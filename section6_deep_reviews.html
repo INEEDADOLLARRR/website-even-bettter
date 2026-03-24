@@ -1,0 +1,522 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; }
+  .divider-label span { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--color-text-secondary); }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  .el-card { border-radius: 10px; border: 1px solid; padding: 14px; cursor: pointer; transition: transform 0.15s; }
+  .el-card:hover { transform: translateX(3px); }
+  .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .el-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+  .el-card p { font-size: 12px; line-height: 1.6; }
+  .el-card .why { margin-top: 8px; font-size: 11px; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .blue-card  { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card  .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card  { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card  .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card{ background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card  { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card  .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card { background:#FAECE7; border-color:#F0997B; }
+  .coral-card .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .green-card { background:#EAF3DE; border-color:#97C459; }
+  .green-card .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card   { background:#FCEBEB; border-color:#F09595; }
+  .red-card   .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── LAYOUT MOCKUP ── */
+  .mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .mockup-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .mockup-body { padding:16px; }
+  .mock-headline { font-size:15px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:4px; }
+  .mock-sub { font-size:12px; color:var(--color-text-secondary); text-align:center; margin-bottom:16px; }
+
+  .review-layout { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+  /* video testimonial card mock */
+  .vid-card { border:1px solid var(--color-border-tertiary); border-radius:10px; overflow:hidden; }
+  .vid-thumb { height:90px; background:#2C2C2A; display:flex; align-items:center; justify-content:center; position:relative; }
+  .vid-play  { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.15); border:2px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; }
+  .vid-arrow { width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:10px solid rgba(255,255,255,0.8); margin-left:2px; }
+  .vid-duration { position:absolute; bottom:6px; right:8px; font-size:9px; color:rgba(255,255,255,0.5); }
+  .vid-info { padding:10px 12px; background:var(--color-background-primary); }
+  .vid-name { font-size:12px; font-weight:500; color:var(--color-text-primary); margin-bottom:2px; }
+  .vid-loc  { font-size:11px; color:var(--color-text-tertiary); }
+  .vid-stars{ font-size:12px; color:#EF9F27; margin-bottom:2px; }
+
+  /* text review card mock */
+  .txt-card { border:1px solid var(--color-border-tertiary); border-radius:10px; padding:12px; background:var(--color-background-primary); display:flex; flex-direction:column; gap:6px; }
+  .txt-top  { display:flex; align-items:center; gap:8px; }
+  .txt-avatar { width:30px; height:30px; border-radius:50%; background:var(--color-background-secondary); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; color:var(--color-text-secondary); }
+  .txt-meta { flex:1; }
+  .txt-name { font-size:12px; font-weight:500; color:var(--color-text-primary); }
+  .txt-loc  { font-size:10px; color:var(--color-text-tertiary); }
+  .txt-stars{ font-size:11px; color:#EF9F27; }
+  .txt-quote{ font-size:11px; color:var(--color-text-secondary); line-height:1.6; font-style:italic; }
+  .txt-platform { font-size:10px; color:var(--color-text-tertiary); }
+
+  /* verification badge */
+  .verify-row { display:flex; align-items:center; gap:6px; margin-top:8px; }
+  .verify-dot { width:6px; height:6px; border-radius:50%; background:#1D9E75; }
+  .verify-text{ font-size:10px; color:var(--color-text-tertiary); }
+
+  /* ── HOW TO ASK ── */
+  .ask-timeline { display:flex; flex-direction:column; gap:0; }
+  .ask-row { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .ask-row:last-child { border-bottom:none; padding-bottom:0; }
+  .ask-num { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; }
+  .ask-content h4 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:4px; }
+  .ask-content p  { font-size:12px; color:var(--color-text-secondary); line-height:1.6; }
+  .ask-content .ask-script { margin-top:6px; font-size:12px; font-style:italic; background:var(--color-background-secondary); border-radius:6px; padding:8px 10px; color:var(--color-text-primary); line-height:1.6; }
+
+  /* ── ANATOMY ── */
+  .anatomy-card { border:1px solid; border-radius:10px; padding:14px; }
+  .anatomy-row  { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anatomy-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anatomy-label{ font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:100px; flex-shrink:0; padding-top:1px; }
+  .anatomy-desc { font-size:12px; line-height:1.6; flex:1; }
+  .anatomy-example { font-size:11px; font-style:italic; margin-top:3px; }
+
+  .ac-teal { background:#E1F5EE; border-color:#5DCAA5; }
+  .ac-teal .anatomy-label { color:#0F6E56; }
+  .ac-teal .anatomy-desc  { color:#0F6E56; }
+  .ac-teal .anatomy-example{ color:#085041; }
+  @media (prefers-color-scheme:dark){
+    .ac-teal { background:#04342C; border-color:#1D9E75; }
+    .ac-teal .anatomy-desc  { color:#5DCAA5; }
+    .ac-teal .anatomy-example{ color:#9FE1CB; }
+  }
+
+  .ac-blue { background:#E6F1FB; border-color:#85B7EB; }
+  .ac-blue .anatomy-label { color:#185FA5; }
+  .ac-blue .anatomy-desc  { color:#185FA5; }
+  .ac-blue .anatomy-example{ color:#042C53; }
+  @media (prefers-color-scheme:dark){
+    .ac-blue { background:#042C53; border-color:#378ADD; }
+    .ac-blue .anatomy-desc  { color:#85B7EB; }
+    .ac-blue .anatomy-example{ color:#B5D4F4; }
+  }
+
+  /* ── GOOD BAD REVIEW ── */
+  .good-bad { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .gb-card { border-radius:10px; border:1px solid; padding:14px; }
+  .gb-label{ font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+  .gb-review{ font-size:12px; font-style:italic; line-height:1.7; margin-bottom:8px; }
+  .gb-name  { font-size:11px; font-weight:500; }
+  .gb-why   { font-size:11px; border-radius:6px; padding:6px 10px; margin-top:8px; line-height:1.5; }
+
+  .gb-bad { background:#FCEBEB; border-color:#F09595; }
+  .gb-bad .gb-label{ color:#A32D2D; }
+  .gb-bad .gb-review{ color:#A32D2D; }
+  .gb-bad .gb-name { color:#501313; }
+  .gb-bad .gb-why  { background:#F7C1C1; color:#501313; }
+  .gb-good{ background:#EAF3DE; border-color:#97C459; }
+  .gb-good .gb-label{ color:#3B6D11; }
+  .gb-good .gb-review{ color:#3B6D11; }
+  .gb-good .gb-name { color:#173404; }
+  .gb-good .gb-why  { background:#C0DD97; color:#173404; }
+  @media (prefers-color-scheme:dark){
+    .gb-bad { background:#501313; border-color:#E24B4A; }
+    .gb-bad .gb-label{ color:#F7C1C1; } .gb-bad .gb-review{ color:#F09595; } .gb-bad .gb-name{ color:#F7C1C1; } .gb-bad .gb-why{ background:#791F1F; color:#F7C1C1; }
+    .gb-good{ background:#173404; border-color:#639922; }
+    .gb-good .gb-label{ color:#C0DD97; } .gb-good .gb-review{ color:#97C459; } .gb-good .gb-name{ color:#C0DD97; } .gb-good .gb-why{ background:#27500A; color:#C0DD97; }
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label{ font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box { background:#173404; border-color:#639922; } .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{ background:#501313; border-color:#E24B4A; } .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  /* number strip */
+  .num-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .num-box   { border-radius:10px; border:1px solid; padding:14px; text-align:center; }
+  .num-big   { font-size:22px; font-weight:500; margin-bottom:4px; }
+  .num-label { font-size:11px; line-height:1.5; }
+  .nb-teal   { background:#E1F5EE; border-color:#5DCAA5; }
+  .nb-teal .num-big,.nb-teal .num-label { color:#0F6E56; }
+  .nb-blue   { background:#E6F1FB; border-color:#85B7EB; }
+  .nb-blue .num-big,.nb-blue .num-label { color:#185FA5; }
+  .nb-amber  { background:#FAEEDA; border-color:#EF9F27; }
+  .nb-amber .num-big,.nb-amber .num-label{ color:#854F0B; }
+  @media (prefers-color-scheme:dark){
+    .nb-teal{background:#04342C;border-color:#1D9E75;} .nb-teal .num-big,.nb-teal .num-label{color:#9FE1CB;}
+    .nb-blue{background:#042C53;border-color:#378ADD;} .nb-blue .num-big,.nb-blue .num-label{color:#B5D4F4;}
+    .nb-amber{background:#412402;border-color:#BA7517;} .nb-amber .num-big,.nb-amber .num-label{color:#FAC775;}
+  }
+</style>
+
+<h1>Section 6 — Deep reviews & video testimonials</h1>
+<p class="subtitle">The verification mix · your heaviest social proof section<br>One brief review widget at the top of the page isn't enough for a $10,000–$20,000 decision — this is where you prove it beyond all doubt</p>
+
+<!-- WHY IT EXISTS -->
+<div class="divider-label"><span>Why this section exists — the psychology</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core problem it solves</div>
+  <h3>By section 6 the visitor is convinced but not yet committed — they need human validation</h3>
+  <p>After the trust strip, photos, video, process steps, and value prop, the logical brain has no objections left. But the emotional brain still asks one final question: "Have real people — people like me — actually trusted this company with their home and been happy?" No amount of polished design answers that. Only real human faces, real names, and real stories do. This section is entirely dedicated to answering that emotional question with overwhelming, verifiable evidence.</p>
+  <div class="why">From your notes: "Roofing is a difficult decision — people need to be 100% sure with all doubts cleared." The trust strip at the top was a first handshake. This is the full conversation.</div>
+</div>
+
+<div class="num-strip">
+  <div class="num-box nb-teal">
+    <div class="num-big">2×</div>
+    <div class="num-label">More convincing than text reviews alone when video is combined</div>
+  </div>
+  <div class="num-box nb-blue">
+    <div class="num-big">$15k</div>
+    <div class="num-label">Average roofing job — why one review widget is never enough</div>
+  </div>
+  <div class="num-box nb-amber">
+    <div class="num-big">100%</div>
+    <div class="num-label">Of reviews must show a real verifiable person — no anonymity</div>
+  </div>
+</div>
+
+<!-- LAYOUT MOCKUP -->
+<div class="divider-label"><span>What it looks like on the page — the verification mix layout</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 6 layout — video testimonials left column, text reviews right column</div>
+  <div class="mockup-body">
+    <div class="mock-headline">What homeowners say about us</div>
+    <div class="mock-sub">Real customers · real results · every review is verifiable</div>
+    <div class="review-layout">
+      <!-- Video testimonial -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="vid-card">
+          <div class="vid-thumb">
+            <div class="vid-play"><div class="vid-arrow"></div></div>
+            <div class="vid-duration">0:42</div>
+          </div>
+          <div class="vid-info">
+            <div class="vid-stars">★★★★★</div>
+            <div class="vid-name">Sarah M.</div>
+            <div class="vid-loc">Oak Park · Full replacement · June 2024</div>
+          </div>
+        </div>
+        <div class="vid-card">
+          <div class="vid-thumb">
+            <div class="vid-play"><div class="vid-arrow"></div></div>
+            <div class="vid-duration">0:38</div>
+          </div>
+          <div class="vid-info">
+            <div class="vid-stars">★★★★★</div>
+            <div class="vid-name">James R.</div>
+            <div class="vid-loc">Riverside Heights · Emergency repair · March 2024</div>
+          </div>
+        </div>
+      </div>
+      <!-- Text reviews -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="txt-card">
+          <div class="txt-top">
+            <div class="txt-avatar">M</div>
+            <div class="txt-meta">
+              <div class="txt-name">Mike T.</div>
+              <div class="txt-loc">Downtown [City] · Storm damage</div>
+              <div class="txt-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="txt-quote">"Called at 8am after the storm, they were at my house by noon. Entire repair done same day. Couldn't believe it."</div>
+          <div class="txt-platform">Posted on Google · Verified purchase</div>
+        </div>
+        <div class="txt-card">
+          <div class="txt-top">
+            <div class="txt-avatar">L</div>
+            <div class="txt-meta">
+              <div class="txt-name">Linda K.</div>
+              <div class="txt-loc">North End · Full replacement</div>
+              <div class="txt-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="txt-quote">"They handled everything with my insurance. I barely had to do anything. Roof looks incredible."</div>
+          <div class="txt-platform">Posted on Google · Verified purchase</div>
+        </div>
+        <div class="txt-card">
+          <div class="txt-top">
+            <div class="txt-avatar">D</div>
+            <div class="txt-meta">
+              <div class="txt-name">David C.</div>
+              <div class="txt-loc">Westside · Inspection + repair</div>
+              <div class="txt-stars">★★★★★</div>
+            </div>
+          </div>
+          <div class="txt-quote">"No mess, no stress. They even swept the driveway after. Will use again without question."</div>
+          <div class="txt-platform">Posted on Yelp · Verified</div>
+        </div>
+      </div>
+    </div>
+    <div class="verify-row">
+      <div class="verify-dot"></div>
+      <div class="verify-text">All reviews are from real customers · names and locations verified · click any video to watch</div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 1: VIDEO TESTIMONIALS -->
+<div class="divider-label"><span>Part 1 — video testimonials · the authenticity weapon</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">The most important rule — counterintuitive</div>
+  <h3>Raw and unpolished beats professionally produced every single time</h3>
+  <p>Your instinct will be to film a clean, well-lit, scripted testimonial. Don't. A homeowner standing in their kitchen or backyard, speaking naturally into their iPhone, is ten times more convincing than a polished studio video. Why? Because over-production looks like it was paid for. Roughness looks like truth. The visitor's brain has seen thousands of slick "customer testimonials" in ads — it filters them out automatically. A slightly shaky vertical phone video of a real person talking genuinely cannot be faked, and the brain knows it.</p>
+  <div class="why">From your notes: "Over-produced testimonials look fake. Raw videos feel authentic and prove the person is real."</div>
+</div>
+
+<div class="grid-2 spacer">
+  <div class="el-card teal-card" onclick="sendPrompt('How do I ask roofing customers to record a video testimonial?')">
+    <div class="el-tag">Format</div>
+    <h3>Vertical smartphone video · 30–60 seconds</h3>
+    <p>Ask the customer to film vertically on their phone — the same format as Instagram Stories and TikTok. This immediately looks organic, not corporate. 30–60 seconds is the sweet spot. Long enough to be credible, short enough to be watched to the end.</p>
+    <div class="why">Never ask them to film horizontally in a studio setup — it kills the authenticity that makes video testimonials work.</div>
+  </div>
+  <div class="el-card teal-card" onclick="sendPrompt('Where should the customer be standing in a video testimonial for roofing?')">
+    <div class="el-tag">Setting</div>
+    <h3>Film outside in front of their newly finished roof</h3>
+    <p>The absolute best setting is the customer standing outside their house with the completed roof visible behind them. This is a single shot that contains the person, the location, and the proof of the finished job. It eliminates every doubt in one frame.</p>
+    <div class="why">The roof in the background is the evidence. The homeowner in the foreground is the validator. Together they are the most convincing possible image.</div>
+  </div>
+</div>
+
+<!-- HOW TO ASK -->
+<div class="divider-label"><span>How to actually get video testimonials — the exact approach</span></div>
+
+<div class="note-box">
+  <h3>The #1 reason roofers don't have video testimonials</h3>
+  <p>They never ask. Or they ask at the wrong moment. The perfect moment to ask is right when you hand over the completion paperwork or do the final walkthrough — the homeowner is at peak satisfaction, relieved the job is done, and looking at a beautiful new roof. That emotional high is when "sure, I'll record something" comes most naturally. Waiting a week means the feeling fades and the request feels like an inconvenience.</p>
+</div>
+
+<div class="el-card gray-card spacer">
+  <div class="el-tag">The exact ask — word for word</div>
+  <h3>What to say to get a yes every time</h3>
+  <p>Don't ask "could you leave us a review?" That's vague and puts all the work on them. Instead give them the exact format, the exact duration, and make it feel effortless. Say it in person, right at job completion.</p>
+  <div style="background:var(--color-background-primary);border-radius:8px;padding:12px;margin-top:10px;border:1px solid var(--color-border-tertiary);">
+    <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">The script</div>
+    <div style="font-size:12px;color:var(--color-text-primary);line-height:1.8;font-style:italic;">"[Name], I'm so glad you're happy with how it turned out. Would you do me a huge favor? Just stand right here in front of the roof and record a 30-second video on your phone — just say what you thought of the process and whether you'd recommend us. It doesn't need to be perfect at all. I'll send you a reminder text tonight so you don't forget. It genuinely helps us more than anything else."</div>
+  </div>
+  <div class="why">Key phrases: "huge favor" (makes them feel generous, not obligated), "doesn't need to be perfect" (removes the barrier of filming anxiety), "reminder text" (follows up without being pushy).</div>
+</div>
+
+<!-- ANATOMY OF A PERFECT VIDEO TESTIMONIAL -->
+<div class="divider-label"><span>Anatomy of a perfect video testimonial — what it should contain</span></div>
+
+<div class="anatomy-card ac-teal spacer">
+  <div class="anatomy-row">
+    <div class="anatomy-label">Opening (0–5s)</div>
+    <div class="anatomy-desc">
+      Who they are and where they live — unprompted. This establishes they are a real local person.
+      <div class="anatomy-example">"Hi, I'm Sarah, I live in Oak Park and I just had my roof replaced by [Company]…"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">The problem (5–15s)</div>
+    <div class="anatomy-desc">
+      What the situation was before. The worse the problem, the more powerful the testimonial.
+      <div class="anatomy-example">"We had a massive leak after the storm last month — water was coming through the ceiling in two rooms…"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">The experience (15–40s)</div>
+    <div class="anatomy-desc">
+      What it was like working with the company — speed, communication, professionalism, cleanliness.
+      <div class="anatomy-example">"They came the same day I called, gave me a quote the next morning, and the whole team was so clean and professional. They even swept the driveway…"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">The outcome (40–55s)</div>
+    <div class="anatomy-desc">
+      The result and emotional payoff. This is the line that resonates with other homeowners.
+      <div class="anatomy-example">"I haven't had a single problem since and I feel so much better knowing my house is protected. I'd recommend them to anyone in the area."</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">Visual proof</div>
+    <div class="anatomy-desc">
+      Film them turning around briefly to show the finished roof behind them. Even 3 seconds of this is worth more than 30 seconds of talking.
+      <div class="anatomy-example">Customer turns, points at roof: "And there it is — looks incredible."</div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 2: TEXT REVIEWS -->
+<div class="divider-label"><span>Part 2 — text reviews · the quick-scanner's trust signal</span></div>
+
+<div class="el-card purple-card spacer">
+  <div class="el-tag">Why you need both video AND text</div>
+  <h3>Video proves the person is real. Text allows quick scanning. You need both.</h3>
+  <p>Different visitors consume social proof differently. Some will watch a video testimonial start to finish. Most will scan text reviews in 10 seconds. Video and text together cover both types of visitor. Your notes specifically said: "The video proves the client is real, while the text allows for quick scanning." Running only one format means you're converting only one type of visitor.</p>
+  <div class="why">The combination also has a compounding effect — a visitor who watches a video and then reads three matching text reviews has their trust doubled, not just added to.</div>
+</div>
+
+<!-- ANATOMY OF A PERFECT TEXT REVIEW -->
+<div class="divider-label"><span>Anatomy of a perfect text review — what makes one convert</span></div>
+
+<div class="anatomy-card ac-blue spacer">
+  <div class="anatomy-row">
+    <div class="anatomy-label">Real first name + last initial</div>
+    <div class="anatomy-desc">
+      Never "Anonymous" or "Happy Customer." First name and last initial is the minimum. First and last name is better.
+      <div class="anatomy-example">"Sarah M." or "Sarah Mitchell" — never "A satisfied customer"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">Neighborhood + job type</div>
+    <div class="anatomy-desc">
+      The location and what was done. This makes it local and specific — the two things a roofing review must be.
+      <div class="anatomy-example">"Oak Park · Full roof replacement · June 2024"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">5 stars + platform logo</div>
+    <div class="anatomy-desc">
+      The platform (Google, Yelp) is the third-party validator. The stars are the instant visual signal. Both must be visible without reading.
+      <div class="anatomy-example">Google logo + ★★★★★ — visible at a glance before reading the text</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">Specific quote — 1–3 sentences</div>
+    <div class="anatomy-desc">
+      The best reviews are specific about a problem solved, a speed exceeded, or a fear removed. Generic praise ("great company!") is weak. Specific detail is strong.
+      <div class="anatomy-example">"Called at 8am after the storm, they were at my house by noon. Entire repair done same day."</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anatomy-label">Verifiable link</div>
+    <div class="anatomy-desc">
+      If the review is from Google or Yelp, link to it. Visitors who want to verify can — and the fact that you link to it signals you have nothing to hide.
+      <div class="anatomy-example">Small "View on Google" link below the review text</div>
+    </div>
+  </div>
+</div>
+
+<!-- GOOD VS BAD REVIEW -->
+<div class="divider-label"><span>Good review vs weak review — what actually converts</span></div>
+
+<div class="good-bad spacer">
+  <div class="gb-card gb-bad">
+    <div class="gb-label">Weak — barely converts</div>
+    <div class="gb-review">"Great service! Very professional and did a good job. Would recommend to others."</div>
+    <div class="gb-name">— John D.</div>
+    <div class="gb-why">No location, no job type, no specific detail, no problem solved. Could be written by anyone about anything. The brain files it as generic noise.</div>
+  </div>
+  <div class="gb-card gb-good">
+    <div class="gb-label">Strong — converts hard</div>
+    <div class="gb-review">"Called at 8am after the storm. They were at my house by noon and the repair was done same day. Swept the entire driveway before they left. I've used three roofers over the years — none came close."</div>
+    <div class="gb-name">— Mike T. · Downtown [City] · Emergency repair · March 2024</div>
+    <div class="gb-why">Specific timeframes, specific action (driveway sweep), comparison to competitors, real name and neighborhood. Every line removes a different doubt.</div>
+  </div>
+</div>
+
+<!-- HOW MANY REVIEWS -->
+<div class="divider-label"><span>How many reviews to show — and which ones to pick</span></div>
+
+<div class="grid-2 spacer">
+  <div class="el-card green-card">
+    <div class="el-tag">Quantity</div>
+    <h3>2 video testimonials + 4–6 text reviews minimum</h3>
+    <p>Two videos give you variety without overwhelming. Four to six text reviews is enough to feel like proof, not so many it becomes a wall of text. If you have more, add a "See all reviews" link to your Google profile — don't stuff the page.</p>
+    <div class="why">The goal is overwhelming evidence, not an exhaustive list. Quality and specificity beat quantity every time.</div>
+  </div>
+  <div class="el-card green-card">
+    <div class="el-tag">Which reviews to pick</div>
+    <h3>Choose reviews that each kill a different doubt</h3>
+    <p>Pick reviews that collectively cover: speed of response, cleanliness, insurance handling, price fairness, communication, and quality of the final result. Each review kills a different fear. Together they cover every objection a homeowner has.</p>
+    <div class="why">Don't pick 5 reviews that all say "great job!" Pick 5 reviews that each tell a different story about a different fear removed.</div>
+  </div>
+</div>
+
+<!-- SECTION HEADLINE -->
+<div class="divider-label"><span>The section headline — don't call it "Testimonials"</span></div>
+
+<div class="el-card coral-card spacer">
+  <div class="el-tag">Headline options ranked best to worst</div>
+  <h3>The headline must signal that these are real, local, verifiable people</h3>
+  <p>The word "Testimonials" is the weakest possible headline — it sounds like a marketing section. The headline should prime the visitor to trust what follows before they read a single word.</p>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Best:</strong> "What your neighbors say about us" — local, implies verifiable</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Strong:</strong> "Real homeowners in [City] — real results"</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Good:</strong> "Don't take our word for it — hear from them directly"</div>
+    <div style="background:#FAC775;border-radius:6px;padding:8px 12px;font-size:12px;color:#412402;"><strong>Weak:</strong> "Customer Testimonials" — sounds like a marketing section</div>
+    <div style="background:#F7C1C1;border-radius:6px;padding:8px 12px;font-size:12px;color:#501313;"><strong>Worst:</strong> "What Our Clients Say" — corporate, forgettable, distrusted</div>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use raw vertical smartphone videos</li>
+      <li>Film customer in front of their finished roof</li>
+      <li>Ask at job completion — peak satisfaction moment</li>
+      <li>Show real first name + last initial minimum</li>
+      <li>Include neighborhood + job type on every review</li>
+      <li>Pick reviews that each kill a different fear</li>
+      <li>Show the platform logo (Google/Yelp) on text reviews</li>
+      <li>Link text reviews to the live Google/Yelp listing</li>
+      <li>Mix 2 videos + 4–6 text reviews side by side</li>
+      <li>Add a "See all X reviews" link to Google profile</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Over-produce video testimonials — kills authenticity</li>
+      <li>Use "Anonymous" or "Happy Customer" on any review</li>
+      <li>Show only one format (all video or all text)</li>
+      <li>Pick reviews that all say the same generic thing</li>
+      <li>Use reviews with no location or job context</li>
+      <li>Show reviews without a platform logo</li>
+      <li>Write fake or paraphrased reviews — destroys trust permanently</li>
+      <li>Place this section below the FAQ — too late in the journey</li>
+      <li>Use a review carousel that auto-rotates — visitors can't control it</li>
+      <li>Show reviews from non-roofing jobs on a roofing page</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The "no review carousel" rule — from your notes</h3>
+  <p>Auto-rotating carousels feel like the company chose what you see and when. Static reviews that the visitor can scroll through at their own pace feel like you have nothing to hide. Your notes consistently emphasised reducing friction and giving the visitor control. A carousel takes control away. Show all reviews visible at once, or in a simple scrollable row the visitor navigates manually.</p>
+</div>

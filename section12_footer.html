@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── FOOTER MOCKUP ── */
+  .mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .mockup-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+
+  .footer-mock { background:#1a1a18; padding:32px 24px 20px; }
+
+  .footer-top { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:20px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:16px; }
+
+  .ft-col-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:rgba(255,255,255,0.3); margin-bottom:10px; }
+
+  /* col 1 — brand + contact */
+  .ft-logo { font-size:15px; font-weight:500; color:#F1EFE8; margin-bottom:6px; }
+  .ft-tagline { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; line-height:1.5; }
+  .ft-contact-row { display:flex; align-items:center; gap:7px; margin-bottom:6px; }
+  .ft-contact-icon { font-size:12px; }
+  .ft-contact-text { font-size:12px; color:#9FE1CB; }
+  .ft-contact-sub  { font-size:11px; color:rgba(255,255,255,0.35); margin-left:19px; margin-top:-3px; margin-bottom:4px; }
+  .ft-address { font-size:11px; color:rgba(255,255,255,0.4); line-height:1.6; margin-top:8px; }
+
+  /* col 2 — nav */
+  .ft-nav-link { font-size:12px; color:rgba(255,255,255,0.55); margin-bottom:7px; display:block; cursor:pointer; }
+  .ft-nav-link:hover { color:#9FE1CB; }
+
+  /* col 3 — trust */
+  .ft-badge-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .ft-badge { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:4px 8px; font-size:10px; color:rgba(255,255,255,0.5); }
+  .ft-stars { color:#EF9F27; font-size:12px; letter-spacing:1px; }
+  .ft-review-text { font-size:10px; color:rgba(255,255,255,0.35); margin-top:3px; }
+  .ft-map-block { margin-top:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; height:56px; display:flex; align-items:center; justify-content:center; }
+  .ft-map-label { font-size:10px; color:rgba(255,255,255,0.3); }
+
+  /* bottom bar */
+  .footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  .fb-copy { font-size:10px; color:rgba(255,255,255,0.25); }
+  .fb-links { display:flex; gap:12px; }
+  .fb-link  { font-size:10px; color:rgba(255,255,255,0.3); cursor:pointer; }
+  .fb-schema-note { font-size:10px; color:rgba(255,255,255,0.2); }
+
+  /* ── ANATOMY ── */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anat-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anat-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:120px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-ex    { font-size:11px; font-style:italic; margin-top:3px; border-radius:5px; padding:5px 8px; }
+
+  .ab-gray { background:#F1EFE8; border-color:#B4B2A9; }
+  .ab-gray .anat-label{color:#5F5E5A;} .ab-gray .anat-desc{color:#5F5E5A;} .ab-gray .anat-ex{background:#D3D1C7;color:#2C2C2A;}
+  @media (prefers-color-scheme:dark){
+    .ab-gray{background:#2C2C2A;border-color:#888780;} .ab-gray .anat-desc{color:#888780;} .ab-gray .anat-ex{background:#444441;color:#D3D1C7;}
+  }
+
+  /* ── NAV RULE ── */
+  .nav-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .nc-card { border-radius:10px; border:1px solid; padding:14px; }
+  .nc-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+  .nc-links { display:flex; flex-direction:column; gap:5px; margin-bottom:8px; }
+  .nc-link  { font-size:12px; border-radius:5px; padding:4px 8px; }
+  .nc-why   { font-size:12px; line-height:1.5; }
+
+  .nc-bad  { background:#FCEBEB; border-color:#F09595; }
+  .nc-bad  .nc-label{color:#A32D2D;} .nc-bad .nc-link{background:#F7C1C1;color:#501313;} .nc-bad .nc-why{color:#A32D2D;}
+  .nc-good { background:#EAF3DE; border-color:#97C459; }
+  .nc-good .nc-label{color:#3B6D11;} .nc-good .nc-link{background:#C0DD97;color:#173404;} .nc-good .nc-why{color:#3B6D11;}
+  @media (prefers-color-scheme:dark){
+    .nc-bad{background:#501313;border-color:#E24B4A;} .nc-bad .nc-link{background:#791F1F;color:#F7C1C1;} .nc-bad .nc-why{color:#F09595;}
+    .nc-good{background:#173404;border-color:#639922;} .nc-good .nc-link{background:#27500A;color:#C0DD97;} .nc-good .nc-why{color:#97C459;}
+  }
+
+  /* ── SCHEMA IMPLEMENTATION ── */
+  .schema-box { background:#1a1a18; border-radius:10px; padding:16px; }
+  .schema-title { font-size:13px; font-weight:500; color:#F1EFE8; margin-bottom:4px; }
+  .schema-sub   { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; }
+  .schema-code  { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; font-family:var(--font-mono); font-size:10px; color:#9FE1CB; line-height:1.8; overflow-x:auto; }
+
+  /* ── SEO ELEMENTS ── */
+  .seo-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .seo-card { border-radius:10px; border:1px solid; padding:12px; }
+  .seo-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px; }
+  .seo-title { font-size:13px; font-weight:500; margin-bottom:4px; }
+  .seo-desc  { font-size:12px; line-height:1.6; margin-bottom:5px; }
+  .seo-ex    { font-size:11px; border-radius:5px; padding:4px 8px; font-style:italic; }
+
+  .sc-1 { background:#E6F1FB; border-color:#85B7EB; }
+  .sc-1 .seo-label{color:#185FA5;} .sc-1 .seo-title{color:#042C53;} .sc-1 .seo-desc{color:#185FA5;} .sc-1 .seo-ex{background:#B5D4F4;color:#042C53;}
+  .sc-2 { background:#E1F5EE; border-color:#5DCAA5; }
+  .sc-2 .seo-label{color:#0F6E56;} .sc-2 .seo-title{color:#04342C;} .sc-2 .seo-desc{color:#0F6E56;} .sc-2 .seo-ex{background:#9FE1CB;color:#04342C;}
+  .sc-3 { background:#FAEEDA; border-color:#EF9F27; }
+  .sc-3 .seo-label{color:#854F0B;} .sc-3 .seo-title{color:#412402;} .sc-3 .seo-desc{color:#854F0B;} .sc-3 .seo-ex{background:#FAC775;color:#412402;}
+  .sc-4 { background:#EEEDFE; border-color:#AFA9EC; }
+  .sc-4 .seo-label{color:#534AB7;} .sc-4 .seo-title{color:#26215C;} .sc-4 .seo-desc{color:#534AB7;} .sc-4 .seo-ex{background:#CECBF6;color:#26215C;}
+  @media (prefers-color-scheme:dark){
+    .sc-1{background:#042C53;border-color:#378ADD;} .sc-1 .seo-title{color:#B5D4F4;} .sc-1 .seo-desc{color:#85B7EB;} .sc-1 .seo-ex{background:#0C447C;color:#B5D4F4;}
+    .sc-2{background:#04342C;border-color:#1D9E75;} .sc-2 .seo-title{color:#9FE1CB;} .sc-2 .seo-desc{color:#5DCAA5;} .sc-2 .seo-ex{background:#085041;color:#9FE1CB;}
+    .sc-3{background:#412402;border-color:#BA7517;} .sc-3 .seo-title{color:#FAC775;} .sc-3 .seo-desc{color:#EF9F27;} .sc-3 .seo-ex{background:#633806;color:#FAC775;}
+    .sc-4{background:#26215C;border-color:#7F77DD;} .sc-4 .seo-title{color:#CECBF6;} .sc-4 .seo-desc{color:#AFA9EC;} .sc-4 .seo-ex{background:#3C3489;color:#CECBF6;}
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-teal  { background:#9FE1CB; color:#04342C; }
+  .pill-blue  { background:#B5D4F4; color:#042C53; }
+  .pill-amber { background:#FAC775; color:#412402; }
+  @media (prefers-color-scheme:dark){
+    .pill-red{background:#791F1F;color:#F7C1C1;} .pill-green{background:#27500A;color:#C0DD97;}
+    .pill-teal{background:#085041;color:#9FE1CB;} .pill-blue{background:#0C447C;color:#B5D4F4;} .pill-amber{background:#633806;color:#FAC775;}
+  }
+
+  /* checklist */
+  .checklist { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:14px; }
+  .cl-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:10px; }
+  .cl-section { margin-bottom:12px; }
+  .cl-section-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:var(--color-text-tertiary); margin-bottom:6px; }
+  .cl-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:5px; }
+  .cl-box  { width:14px; height:14px; border:1.5px solid var(--color-border-secondary); border-radius:3px; flex-shrink:0; margin-top:1px; }
+  .cl-text { font-size:12px; color:var(--color-text-secondary); line-height:1.5; }
+</style>
+
+<h1>Section 12 — The footer</h1>
+<p class="subtitle">The last element on the page · not a dumping ground · a final trust reinforcer and SEO powerhouse<br>Most roofers treat the footer as an afterthought — done right it does real conversion and ranking work</p>
+
+<!-- WHY IT MATTERS -->
+<div class="divider-label"><span>Why the footer matters more than most people think</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The two jobs the footer does</div>
+  <h3>Job 1: catches visitors who scrolled past section 11 without acting · Job 2: sends critical signals to Google about your local legitimacy</h3>
+  <p>The footer is the last chance to convert a visitor who scrolled all the way to the bottom and still hasn't clicked. More importantly, it is one of the most SEO-significant elements on the page — Google reads the footer on every page of your site and uses the NAP data (Name, Address, Phone) to verify your local business listing, match your Google Business Profile, and rank you in local map searches. A footer that has inconsistent contact info, is missing schema markup, or has a cluttered navigation actually hurts both conversions and rankings simultaneously. Built correctly, it does two jobs at once without any extra effort.</p>
+  <div class="why">From your notes: "Add Local Business Schema Markup — implement JSON-LD structured data specifying the business name, address, phone, service area, and hours. Enables Google Maps and local search results."</div>
+</div>
+
+<!-- THE FULL FOOTER MOCKUP -->
+<div class="divider-label"><span>What it looks like — the complete footer layout</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 12 — footer · dark background · 3-column layout · NAP + nav + trust + schema</div>
+  <div class="footer-mock">
+    <div class="footer-top">
+
+      <!-- Column 1: Brand + Contact -->
+      <div>
+        <div class="ft-col-label">Contact us</div>
+        <div class="ft-logo">[Company Name] Roofing</div>
+        <div class="ft-tagline">Protecting homes in [City] for 20 years.<br>Licensed · Insured · Guaranteed.</div>
+        <div class="ft-contact-row">
+          <span class="ft-contact-icon">📞</span>
+          <span class="ft-contact-text">(555) 000-0000</span>
+        </div>
+        <div class="ft-contact-sub">Mon–Sat 7am–7pm · Same-day available</div>
+        <div class="ft-contact-row">
+          <span class="ft-contact-icon">✉</span>
+          <span class="ft-contact-text">hello@yoursite.com</span>
+        </div>
+        <div class="ft-address">123 Main Street, Suite 100<br>[City], [State] [ZIP]<br>License #CR-12345</div>
+      </div>
+
+      <!-- Column 2: Navigation -->
+      <div>
+        <div class="ft-col-label">Quick links</div>
+        <span class="ft-nav-link">Home</span>
+        <span class="ft-nav-link">Roof Inspection</span>
+        <span class="ft-nav-link">Repair & Patch</span>
+        <span class="ft-nav-link">Full Replacement</span>
+        <span class="ft-nav-link">Service Areas</span>
+        <span class="ft-nav-link">About Us</span>
+        <span class="ft-nav-link">Reviews</span>
+        <span class="ft-nav-link">Contact</span>
+      </div>
+
+      <!-- Column 3: Trust + Map -->
+      <div>
+        <div class="ft-col-label">Credentials</div>
+        <div class="ft-badge-row">
+          <div class="ft-badge">Licensed</div>
+          <div class="ft-badge">Insured</div>
+          <div class="ft-badge">GAF Certified</div>
+          <div class="ft-badge">BBB A+</div>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="ft-stars">★★★★★</div>
+          <div class="ft-review-text">4.9/5 · 200+ Google reviews · <span style="color:#9FE1CB;cursor:pointer;">View all</span></div>
+        </div>
+        <div class="ft-map-block">
+          <div class="ft-map-label">📍 Google Maps embed — [City] service area</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="fb-copy">© 2025 [Company Name] Roofing · All rights reserved</div>
+      <div class="fb-links">
+        <span class="fb-link">Privacy Policy</span>
+        <span class="fb-link">Terms of Service</span>
+        <span class="fb-link">Sitemap</span>
+      </div>
+    </div>
+    <div style="margin-top:8px;text-align:center;">
+      <div class="fb-schema-note">← JSON-LD Local Business Schema lives in the &lt;head&gt; of this page (invisible to visitors, critical for Google)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ANATOMY -->
+<div class="divider-label"><span>Anatomy — every column, every element, every reason</span></div>
+
+<div class="anatomy-box ab-gray spacer">
+  <div class="anat-row">
+    <div class="anat-label">Dark background</div>
+    <div class="anat-desc">The footer uses the same dark background as the section 8 breather — a visual bookend that signals "we've reached the end." It creates a clear boundary between the page content and the footer, and feels premium rather than like the page just ran out.
+      <div class="anat-ex">Use #1a1a18 or similar warm dark gray — same value as section 8 creates visual consistency across the page.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 1 — NAP</div>
+    <div class="anat-desc">Name, Address, Phone — the single most important SEO element in the footer. These three pieces of data must exactly match your Google Business Profile listing, your Yelp listing, and every other directory listing. One character difference between your website footer and your Google Business Profile can hurt your local ranking. Include the full street address, city, state, zip, and your license number.
+      <div class="anat-ex">Company Name · Full address · Phone number · Email · License # — all visible, all matching every other listing exactly.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 1 — hours</div>
+    <div class="anat-desc">Business hours displayed plainly next to or below the phone number. Removes the fear of "what if I call and nobody answers?" For emergency roofing situations especially, knowing you're available Saturday at 7am makes a homeowner call instead of search for another company.
+      <div class="anat-ex">"Mon–Sat 7am–7pm · Same-day available" — specific days and times, not "we're always here for you."</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 2 — navigation</div>
+    <div class="anat-desc">A clean list of 6–8 essential links. Not a full site map. Not every blog post. The links should cover your main service pages (inspection, repair, replacement), location pages (service areas), and supporting pages (about, reviews, contact). This also creates internal links that Google follows for SEO.
+      <div class="anat-ex">Home · Inspection · Repair · Replacement · Service Areas · About · Reviews · Contact — 8 links maximum.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 3 — trust badges</div>
+    <div class="anat-desc">Your certification badges, license status, and insurance confirmation one final time. A visitor who skipped the trust strip at the top and landed here via a back-scroll will see these credentials. Google also reads alt text on badge images as local trust signals.
+      <div class="anat-ex">Licensed · Insured · GAF Certified · BBB A+ — actual badge images where possible, plain text labels otherwise.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 3 — star rating</div>
+    <div class="anat-desc">Your Google rating and review count repeated one final time. Link it to your Google Business Profile — "View all" in a distinct color. For visitors who bypassed section 6's deep reviews, this is their last chance to verify you are trusted by real people.
+      <div class="anat-ex">"★★★★★ 4.9/5 · 200+ Google reviews · View all" — the number of reviews matters as much as the rating.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Column 3 — map embed</div>
+    <div class="anat-desc">A Google Maps embed showing your location and service area. This does three things: proves you are a real physical business, confirms you are local to the homeowner's area, and creates a positive signal to Google's local algorithm.
+      <div class="anat-ex">Embed the Google Business Profile map directly — not just a screenshot. The actual Google Maps iframe is what matters for SEO signal.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Bottom bar</div>
+    <div class="anat-desc">Copyright line, Privacy Policy link, Terms of Service link, and Sitemap link. The Privacy Policy and Terms are legally required in most jurisdictions if you collect any form data. The Sitemap link gives Google one more crawl entry point.
+      <div class="anat-ex">"© 2025 [Company] Roofing · All rights reserved · Privacy Policy · Terms · Sitemap"</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAP CONSISTENCY RULE -->
+<div class="divider-label"><span>The NAP consistency rule — the most important SEO rule in this section</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">Critical for local SEO — most roofers get this wrong</div>
+  <h3>Your Name, Address, and Phone must be character-for-character identical across every platform</h3>
+  <p>Google's local algorithm cross-references your website footer NAP against every directory listing it can find — Google Business Profile, Yelp, HomeAdvisor, Angi, BBB, and dozens more. When these match exactly, Google's confidence in your local legitimacy increases and your map ranking improves. When they don't match — even small differences like "St." vs "Street," "(555) 000-0000" vs "555-000-0000," or "Roofing Co." vs "Roofing Company" — Google treats them as potentially different businesses and your ranking suffers. This is invisible to visitors but has a significant impact on how many people find you organically.</p>
+  <div class="why">Your notes specifically flagged this: "Local Business Schema Markup — implement structured data specifying the business name, address, phone, service area, and hours. Validate with Google's Rich Results Test."</div>
+</div>
+
+<div class="grid-2 spacer">
+  <div class="el-card red-card">
+    <div class="el-tag">What inconsistency looks like</div>
+    <h3>These count as different businesses to Google</h3>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+      <div style="background:#F7C1C1;border-radius:5px;padding:6px 10px;font-size:12px;color:#501313;">Website: "123 Main St, [City]"</div>
+      <div style="background:#F7C1C1;border-radius:5px;padding:6px 10px;font-size:12px;color:#501313;">Google: "123 Main Street, [City]"</div>
+      <div style="background:#F7C1C1;border-radius:5px;padding:6px 10px;font-size:12px;color:#501313;">Yelp: "123 Main St., [City], [State]"</div>
+      <div style="background:#F7C1C1;border-radius:5px;padding:6px 10px;font-size:12px;color:#501313;">Angi: "(555)000-0000" vs "(555) 000-0000"</div>
+    </div>
+    <div class="why" style="margin-top:8px;">These look like minor variations to a human. To Google's algorithm they are signals of inconsistency that reduce confidence in the listing's accuracy.</div>
+  </div>
+  <div class="el-card green-card">
+    <div class="el-tag">What consistency looks like</div>
+    <h3>Identical across every platform</h3>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+      <div style="background:#C0DD97;border-radius:5px;padding:6px 10px;font-size:12px;color:#173404;">Website: "[Company Name] Roofing"</div>
+      <div style="background:#C0DD97;border-radius:5px;padding:6px 10px;font-size:12px;color:#173404;">Google: "[Company Name] Roofing"</div>
+      <div style="background:#C0DD97;border-radius:5px;padding:6px 10px;font-size:12px;color:#173404;">Yelp: "[Company Name] Roofing"</div>
+      <div style="background:#C0DD97;border-radius:5px;padding:6px 10px;font-size:12px;color:#173404;">Phone format: (555) 000-0000 everywhere</div>
+    </div>
+    <div class="why" style="margin-top:8px;">Pick one exact format for every piece of NAP data and use it verbatim everywhere. Copy-paste, never retype. One source of truth.</div>
+  </div>
+</div>
+
+<!-- LOCAL SCHEMA MARKUP -->
+<div class="divider-label"><span>Local Business Schema markup — what it is and how to implement it</span></div>
+
+<div class="el-card teal-card spacer">
+  <div class="el-tag">What schema markup is — explained simply</div>
+  <h3>Invisible code that tells Google exactly what your business is, where it is, and who it serves</h3>
+  <p>Schema markup is a block of JSON code that lives in the &lt;head&gt; section of your HTML — visitors never see it, but Google reads it on every crawl. It tells the algorithm: "This is a roofing business. It is located at this exact address. It serves these specific cities. It is open these hours. Here is the phone number. Here are the reviews." Without schema, Google has to infer all of this from the page text — and it sometimes gets it wrong. With schema, you are telling Google directly, which increases the likelihood of appearing in the local map pack (the three businesses shown above organic search results) and in voice search results.</p>
+  <div class="why">Your notes: "Add invisible code for Google that says 'this business is physically located in this specific city.' It helps them show up in local map searches — critical for local service companies."</div>
+</div>
+
+<div class="schema-box spacer">
+  <div class="schema-title">Local Business Schema — the exact JSON-LD template for a roofing company</div>
+  <div class="schema-sub">Paste this in the &lt;head&gt; of your HTML. Replace every [bracket] with your real data. Validate at search.google.com/test/rich-results</div>
+  <div class="schema-code">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "RoofingContractor",
+  "name": "[Company Name] Roofing",
+  "image": "https://yoursite.com/logo.png",
+  "url": "https://yoursite.com",
+  "telephone": "(555) 000-0000",
+  "email": "hello@yoursite.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main Street",
+    "addressLocality": "[City]",
+    "addressRegion": "[State]",
+    "postalCode": "[ZIP]",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 00.0000,
+    "longitude": -00.0000
+  },
+  "areaServed": [
+    "[City]", "[Neighboring City 1]", "[Neighboring City 2]"
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday",
+                    "Thursday","Friday","Saturday"],
+      "opens": "07:00",
+      "closes": "19:00"
+    }
+  ],
+  "priceRange": "$$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "200"
+  }
+}
+&lt;/script&gt;</div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The @type "RoofingContractor" is more specific than "LocalBusiness"</h3>
+  <p>Always use the most specific schema type available. "RoofingContractor" tells Google exactly what category of business you are without it having to guess. This increases the chance of appearing in industry-specific searches ("roofing contractor near me") rather than just general local searches. Validate your schema using Google's Rich Results Test — it will show you any errors and confirm Google can read the data correctly. Run this validation every time you update contact information.</p>
+</div>
+
+<!-- NAVIGATION RULE -->
+<div class="divider-label"><span>The footer navigation rule — minimal and purposeful</span></div>
+
+<div class="nav-compare spacer">
+  <div class="nc-card nc-bad">
+    <div class="nc-label">Bloated footer nav — hurts conversion</div>
+    <div class="nc-links">
+      <div class="nc-link">Home</div>
+      <div class="nc-link">About · Our Story · Team · Careers</div>
+      <div class="nc-link">Blog · Articles · Tips · Resources</div>
+      <div class="nc-link">Gallery · Videos · Case Studies</div>
+      <div class="nc-link">FAQ · Testimonials · Press</div>
+      <div class="nc-link">Terms · Privacy · Accessibility · Cookies</div>
+    </div>
+    <div class="nc-why">20+ links overwhelm a visitor who just read the entire page. Creates analysis paralysis at the last moment. Also dilutes Google's crawl budget across too many pages.</div>
+  </div>
+  <div class="nc-card nc-good">
+    <div class="nc-label">Clean footer nav — helps both visitors and SEO</div>
+    <div class="nc-links">
+      <div class="nc-link">Home</div>
+      <div class="nc-link">Inspection · Repair · Replacement</div>
+      <div class="nc-link">Service Areas</div>
+      <div class="nc-link">About · Reviews · Contact</div>
+      <div class="nc-link">Privacy Policy · Terms · Sitemap</div>
+    </div>
+    <div class="nc-why">8 focused links cover everything a visitor or Googlebot needs. Each link points to a page with its own conversion opportunity. Clean, scannable, purposeful.</div>
+  </div>
+</div>
+
+<!-- SEO ELEMENTS IN FOOTER -->
+<div class="divider-label"><span>The 4 SEO elements that live in or near the footer</span></div>
+
+<div class="seo-grid spacer">
+  <div class="seo-card sc-1" onclick="sendPrompt('How do I add Local Business Schema markup to my roofing website?')">
+    <div class="seo-label">SEO Element 1</div>
+    <div class="seo-title">JSON-LD Schema in &lt;head&gt;</div>
+    <div class="seo-desc">The schema code block placed in the HTML head. Validates with Google Rich Results Test. Tells Google your exact category, address, hours, and service area.</div>
+    <div class="seo-ex">Type: RoofingContractor · includes areaServed, openingHours, telephone, address, aggregateRating</div>
+  </div>
+  <div class="seo-card sc-2" onclick="sendPrompt('How do I set up internal linking for my roofing website?')">
+    <div class="seo-label">SEO Element 2</div>
+    <div class="seo-title">Internal links to service pages</div>
+    <div class="seo-desc">Footer links to your service pages pass "link equity" from every page to your most important pages. Google crawls the footer on every page load — each internal link is an SEO signal.</div>
+    <div class="seo-ex">Footer links to: /roof-inspection · /roof-repair · /roof-replacement · /service-areas</div>
+  </div>
+  <div class="seo-card sc-3" onclick="sendPrompt('How do I create location pages for my roofing website?')">
+    <div class="seo-label">SEO Element 3</div>
+    <div class="seo-title">Service area links</div>
+    <div class="seo-desc">A "Service Areas" link in the footer points to a page listing every city and neighborhood you serve. Each city can have its own landing page — each of which can rank for "[City] roofing contractor."</div>
+    <div class="seo-ex">/service-areas → [City] · [Suburb 1] · [Suburb 2] · [Suburb 3] — each a separate indexable URL</div>
+  </div>
+  <div class="seo-card sc-4" onclick="sendPrompt('What should I put in a sitemap for my roofing website?')">
+    <div class="seo-label">SEO Element 4</div>
+    <div class="seo-title">XML Sitemap link</div>
+    <div class="seo-desc">A "Sitemap" link in the bottom bar pointing to your XML sitemap file. Submit this URL to Google Search Console. Ensures every page on your site gets crawled and indexed, including location pages.</div>
+    <div class="seo-ex">/sitemap.xml · submitted to Google Search Console · updated automatically when pages are added</div>
+  </div>
+</div>
+
+<!-- COMPLETE IMPLEMENTATION CHECKLIST -->
+<div class="divider-label"><span>Complete footer implementation checklist</span></div>
+
+<div class="checklist spacer">
+  <div class="cl-title">Everything you need to build and launch a conversion + SEO optimised footer</div>
+
+  <div class="cl-section">
+    <div class="cl-section-label">Design & layout</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Dark background (#1a1a18 or similar warm dark gray)</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">3-column layout: contact info · navigation · trust + map</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Bottom bar with copyright, privacy policy, terms, sitemap</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Mobile: stack columns vertically, contact info first</div></div>
+  </div>
+
+  <div class="cl-section">
+    <div class="cl-section-label">Contact information (NAP)</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Company name — exactly matching Google Business Profile</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Full street address — exactly matching every directory</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Phone number — exact format matching all listings</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Email address — clickable mailto: link</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Business hours — specific days and times</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Contractor license number — visible in plain text</div></div>
+  </div>
+
+  <div class="cl-section">
+    <div class="cl-section-label">Trust elements</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Certification badges: GAF, BBB, or equivalent</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Google rating + review count + link to Google profile</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Google Maps embed of your business location</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Short tagline reinforcing experience and guarantee</div></div>
+  </div>
+
+  <div class="cl-section">
+    <div class="cl-section-label">Navigation</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Home, service pages (inspection/repair/replacement)</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Service Areas page link</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">About, Reviews, Contact</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Maximum 8 links — no blog, no secondary pages</div></div>
+  </div>
+
+  <div class="cl-section">
+    <div class="cl-section-label">Technical SEO</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">JSON-LD schema with @type: RoofingContractor in &lt;head&gt;</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Schema includes: name, address, phone, hours, areaServed, rating</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Validated with Google's Rich Results Test</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">XML sitemap created and submitted to Search Console</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">NAP cross-checked against Google Business Profile — identical</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">NAP cross-checked against Yelp, Angi, BBB — identical</div></div>
+  </div>
+
+  <div class="cl-section" style="margin-bottom:0;">
+    <div class="cl-section-label">Legal</div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Privacy Policy page created and linked in footer</div></div>
+    <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Terms of Service page created and linked in footer</div></div>
+    <div class="cl-item" style="margin-bottom:0;"><div class="cl-box"></div><div class="cl-text">Copyright year correct and auto-updating</div></div>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use a dark background — visual bookend to the page</li>
+      <li>Show full NAP exactly matching every directory</li>
+      <li>Display business hours next to the phone number</li>
+      <li>Embed a real Google Maps iframe</li>
+      <li>Show your star rating and link to Google profile</li>
+      <li>Keep navigation to 8 links maximum</li>
+      <li>Implement JSON-LD schema in the page head</li>
+      <li>Validate schema with Google Rich Results Test</li>
+      <li>Cross-check NAP against all directory listings</li>
+      <li>Include license number in plain visible text</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Put blog links in the footer — off-mission</li>
+      <li>Use inconsistent NAP across platforms</li>
+      <li>Use a phone number image — Google can't read images</li>
+      <li>Skip the map embed — it's a real trust signal</li>
+      <li>Have 20+ footer links — creates paralysis</li>
+      <li>Use a screenshot of Google Maps — embed the real iframe</li>
+      <li>Skip schema markup — invisible but critical for ranking</li>
+      <li>Skip the Privacy Policy — legally required if collecting forms</li>
+      <li>Leave copyright year static — update it yearly</li>
+      <li>Treat the footer as an afterthought — it does real work</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The footer is where the entire website comes full circle</h3>
+  <p>Look at what the footer repeats: the phone number (first shown in the hero), the trust credentials (first shown in section 2), the license number (first shown in section 2), the star rating (first shown in section 6), and the service area (mentioned in every section). This is not accidental repetition — it is deliberate reinforcement. A visitor who skipped section 2 but scrolled to the footer sees the credentials for the first time. A visitor who forgot the phone number after reading 10 sections finds it again. A Googlebot that crawls the footer on every page gets the NAP signal on every crawl. The footer is the page's foundation — unseen by most, essential to everything.</p>
+</div>

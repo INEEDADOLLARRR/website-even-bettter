@@ -29,7 +29,7 @@ export function Breadcrumbs() {
             '@type': 'ListItem',
             position: i + 1,
             name: crumb.label,
-            item: `https://verrazanoroofing.com${crumb.href}`,
+            item: `https://myrooftop.com${crumb.href}`,
         })),
     };
 
@@ -41,25 +41,25 @@ export function Breadcrumbs() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 aria-label="Breadcrumb"
-                className="container mx-auto px-6 py-4"
+                className="container mx-auto px-6 py-sp-5"
             >
                 <ol className="flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest">
                     {crumbs.map((crumb, i) => {
                         const isLast = i === crumbs.length - 1;
                         return (
                             <li key={crumb.href} className="flex items-center gap-2">
-                                {i === 0 && <Home className="w-3 h-3 text-brand-silver/60" />}
+                                {i === 0 && <Home className="w-3 h-3 text-text-secondary/60" />}
                                 {isLast ? (
-                                    <span className="text-brand-white font-medium">{crumb.label}</span>
+                                    <span className="text-text-primary font-medium">{crumb.label}</span>
                                 ) : (
                                     <>
                                         <Link
                                             to={crumb.href}
-                                            className="text-brand-silver hover:text-brand-white transition-colors duration-300"
+                                            className="text-text-secondary hover:text-text-primary transition-colors duration-300"
                                         >
                                             {crumb.label}
                                         </Link>
-                                        <ChevronRight className="w-3 h-3 text-brand-silver/40" />
+                                        <ChevronRight className="w-3 h-3 text-text-secondary/40" />
                                     </>
                                 )}
                             </li>

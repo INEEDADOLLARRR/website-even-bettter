@@ -26,9 +26,9 @@ const values = [
 
 export function ValueGrid() {
   return (
-    <section aria-label="Our values" className="py-16 md:py-24 bg-surface relative border-t border-surface-muted/5 overflow-hidden transition-colors duration-300">
+    <section aria-label="Our values" className="py-16 md:py-sp-54 bg-bg-base relative border-t border-surface-muted/5 overflow-hidden transition-colors duration-300">
       <SectionSettle className="container mx-auto px-5 md:px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-16 max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-sp-5 mb-[40px] md:mb-sp-8 max-w-6xl mx-auto">
           <div className="max-w-xl">
             <BlurReveal delay={0}>
               <p className="text-brand-blue font-semibold tracking-[0.2em] text-[10px] uppercase mb-4 flex items-center gap-3">
@@ -37,14 +37,14 @@ export function ValueGrid() {
               </p>
             </BlurReveal>
             <BlurReveal delay={0.1}>
-              <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-medium tracking-tight text-surface-text text-balance">
-                Unequivocally superior <span className="text-surface-muted/60">craftsmanship.</span>
+              <h2 className="font-display text-2xl md:text-4xl lg:text-5xl font-medium tracking-tight text-text-primary text-balance">
+                Unequivocally superior <span className="text-text-secondary/60">craftsmanship.</span>
               </h2>
             </BlurReveal>
           </div>
 
           <BlurReveal delay={0.2}>
-            <a href="#expertise" className="hidden md:flex items-center gap-2 text-surface-muted/60 font-medium uppercase tracking-wider text-xs hover:text-surface-text transition-colors duration-300 group">
+            <a href="#expertise" className="hidden md:flex items-center gap-2 text-text-secondary/60 font-medium uppercase tracking-wider text-xs hover:text-text-primary transition-colors duration-300 group">
               View Specifications
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </a>
@@ -58,7 +58,7 @@ export function ValueGrid() {
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-5%" }}
-              transition={{ delay: i * 0.08, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: i * 0.08, duration: 0.35, ease: 'easeOut' }}
               className="group relative overflow-hidden rounded-xl glass-panel h-[320px] md:h-[420px] lg:h-[460px] p-6 flex flex-col justify-end cursor-pointer"
             >
               <div className="absolute inset-0 z-0 overflow-hidden">
@@ -71,18 +71,18 @@ export function ValueGrid() {
                   decoding="async"
                   className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 opacity-0 group-hover:opacity-100 transition-all duration-[1500ms] ease-out"
                 />
-                <div className="absolute inset-0 bg-surface/90 group-hover:bg-surface/40 transition-colors duration-500 z-10" />
+                <div className="absolute inset-0 bg-bg-base/90 group-hover:bg-bg-base/40 transition-colors duration-500 z-10" />
               </div>
 
               <div className="absolute top-6 left-6 right-6 flex justify-between items-start z-20">
-                <span className="text-surface-muted/20 font-display text-base">0{i + 1}</span>
-                <ArrowUpRight className="w-4 h-4 text-surface-muted/30 group-hover:text-brand-yellow transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-500" />
+                <span className="text-text-secondary/20 font-display text-base">0{i + 1}</span>
+                <ArrowUpRight className="w-4 h-4 text-text-secondary/30 group-hover:text-brand-yellow transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-500" />
               </div>
 
               <div className="relative z-20 w-full mt-auto">
-                <h3 className="font-display text-lg md:text-xl font-medium tracking-tight text-surface-text mb-2.5">{val.title}</h3>
+                <h3 className="font-display text-lg md:text-xl font-medium tracking-tight text-text-primary mb-2.5">{val.title}</h3>
                 <div className="w-full h-px bg-surface-muted/5 mb-4 group-hover:bg-surface-muted/20 transition-colors duration-500" />
-                <p className="text-surface-muted/50 group-hover:text-surface-text/80 leading-relaxed font-light text-sm transition-colors duration-500">
+                <p className="text-text-secondary/50 group-hover:text-text-primary/80 leading-[1.7] font-light text-sm transition-colors duration-500">
                   {val.desc}
                 </p>
               </div>

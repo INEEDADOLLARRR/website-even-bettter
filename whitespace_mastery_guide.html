@@ -1,0 +1,606 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── BEFORE/AFTER SECTION DEMOS ── */
+  .ba-wrap { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .ba-bar  { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .ba-cols { display:grid; grid-template-columns:1fr 1fr; }
+  .ba-col  { padding:0; }
+  .ba-col-label { padding:8px 12px; font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--color-border-tertiary); }
+  .bad-label  { color:#A32D2D; background:#FCEBEB; }
+  .good-label { color:#3B6D11; background:#EAF3DE; }
+  @media (prefers-color-scheme:dark){
+    .bad-label  { color:#F7C1C1; background:#501313; }
+    .good-label { color:#C0DD97; background:#173404; }
+  }
+  .ba-divider { width:1px; background:var(--color-border-tertiary); }
+
+  /* section mock — bad */
+  .sm-bad { padding:16px; background:var(--color-background-primary); }
+  .sm-bad .sm-eyebrow { font-size:9px; color:var(--color-text-tertiary); text-transform:uppercase; margin-bottom:3px; }
+  .sm-bad .sm-h { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:3px; line-height:1.3; }
+  .sm-bad .sm-p { font-size:10px; color:var(--color-text-secondary); line-height:1.4; margin-bottom:6px; }
+  .sm-bad .sm-btn { display:inline-block; background:#0F6E56; color:#fff; border-radius:5px; padding:5px 10px; font-size:10px; font-weight:500; margin-bottom:8px; }
+  .sm-bad .sm-img { height:48px; background:var(--color-background-secondary); border-radius:4px; margin-bottom:6px; }
+  .sm-bad .sm-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; }
+  .sm-bad .sm-card { background:var(--color-background-secondary); border-radius:4px; padding:5px; }
+  .sm-bad .sm-card-t { font-size:9px; font-weight:500; color:var(--color-text-primary); margin-bottom:2px; }
+  .sm-bad .sm-card-p { font-size:8px; color:var(--color-text-secondary); line-height:1.3; }
+  .sm-bad .sm-divider { height:1px; background:var(--color-border-tertiary); margin:6px 0; }
+
+  /* section mock — good */
+  .sm-good { padding:28px 20px; background:var(--color-background-primary); }
+  .sm-good .sm-eyebrow { font-size:9px; color:var(--color-text-tertiary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px; }
+  .sm-good .sm-h { font-size:15px; font-weight:500; color:var(--color-text-primary); margin-bottom:10px; line-height:1.35; }
+  .sm-good .sm-p { font-size:11px; color:var(--color-text-secondary); line-height:1.7; margin-bottom:18px; max-width:260px; }
+  .sm-good .sm-btn { display:inline-block; background:#0F6E56; color:#fff; border-radius:6px; padding:9px 18px; font-size:11px; font-weight:500; margin-bottom:24px; }
+  .sm-good .sm-img { height:56px; background:var(--color-background-secondary); border-radius:6px; margin-bottom:20px; }
+  .sm-good .sm-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  .sm-good .sm-card { background:var(--color-background-secondary); border-radius:6px; padding:10px 8px; }
+  .sm-good .sm-card-t { font-size:10px; font-weight:500; color:var(--color-text-primary); margin-bottom:4px; }
+  .sm-good .sm-card-p { font-size:9px; color:var(--color-text-secondary); line-height:1.4; }
+
+  /* ── SPACING SCALE TABLE ── */
+  .scale-table { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .st-header { display:grid; grid-template-columns:80px 80px 1fr 1fr; background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); }
+  .st-row    { display:grid; grid-template-columns:80px 80px 1fr 1fr; border-bottom:1px solid var(--color-border-tertiary); }
+  .st-row:last-child { border-bottom:none; }
+  .st-cell   { padding:9px 12px; font-size:12px; color:var(--color-text-secondary); border-right:1px solid var(--color-border-tertiary); vertical-align:middle; }
+  .st-cell:last-child { border-right:none; }
+  .st-cell.head { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); }
+  .st-cell.token { font-weight:500; color:var(--color-text-primary); font-family:var(--font-mono); font-size:11px; }
+  .st-cell.use-good { color:#0F6E56; font-weight:500; }
+  .st-bar-cell { padding:9px 12px; border-right:1px solid var(--color-border-tertiary); display:flex; align-items:center; }
+  .st-bar    { height:8px; background:#0F6E56; border-radius:3px; opacity:0.7; }
+
+  /* ── SECTION-BY-SECTION SPACING MAP ── */
+  .spacing-map { display:flex; flex-direction:column; gap:0; border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .sm-row { display:grid; grid-template-columns:160px 1fr 1fr; border-bottom:1px solid var(--color-border-tertiary); }
+  .sm-row:last-child { border-bottom:none; }
+  .sm-row-header { display:grid; grid-template-columns:160px 1fr 1fr; background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); }
+  .sm-cell { padding:9px 12px; font-size:12px; color:var(--color-text-secondary); border-right:1px solid var(--color-border-tertiary); vertical-align:middle; }
+  .sm-cell:last-child { border-right:none; }
+  .sm-cell.head { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); }
+  .sm-cell.section-name { font-weight:500; color:var(--color-text-primary); font-size:12px; }
+  .sm-cell.correct { color:#0F6E56; font-weight:500; font-size:12px; }
+  .sm-cell.avoid  { color:#A32D2D; font-size:12px; }
+
+  /* ── INSIDE ELEMENT PADDING ── */
+  .elem-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .elem-card { border-radius:10px; border:1px solid var(--color-border-tertiary); padding:14px; }
+  .ec-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); margin-bottom:8px; }
+  .ec-demo  { border-radius:8px; background:var(--color-background-secondary); margin-bottom:8px; }
+  .ec-rule  { font-size:12px; color:var(--color-text-secondary); line-height:1.6; }
+  .ec-vals  { font-size:11px; font-family:var(--font-mono); color:var(--color-text-tertiary); margin-top:4px; }
+
+  /* button demos */
+  .btn-bad  { display:inline-block; background:#0F6E56; color:#fff; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:500; margin:10px; }
+  .btn-good { display:inline-block; background:#0F6E56; color:#fff; border-radius:8px; padding:12px 24px; font-size:12px; font-weight:500; margin:10px; }
+
+  /* card demos */
+  .card-bad  { border:1px solid var(--color-border-tertiary); border-radius:6px; padding:8px; margin:8px; }
+  .card-good { border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin:8px; }
+  .cd-label  { font-size:11px; font-weight:500; color:var(--color-text-primary); margin-bottom:2px; }
+  .cd-text   { font-size:10px; color:var(--color-text-secondary); line-height:1.4; }
+
+  /* ── COGNITIVE LOAD DEMO ── */
+  .cl-demo { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .cl-bar  { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .cl-cols { display:grid; grid-template-columns:1fr 1fr; }
+  .cl-side { padding:16px; }
+  .cl-side-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px; }
+  .cl-bad-label  { color:#A32D2D; }
+  .cl-good-label { color:#3B6D11; }
+
+  /* cramped text demo */
+  .text-bad  { font-size:12px; color:var(--color-text-primary); line-height:1.3; letter-spacing:-0.01em; }
+  .text-good { font-size:12px; color:var(--color-text-primary); line-height:1.7; }
+
+  /* ── THE 8 RULES ── */
+  .rules-list { display:flex; flex-direction:column; gap:8px; }
+  .rule-item  { display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border-radius:10px; border:1px solid; }
+  .rule-num   { font-size:20px; font-weight:500; flex-shrink:0; min-width:28px; }
+  .rule-body  { flex:1; }
+  .rule-title { font-size:13px; font-weight:500; margin-bottom:3px; }
+  .rule-desc  { font-size:12px; line-height:1.6; }
+  .rule-val   { font-size:11px; font-family:var(--font-mono); margin-top:4px; border-radius:4px; padding:3px 8px; display:inline-block; }
+
+  .ri-1{background:#EEEDFE;border-color:#AFA9EC;} .ri-1 .rule-num,.ri-1 .rule-title{color:#26215C;} .ri-1 .rule-desc{color:#534AB7;} .ri-1 .rule-val{background:#CECBF6;color:#26215C;}
+  .ri-2{background:#E1F5EE;border-color:#5DCAA5;} .ri-2 .rule-num,.ri-2 .rule-title{color:#04342C;} .ri-2 .rule-desc{color:#0F6E56;} .ri-2 .rule-val{background:#9FE1CB;color:#04342C;}
+  .ri-3{background:#FAEEDA;border-color:#EF9F27;} .ri-3 .rule-num,.ri-3 .rule-title{color:#412402;} .ri-3 .rule-desc{color:#854F0B;} .ri-3 .rule-val{background:#FAC775;color:#412402;}
+  .ri-4{background:#E6F1FB;border-color:#85B7EB;} .ri-4 .rule-num,.ri-4 .rule-title{color:#042C53;} .ri-4 .rule-desc{color:#185FA5;} .ri-4 .rule-val{background:#B5D4F4;color:#042C53;}
+  .ri-5{background:#EAF3DE;border-color:#97C459;} .ri-5 .rule-num,.ri-5 .rule-title{color:#173404;} .ri-5 .rule-desc{color:#3B6D11;} .ri-5 .rule-val{background:#C0DD97;color:#173404;}
+  .ri-6{background:#FAECE7;border-color:#F0997B;} .ri-6 .rule-num,.ri-6 .rule-title{color:#4A1B0C;} .ri-6 .rule-desc{color:#993C1D;} .ri-6 .rule-val{background:#F5C4B3;color:#4A1B0C;}
+  .ri-7{background:#F1EFE8;border-color:#B4B2A9;} .ri-7 .rule-num,.ri-7 .rule-title{color:#2C2C2A;} .ri-7 .rule-desc{color:#5F5E5A;} .ri-7 .rule-val{background:#D3D1C7;color:#2C2C2A;}
+  .ri-8{background:#FCEBEB;border-color:#F09595;} .ri-8 .rule-num,.ri-8 .rule-title{color:#501313;} .ri-8 .rule-desc{color:#A32D2D;} .ri-8 .rule-val{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .ri-1{background:#26215C;border-color:#7F77DD;} .ri-1 .rule-num,.ri-1 .rule-title{color:#CECBF6;} .ri-1 .rule-desc{color:#AFA9EC;} .ri-1 .rule-val{background:#3C3489;color:#CECBF6;}
+    .ri-2{background:#04342C;border-color:#1D9E75;} .ri-2 .rule-num,.ri-2 .rule-title{color:#9FE1CB;} .ri-2 .rule-desc{color:#5DCAA5;} .ri-2 .rule-val{background:#085041;color:#9FE1CB;}
+    .ri-3{background:#412402;border-color:#BA7517;} .ri-3 .rule-num,.ri-3 .rule-title{color:#FAC775;} .ri-3 .rule-desc{color:#EF9F27;} .ri-3 .rule-val{background:#633806;color:#FAC775;}
+    .ri-4{background:#042C53;border-color:#378ADD;} .ri-4 .rule-num,.ri-4 .rule-title{color:#B5D4F4;} .ri-4 .rule-desc{color:#85B7EB;} .ri-4 .rule-val{background:#0C447C;color:#B5D4F4;}
+    .ri-5{background:#173404;border-color:#639922;} .ri-5 .rule-num,.ri-5 .rule-title{color:#C0DD97;} .ri-5 .rule-desc{color:#97C459;} .ri-5 .rule-val{background:#27500A;color:#C0DD97;}
+    .ri-6{background:#4A1B0C;border-color:#D85A30;} .ri-6 .rule-num,.ri-6 .rule-title{color:#F5C4B3;} .ri-6 .rule-desc{color:#F0997B;} .ri-6 .rule-val{background:#711B0C;color:#F5C4B3;}
+    .ri-7{background:#2C2C2A;border-color:#888780;} .ri-7 .rule-num,.ri-7 .rule-title{color:#D3D1C7;} .ri-7 .rule-desc{color:#888780;} .ri-7 .rule-val{background:#444441;color:#D3D1C7;}
+    .ri-8{background:#501313;border-color:#E24B4A;} .ri-8 .rule-num,.ri-8 .rule-title{color:#F7C1C1;} .ri-8 .rule-desc{color:#F09595;} .ri-8 .rule-val{background:#791F1F;color:#F7C1C1;}
+  }
+
+  /* pills */
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-blue  { background:#B5D4F4; color:#042C53; }
+  @media (prefers-color-scheme:dark){
+    .pill-red{background:#791F1F;color:#F7C1C1;} .pill-green{background:#27500A;color:#C0DD97;} .pill-blue{background:#0C447C;color:#B5D4F4;}
+  }
+</style>
+
+<h1>How to nail whitespace on your roofing website</h1>
+<p class="subtitle">Whitespace is not empty space — it is a design element that signals confidence, reduces cognitive load, and makes everything else on the page land harder</p>
+
+<!-- THE PSYCHOLOGY FIRST -->
+<div class="divider-label"><span>Why whitespace converts — the psychology</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core principle</div>
+  <h3>Cramped = anxious. Spacious = confident. The brain reads whitespace as a signal about your business.</h3>
+  <p>When a page feels dense and crowded, the brain interprets it as "this business is shouting at me, trying to overwhelm me into buying." When a page has generous space, the brain reads it as "this business is calm, established, and confident enough not to need to cram everything in." Your notes described it exactly: "Empty space is a psychological cue that tells the visitor: we are confident and don't need to shout." Hermès and Apple use extreme whitespace not to look minimal — they use it because spaciousness signals authority. You're selling a $10,000–$20,000 roofing job. Your page needs to feel like it costs that much.</p>
+  <div class="why">Whitespace reduces cognitive load, which your notes called the #1 enemy of conversion. A brain that feels overwhelmed stops processing and leaves. A brain that feels calm keeps reading and converts.</div>
+</div>
+
+<!-- BEFORE/AFTER DEMO -->
+<div class="divider-label"><span>What cramped vs spacious actually looks like — side by side</span></div>
+
+<div class="ba-wrap">
+  <div class="ba-bar">Same content · same elements · different spacing — the right one feels premium, the left one feels cheap</div>
+  <div class="ba-cols">
+    <div class="ba-col">
+      <div class="ba-col-label bad-label">Cramped — looks cheap</div>
+      <div class="sm-bad">
+        <div class="sm-eyebrow">Free · No obligation</div>
+        <div class="sm-h">Protect Your Home From Leaks</div>
+        <div class="sm-p">Emergency repairs within 24 hours. 10-year guarantee in writing. Serving Oak Park and surrounding areas since 2004.</div>
+        <div class="sm-btn">Book Free Inspection →</div>
+        <div class="sm-img"></div>
+        <div class="sm-divider"></div>
+        <div class="sm-cards">
+          <div class="sm-card"><div class="sm-card-t">Inspection</div><div class="sm-card-p">Same-day available. No commitment.</div></div>
+          <div class="sm-card"><div class="sm-card-t">Repair</div><div class="sm-card-p">Emergency same-day. Insurance handled.</div></div>
+          <div class="sm-card"><div class="sm-card-t">Replacement</div><div class="sm-card-p">Full re-roof in 1–2 days.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ba-divider"></div>
+    <div class="ba-col">
+      <div class="ba-col-label good-label">Spacious — feels premium</div>
+      <div class="sm-good">
+        <div class="sm-eyebrow">Free · No obligation</div>
+        <div class="sm-h">Protect Your Home From Leaks</div>
+        <div class="sm-p">Emergency repairs within 24 hours. 10-year guarantee in writing. Serving Oak Park and surrounding areas since 2004.</div>
+        <div class="sm-btn">Book Free Inspection →</div>
+        <div class="sm-img"></div>
+        <div class="sm-cards">
+          <div class="sm-card"><div class="sm-card-t">Inspection</div><div class="sm-card-p">Same-day available. No commitment.</div></div>
+          <div class="sm-card"><div class="sm-card-t">Repair</div><div class="sm-card-p">Emergency same-day. Insurance handled.</div></div>
+          <div class="sm-card"><div class="sm-card-t">Replacement</div><div class="sm-card-p">Full re-roof in 1–2 days.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Identical content. The only difference is spacing values.</h3>
+  <p>The left side uses 16px section padding, 4px card gap, 3px button padding. The right side uses 28px section padding, 8px card gap, 12px button padding. No content was changed. No colors changed. No fonts changed. Just spacing — and the right one reads as a different calibre of business entirely. This is why whitespace is the highest-leverage design fix you can make.</p>
+</div>
+
+<!-- THE 8 RULES -->
+<div class="divider-label"><span>The 8 whitespace rules — exact values for every situation</span></div>
+
+<div class="rules-list">
+  <div class="rule-item ri-1" onclick="sendPrompt('Show me exactly how to add section padding to my website CSS')">
+    <div class="rule-num">1</div>
+    <div class="rule-body">
+      <div class="rule-title">Section padding: 80–120px top and bottom on every section</div>
+      <div class="rule-desc">This is the single most impactful spacing change. Most amateur sites use 40px. Premium sites use 80px minimum. The extra vertical breathing room is what makes the page feel curated rather than rushed. Double whatever you currently have and see how it looks.</div>
+      <div class="rule-val">padding: 96px 24px; /* desktop */ · padding: 64px 20px; /* mobile */</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-2" onclick="sendPrompt('How much padding should my hero section have on a roofing website?')">
+    <div class="rule-num">2</div>
+    <div class="rule-body">
+      <div class="rule-title">Hero section: 120px+ top padding — the most important section gets the most space</div>
+      <div class="rule-desc">The hero is your 50-millisecond judge. It needs the most generous space of any section because it has to create an immediate sense of quality before anything is even read. The headline should feel like it has room to breathe, not like it's fighting for space.</div>
+      <div class="rule-val">padding: 120px 24px 96px; /* hero gets more top than bottom */</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-3" onclick="sendPrompt('How much padding should my dark breather sections have?')">
+    <div class="rule-num">3</div>
+    <div class="rule-body">
+      <div class="rule-title">Breather sections (8 & 11): 60–80px top and bottom — the most spacious sections on the page</div>
+      <div class="rule-desc">These sections work because they feel like relief after dense content. If they're cramped, they fail completely. The content should feel like it's floating in the middle of dark space — not pressed against the edges. This spaciousness IS the psychology — don't fight it.</div>
+      <div class="rule-val">padding: 72px 32px; /* desktop */ · padding: 56px 24px; /* mobile */</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-4" onclick="sendPrompt('What gap should I use between cards and elements on my website?')">
+    <div class="rule-num">4</div>
+    <div class="rule-body">
+      <div class="rule-title">Between cards and elements: 16–24px gap minimum — never less than 16px</div>
+      <div class="rule-desc">Cards touching or nearly touching look like they were placed by someone who ran out of space. 24px is the standard gap between all cards, service tiles, review blocks, and pricing cards. Use CSS gap on grid/flex containers — never margins on individual cards.</div>
+      <div class="rule-val">gap: 24px; /* grid/flex containers */ · gap: 16px; /* tight mobile grids */</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-5" onclick="sendPrompt('How much padding should buttons have on a roofing website?')">
+    <div class="rule-num">5</div>
+    <div class="rule-body">
+      <div class="rule-title">Inside CTA buttons: 12–14px top/bottom · 24–28px left/right — never tighter</div>
+      <div class="rule-desc">A cramped button looks like it's apologising for existing. A spacious button looks confident and demands to be clicked. The padding inside the button is what makes it feel important. If your CTA button looks like a text link with a box around it, the padding is too small.</div>
+      <div class="rule-val">padding: 13px 26px; /* primary CTA */ · padding: 11px 22px; /* secondary */</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-6" onclick="sendPrompt('What is the correct line height for body text and headings on a website?')">
+    <div class="rule-num">6</div>
+    <div class="rule-body">
+      <div class="rule-title">Line height: 1.7 for body text · 1.3–1.4 for headlines · 1.5 for subheadlines</div>
+      <div class="rule-desc">Line height IS whitespace — it's the space between each line of text. Default line-height (1.2) makes text feel crammed together. 1.7 on body text is the standard for premium sites. It makes copy dramatically easier to read and feels inherently more expensive.</div>
+      <div class="rule-val">body: line-height:1.7 · h1/h2: line-height:1.3 · p.subhead: line-height:1.5</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-7" onclick="sendPrompt('How much space should I put between heading and paragraph text on a website?')">
+    <div class="rule-num">7</div>
+    <div class="rule-body">
+      <div class="rule-title">Between headline and paragraph: 12–16px · between paragraph and button: 24–32px</div>
+      <div class="rule-desc">The space between elements within a section creates visual grouping. Headline and its paragraph should be close (12px) — they belong together. Paragraph and CTA button should be further apart (24px+) — the gap signals "this is a new action, not continuation of the text."</div>
+      <div class="rule-val">h→p: margin-bottom:14px · p→btn: margin-bottom:28px · btn→trust: margin-top:12px</div>
+    </div>
+  </div>
+
+  <div class="rule-item ri-8" onclick="sendPrompt('How wide should my content container be on a website?')">
+    <div class="rule-num">8</div>
+    <div class="rule-body">
+      <div class="rule-title">Max content width: 1200px container · text blocks max 680px wide — never full bleed text</div>
+      <div class="rule-desc">Full-width text on large screens creates lines of 100+ characters — impossible to read comfortably. Constrain your content to a max-width container and constrain text blocks further to 680px. The horizontal whitespace on either side is not wasted — it's the frame that makes the content feel intentional.</div>
+      <div class="rule-val">max-width:1200px; margin:0 auto; · .text-block { max-width:680px; }</div>
+    </div>
+  </div>
+</div>
+
+<!-- SPACING SCALE -->
+<div class="divider-label"><span>Your spacing scale — use only these values, nothing in between</span></div>
+
+<div class="scale-table spacer">
+  <div class="st-header">
+    <div class="st-cell head">Token</div>
+    <div class="st-cell head">Value</div>
+    <div class="st-cell head">Use it for</div>
+    <div class="st-cell head">Never use for</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-1</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">4px</div>
+    <div class="st-cell use-good">Icon-to-label gap · badge padding · dot separator spacing</div>
+    <div class="st-cell" style="color:#A32D2D;">Section gaps · card spacing · anything visible</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-2</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">8px</div>
+    <div class="st-cell use-good">Eyebrow-to-headline · label-to-input · tight pill rows</div>
+    <div class="st-cell" style="color:#A32D2D;">Card padding · section padding · button padding</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-3</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">12px</div>
+    <div class="st-cell use-good">Headline-to-paragraph · inside small cards · mobile button padding</div>
+    <div class="st-cell" style="color:#A32D2D;">Section padding · breather padding · desktop card gap</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-4</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">16px</div>
+    <div class="st-cell use-good">Card padding (minimum) · mobile card gap · form field gap</div>
+    <div class="st-cell" style="color:#A32D2D;">Section padding · breather sections</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-5</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">24px</div>
+    <div class="st-cell use-good">Desktop card gap · paragraph-to-CTA · card padding (standard) · mobile section padding</div>
+    <div class="st-cell" style="color:#A32D2D;">Section vertical padding on desktop</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-6</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">32px</div>
+    <div class="st-cell use-good">Section horizontal padding · space between section title and content</div>
+    <div class="st-cell" style="color:#A32D2D;">Section vertical padding (too small)</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-7</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">48px</div>
+    <div class="st-cell use-good">Mobile section vertical padding · breather section minimum</div>
+    <div class="st-cell" style="color:#A32D2D;">Spacing between inline elements</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-8</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">64px</div>
+    <div class="st-cell use-good">Desktop section vertical padding (minimum) · breather sections</div>
+    <div class="st-cell" style="color:#A32D2D;">Anything on mobile</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-9</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">96px</div>
+    <div class="st-cell use-good">Standard desktop section vertical padding · hero section</div>
+    <div class="st-cell" style="color:#A32D2D;">Mobile · tight informational sections</div>
+  </div>
+  <div class="st-row">
+    <div class="st-cell token">--sp-10</div>
+    <div class="st-cell" style="font-weight:500;color:var(--color-text-primary);">120px</div>
+    <div class="st-cell use-good">Hero section top padding · major landing moments</div>
+    <div class="st-cell" style="color:#A32D2D;">Regular content sections · mobile</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why use a spacing scale and not arbitrary values?</h3>
+  <p>When every element uses a value from the same scale (4, 8, 12, 16, 24, 32, 48, 64, 96, 120), the page achieves visual harmony automatically. Elements feel like they belong to the same system. When spacing is arbitrary (13px here, 19px there, 27px somewhere else), the page feels inconsistent even when the user can't articulate why. Define these as CSS custom properties once and reference them everywhere — changing one value updates every instance.</p>
+</div>
+
+<!-- SECTION BY SECTION MAP -->
+<div class="divider-label"><span>Section-by-section spacing map — exact values for your 12 sections</span></div>
+
+<div class="spacing-map spacer">
+  <div class="sm-row-header">
+    <div class="sm-cell head">Section</div>
+    <div class="sm-cell head">Desktop padding (top / bottom)</div>
+    <div class="sm-cell head">Mobile padding (top / bottom)</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">1. Hero</div>
+    <div class="sm-cell correct">120px / 96px</div>
+    <div class="sm-cell correct">80px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">2. Trust strip</div>
+    <div class="sm-cell correct">24px / 24px · narrow strip, not a full section</div>
+    <div class="sm-cell correct">20px / 20px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">3. Authority stack</div>
+    <div class="sm-cell correct">64px / 64px</div>
+    <div class="sm-cell correct">48px / 48px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">4. Local photos</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">5. Video + value prop</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">6. How it works</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">7. Deep reviews</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">8. Services + urgency</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">9. Breather + CTA</div>
+    <div class="sm-cell correct" style="color:#534AB7;font-weight:500;">80px / 80px · most spacious section</div>
+    <div class="sm-cell correct" style="color:#534AB7;font-weight:500;">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">10. Pricing tiers</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">11. FAQ</div>
+    <div class="sm-cell correct">96px / 96px</div>
+    <div class="sm-cell correct">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">12. Final CTA</div>
+    <div class="sm-cell correct" style="color:#534AB7;font-weight:500;">80px / 80px · second most spacious</div>
+    <div class="sm-cell correct" style="color:#534AB7;font-weight:500;">64px / 64px</div>
+  </div>
+  <div class="sm-row">
+    <div class="sm-cell section-name">13. Footer</div>
+    <div class="sm-cell correct">48px / 32px</div>
+    <div class="sm-cell correct">40px / 24px</div>
+  </div>
+</div>
+
+<!-- INSIDE ELEMENTS -->
+<div class="divider-label"><span>Padding inside specific elements — buttons, cards, forms</span></div>
+
+<div class="elem-grid spacer">
+  <div class="elem-card">
+    <div class="ec-label">CTA buttons</div>
+    <div class="ec-demo" style="padding:10px;text-align:center;">
+      <span class="btn-bad">Book Inspection</span>
+      <span style="font-size:10px;color:var(--color-text-tertiary);display:block;margin:2px 0;">cramped — 5px/10px</span>
+      <span class="btn-good">Book Free Inspection →</span>
+      <span style="font-size:10px;color:#0F6E56;display:block;margin:2px 0;">confident — 12px/24px</span>
+    </div>
+    <div class="ec-rule">Primary CTA: 12–14px vertical · 24–28px horizontal. Arrow adds perceived forward momentum. The button should feel like a destination, not an afterthought.</div>
+    <div class="ec-vals">padding: 13px 26px; border-radius: 8px;</div>
+  </div>
+  <div class="elem-card">
+    <div class="ec-label">Content cards (service/pricing)</div>
+    <div class="ec-demo" style="padding:6px;">
+      <div class="card-bad"><div class="cd-label">Inspection</div><div class="cd-text">Same-day available, no commitment required.</div></div>
+      <div style="font-size:10px;color:var(--color-text-tertiary);text-align:center;padding:3px 0;">cramped — 8px</div>
+      <div class="card-good"><div class="cd-label">Inspection</div><div class="cd-text">Same-day available, no commitment required.</div></div>
+      <div style="font-size:10px;color:#0F6E56;text-align:center;padding:3px 0;">comfortable — 16px</div>
+    </div>
+    <div class="ec-rule">Cards need 16px minimum padding, 20–24px preferred. Content inside a card that touches the card edge looks like a mistake, not a design decision.</div>
+    <div class="ec-vals">padding: 20px; border-radius: 10px; gap: 24px;</div>
+  </div>
+  <div class="elem-card">
+    <div class="ec-label">Form fields</div>
+    <div class="ec-demo" style="padding:10px;display:flex;flex-direction:column;gap:6px;">
+      <div style="border:1px solid var(--color-border-secondary);border-radius:4px;padding:5px 8px;font-size:11px;color:var(--color-text-tertiary);">Your name</div>
+      <div style="font-size:10px;color:var(--color-text-tertiary);text-align:center;">cramped — 5px/8px</div>
+      <div style="border:1.5px solid var(--color-border-secondary);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--color-text-tertiary);">Your name</div>
+      <div style="font-size:10px;color:#0F6E56;text-align:center;">comfortable — 10px/14px</div>
+    </div>
+    <div class="ec-rule">Form inputs need 10px vertical and 14px horizontal padding. The field should feel easy and inviting to type into — not like a tiny box you're trying to fit letters inside.</div>
+    <div class="ec-vals">padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;</div>
+  </div>
+  <div class="elem-card">
+    <div class="ec-label">Navigation</div>
+    <div class="ec-demo" style="padding:8px;">
+      <div style="display:flex;gap:4px;padding:6px;background:var(--color-background-secondary);border-radius:4px;margin-bottom:4px;">
+        <div style="font-size:10px;color:var(--color-text-secondary);padding:2px 4px;">Home</div>
+        <div style="font-size:10px;color:var(--color-text-secondary);padding:2px 4px;">Services</div>
+        <div style="font-size:10px;color:var(--color-text-secondary);padding:2px 4px;">Reviews</div>
+      </div>
+      <div style="font-size:9px;color:var(--color-text-tertiary);text-align:center;margin-bottom:6px;">cramped links</div>
+      <div style="display:flex;gap:12px;padding:10px 16px;background:var(--color-background-secondary);border-radius:6px;align-items:center;">
+        <div style="font-size:11px;color:var(--color-text-secondary);">Home</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);">Services</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);">Reviews</div>
+      </div>
+      <div style="font-size:9px;color:#0F6E56;text-align:center;margin-top:3px;">breathing nav</div>
+    </div>
+    <div class="ec-rule">Nav links need 12px gap between them minimum, 16–20px preferred. A cramped navigation makes the whole header feel compressed even if the logo looks great.</div>
+    <div class="ec-vals">gap: 16px; nav height: 64–72px; link padding: 8px 4px;</div>
+  </div>
+</div>
+
+<!-- THE COGNITIVE LOAD DEMO -->
+<div class="divider-label"><span>Line height — the invisible whitespace that most people ignore</span></div>
+
+<div class="cl-demo">
+  <div class="cl-bar">Line height comparison — same words, completely different readability and perceived quality</div>
+  <div class="cl-cols">
+    <div class="cl-side">
+      <div class="cl-side-label cl-bad-label">line-height: 1.2 — cramped, cheap</div>
+      <div class="text-bad">Emergency roof repairs in Oak Park and surrounding areas. We respond within 24 hours and handle all insurance claims directly so you don't have to deal with adjusters. 10-year workmanship guarantee in writing on every job.</div>
+    </div>
+    <div class="cl-side" style="border-left:1px solid var(--color-border-tertiary);">
+      <div class="cl-side-label cl-good-label">line-height: 1.7 — spacious, premium</div>
+      <div class="text-good">Emergency roof repairs in Oak Park and surrounding areas. We respond within 24 hours and handle all insurance claims directly so you don't have to deal with adjusters. 10-year workmanship guarantee in writing on every job.</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The single CSS line that makes the biggest difference to body text</h3>
+  <p>Add this to your body selector and watch your entire site transform: <code style="background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:11px;">body { line-height: 1.7; }</code> — that one line is the fastest whitespace improvement you can make. It costs nothing, takes 10 seconds, and immediately makes every paragraph on the site feel more premium, more readable, and more trustworthy.</p>
+</div>
+
+<!-- THE AUDIT METHOD -->
+<div class="divider-label"><span>How to actually audit your current site — the 3-step process</span></div>
+
+<div class="grid-2 spacer">
+  <div class="el-card teal-card" onclick="sendPrompt('How do I audit whitespace on my existing website to find problem areas?')">
+    <div class="el-tag">Step 1 — the squint test</div>
+    <h3>Squint at your site until it blurs — tight clusters are the problems</h3>
+    <p>Open your website and literally squint until you can't read text. The page reduces to shapes and density. Any area that looks like a dense cluster of shapes is a whitespace problem. Any area that looks light and open is doing it right. Mark every cluster — those are your first fixes.</p>
+    <div class="why">Your brain processes density before it processes content. Dense areas feel stressful even before a visitor has read a single word.</div>
+  </div>
+  <div class="el-card teal-card" onclick="sendPrompt('What is the double padding rule for fixing whitespace on a website?')">
+    <div class="el-tag">Step 2 — the double rule</div>
+    <h3>Double every padding and margin value you currently have and compare</h3>
+    <p>Open your CSS. Find every padding and margin value. Double all of them. Screenshot both versions side by side. In almost every case the doubled version will look more premium. Then scale back any that go too far — but your starting point is almost always too tight, not too loose.</p>
+    <div class="why">Most people's instinct is to add more content when they have empty space. The correct instinct is to add more space when things feel cramped. Fighting this instinct is the entire skill.</div>
+  </div>
+</div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">Step 3 — the Hermès test</div>
+  <h3>If it feels like too much space, you're close to right — trust the discomfort</h3>
+  <p>When you increase whitespace to the correct amount, your first reaction will be "this feels like too much space, something is missing." That feeling is your amateur instinct fighting your professional decision. Luxury brands like Hermès and Apple use what feels like "too much space" to everyone who first encounters it. Let the discomfort exist for 24 hours. Come back to it. It will feel right. The visitor who arrives at your roofing site fresh — without the context of having designed it — will feel calm and confident, not empty. That's the goal.</p>
+  <div class="why">You've been staring at your site for hours or days. You're immune to its density. A fresh visitor experiences it the way you experience a new site — the cramped one feels overwhelming, the spacious one feels trustworthy. Design for the fresh visitor, not for yourself.</div>
+</div>
+
+<!-- WHAT NOT TO DO -->
+<div class="divider-label"><span>The most common whitespace mistakes — and how to fix them</span></div>
+
+<div class="pills">
+  <span class="pill pill-red">Section padding under 60px on desktop</span>
+  <span class="pill pill-red">Cards with less than 16px internal padding</span>
+  <span class="pill pill-red">CTA button with less than 10px vertical padding</span>
+  <span class="pill pill-red">line-height below 1.6 on body text</span>
+  <span class="pill pill-red">Gap between cards less than 16px</span>
+  <span class="pill pill-red">Content width over 800px on text blocks</span>
+  <span class="pill pill-red">Breather sections with same padding as content sections</span>
+  <span class="pill pill-red">Navigation links with less than 12px gap between them</span>
+  <span class="pill pill-red">Form fields with less than 8px vertical padding</span>
+  <span class="pill pill-red">Adding content to fill space instead of accepting the space</span>
+</div>
+
+<div class="pills" style="margin-top:8px;">
+  <span class="pill pill-green">Section padding 80–120px desktop / 56–80px mobile</span>
+  <span class="pill pill-green">Cards with 20–24px internal padding</span>
+  <span class="pill pill-green">CTA buttons with 12px vertical / 24px horizontal</span>
+  <span class="pill pill-green">body { line-height: 1.7 }</span>
+  <span class="pill pill-green">24px gap between all cards</span>
+  <span class="pill pill-green">Text blocks max-width: 680px</span>
+  <span class="pill pill-green">Breather sections 20px more padding than content sections</span>
+  <span class="pill pill-green">A spacing scale with only 10 values — nothing in between</span>
+</div>

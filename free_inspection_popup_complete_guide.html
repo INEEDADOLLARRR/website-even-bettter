@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── POPUP MOCKUP ── */
+  .popup-demo-wrap { position:relative; border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .demo-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+
+  /* blurred page behind */
+  .page-behind { padding:20px; background:var(--color-background-primary); filter:blur(1.5px); opacity:0.4; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .pb-block { border-radius:6px; background:var(--color-background-secondary); }
+
+  /* overlay */
+  .popup-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:16px; top:36px; }
+
+  /* the actual popup card */
+  .popup-card { background:var(--color-background-primary); border-radius:14px; width:100%; max-width:380px; overflow:hidden; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
+
+  /* left accent bar */
+  .popup-inner { display:grid; grid-template-columns:4px 1fr; }
+  .popup-accent { background:#0F6E56; border-radius:0; }
+  .popup-content { padding:20px 18px 18px; }
+
+  /* close button */
+  .popup-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+  .popup-close { width:24px; height:24px; border-radius:50%; background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--color-text-tertiary); cursor:pointer; flex-shrink:0; }
+
+  .popup-eyebrow { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:#0F6E56; margin-bottom:4px; }
+  .popup-headline { font-size:16px; font-weight:500; color:var(--color-text-primary); margin-bottom:3px; line-height:1.3; }
+  .popup-sub { font-size:11px; color:var(--color-text-secondary); line-height:1.5; margin-bottom:16px; }
+
+  /* fields */
+  .popup-field { margin-bottom:10px; }
+  .popup-label { font-size:11px; font-weight:500; color:var(--color-text-secondary); margin-bottom:4px; display:block; }
+  .popup-input { width:100%; border:1.5px solid var(--color-border-secondary); border-radius:8px; padding:9px 12px; font-size:13px; color:var(--color-text-primary); background:var(--color-background-secondary); outline:none; transition:border-color 0.15s; font-family:var(--font-sans); }
+  .popup-input:focus { border-color:#0F6E56; }
+  .popup-input.valid { border-color:#0F6E56; background:var(--color-background-primary); }
+  .popup-input-row { position:relative; }
+  .popup-check { position:absolute; right:10px; top:50%; transform:translateY(-50%); width:16px; height:16px; border-radius:50%; background:#0F6E56; display:flex; align-items:center; justify-content:center; font-size:9px; color:#fff; }
+
+  /* submit btn */
+  .popup-btn { width:100%; background:#0F6E56; color:#fff; border:none; border-radius:8px; padding:12px; font-size:13px; font-weight:500; cursor:pointer; margin-top:4px; font-family:var(--font-sans); }
+  .popup-trust { display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+  .popup-trust-item { font-size:10px; color:var(--color-text-tertiary); display:flex; align-items:center; gap:4px; }
+  .popup-trust-dot { width:4px; height:4px; border-radius:50%; background:#0F6E56; flex-shrink:0; }
+
+  /* ── SUCCESS STATE MOCKUP ── */
+  .success-card { background:var(--color-background-primary); border-radius:14px; width:100%; max-width:380px; overflow:hidden; box-shadow:0 24px 48px rgba(0,0,0,0.3); }
+  .success-inner { padding:32px 24px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; }
+  .success-icon { width:52px; height:52px; border-radius:50%; background:#E1F5EE; display:flex; align-items:center; justify-content:center; font-size:22px; }
+  .success-headline { font-size:16px; font-weight:500; color:var(--color-text-primary); line-height:1.4; }
+  .success-sub { font-size:12px; color:var(--color-text-secondary); line-height:1.6; max-width:280px; }
+  .success-time { background:#E1F5EE; border-radius:8px; padding:8px 16px; font-size:12px; color:#0F6E56; font-weight:500; }
+  .success-close { font-size:11px; color:var(--color-text-tertiary); cursor:pointer; margin-top:4px; text-decoration:underline; }
+  @media (prefers-color-scheme:dark){
+    .success-icon { background:#04342C; }
+    .success-time { background:#04342C; }
+  }
+
+  /* ── ANATOMY BOX ── */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anat-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anat-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:110px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-ex    { font-size:11px; font-style:italic; margin-top:3px; border-radius:5px; padding:5px 8px; }
+
+  .ab-teal { background:#E1F5EE; border-color:#5DCAA5; }
+  .ab-teal .anat-label{color:#0F6E56;} .ab-teal .anat-desc{color:#0F6E56;} .ab-teal .anat-ex{background:#9FE1CB;color:#04342C;}
+  @media (prefers-color-scheme:dark){
+    .ab-teal{background:#04342C;border-color:#1D9E75;} .ab-teal .anat-desc{color:#5DCAA5;} .ab-teal .anat-ex{background:#085041;color:#9FE1CB;}
+  }
+
+  /* ── TRIGGER TYPES ── */
+  .trigger-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .trig-card { border-radius:10px; border:1px solid; padding:12px; }
+  .trig-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px; }
+  .trig-title { font-size:13px; font-weight:500; margin-bottom:4px; }
+  .trig-desc  { font-size:12px; line-height:1.5; margin-bottom:5px; }
+  .trig-code  { font-size:10px; border-radius:5px; padding:5px 8px; font-family:var(--font-mono); line-height:1.6; }
+
+  .tc-1 { background:#E6F1FB; border-color:#85B7EB; }
+  .tc-1 .trig-label{color:#185FA5;} .tc-1 .trig-title{color:#042C53;} .tc-1 .trig-desc{color:#185FA5;} .tc-1 .trig-code{background:#B5D4F4;color:#042C53;}
+  .tc-2 { background:#E1F5EE; border-color:#5DCAA5; }
+  .tc-2 .trig-label{color:#0F6E56;} .tc-2 .trig-title{color:#04342C;} .tc-2 .trig-desc{color:#0F6E56;} .tc-2 .trig-code{background:#9FE1CB;color:#04342C;}
+  .tc-3 { background:#FAEEDA; border-color:#EF9F27; }
+  .tc-3 .trig-label{color:#854F0B;} .tc-3 .trig-title{color:#412402;} .tc-3 .trig-desc{color:#854F0B;} .tc-3 .trig-code{background:#FAC775;color:#412402;}
+  .tc-4 { background:#EEEDFE; border-color:#AFA9EC; }
+  .tc-4 .trig-label{color:#534AB7;} .tc-4 .trig-title{color:#26215C;} .tc-4 .trig-desc{color:#534AB7;} .tc-4 .trig-code{background:#CECBF6;color:#26215C;}
+  @media (prefers-color-scheme:dark){
+    .tc-1{background:#042C53;border-color:#378ADD;} .tc-1 .trig-title{color:#B5D4F4;} .tc-1 .trig-desc{color:#85B7EB;} .tc-1 .trig-code{background:#0C447C;color:#B5D4F4;}
+    .tc-2{background:#04342C;border-color:#1D9E75;} .tc-2 .trig-title{color:#9FE1CB;} .tc-2 .trig-desc{color:#5DCAA5;} .tc-2 .trig-code{background:#085041;color:#9FE1CB;}
+    .tc-3{background:#412402;border-color:#BA7517;} .tc-3 .trig-title{color:#FAC775;} .tc-3 .trig-desc{color:#EF9F27;} .tc-3 .trig-code{background:#633806;color:#FAC775;}
+    .tc-4{background:#26215C;border-color:#7F77DD;} .tc-4 .trig-title{color:#CECBF6;} .tc-4 .trig-desc{color:#AFA9EC;} .tc-4 .trig-code{background:#3C3489;color:#CECBF6;}
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:14px; }
+  .flow-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:12px; }
+  .flow-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+  .flow-row:last-child { margin-bottom:0; }
+  .flow-step { flex:1; border-radius:8px; padding:9px 11px; }
+  .flow-arrow { font-size:14px; color:var(--color-text-tertiary); flex-shrink:0; }
+  .flow-step-num { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px; }
+  .flow-step-text { font-size:12px; font-weight:500; }
+  .flow-step-sub  { font-size:11px; margin-top:2px; }
+
+  .fs-1 { background:#E6F1FB; } .fs-1 .flow-step-num{color:#185FA5;} .fs-1 .flow-step-text{color:#042C53;} .fs-1 .flow-step-sub{color:#185FA5;}
+  .fs-2 { background:#E1F5EE; } .fs-2 .flow-step-num{color:#0F6E56;} .fs-2 .flow-step-text{color:#04342C;} .fs-2 .flow-step-sub{color:#0F6E56;}
+  .fs-3 { background:#FAEEDA; } .fs-3 .flow-step-num{color:#854F0B;} .fs-3 .flow-step-text{color:#412402;} .fs-3 .flow-step-sub{color:#854F0B;}
+  .fs-4 { background:#EEEDFE; } .fs-4 .flow-step-num{color:#534AB7;} .fs-4 .flow-step-text{color:#26215C;} .fs-4 .flow-step-sub{color:#534AB7;}
+  .fs-5 { background:#EAF3DE; } .fs-5 .flow-step-num{color:#3B6D11;} .fs-5 .flow-step-text{color:#173404;} .fs-5 .flow-step-sub{color:#3B6D11;}
+  @media (prefers-color-scheme:dark){
+    .fs-1{background:#042C53;} .fs-1 .flow-step-text{color:#B5D4F4;} .fs-1 .flow-step-sub{color:#85B7EB;}
+    .fs-2{background:#04342C;} .fs-2 .flow-step-text{color:#9FE1CB;} .fs-2 .flow-step-sub{color:#5DCAA5;}
+    .fs-3{background:#412402;} .fs-3 .flow-step-text{color:#FAC775;} .fs-3 .flow-step-sub{color:#EF9F27;}
+    .fs-4{background:#26215C;} .fs-4 .flow-step-text{color:#CECBF6;} .fs-4 .flow-step-sub{color:#AFA9EC;}
+    .fs-5{background:#173404;} .fs-5 .flow-step-text{color:#C0DD97;} .fs-5 .flow-step-sub{color:#97C459;}
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-box { background:#1a1a18; border-radius:10px; padding:16px; overflow-x:auto; }
+  .code-title { font-size:11px; font-weight:500; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px; }
+  .code-block { font-family:var(--font-mono); font-size:11px; line-height:1.9; }
+  .c-comment { color:#5F5E5A; }
+  .c-keyword { color:#AFA9EC; }
+  .c-string  { color:#9FE1CB; }
+  .c-func    { color:#FAC775; }
+  .c-var     { color:#B5D4F4; }
+  .c-plain   { color:#D3D1C7; }
+
+  /* ── VALIDATION ── */
+  .val-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .val-card { border-radius:10px; border:1px solid; padding:12px; }
+  .val-field{ font-size:12px; font-weight:500; margin-bottom:4px; }
+  .val-rule { font-size:11px; margin-bottom:4px; line-height:1.5; }
+  .val-err  { font-size:11px; border-radius:5px; padding:4px 8px; font-style:italic; margin-top:4px; }
+  .val-ok   { font-size:11px; border-radius:5px; padding:4px 8px; font-style:italic; margin-top:4px; }
+
+  .vc-1{background:#E6F1FB;border-color:#85B7EB;} .vc-1 .val-field{color:#042C53;} .vc-1 .val-rule{color:#185FA5;} .vc-1 .val-err{background:#F7C1C1;color:#501313;} .vc-1 .val-ok{background:#C0DD97;color:#173404;}
+  .vc-2{background:#E1F5EE;border-color:#5DCAA5;} .vc-2 .val-field{color:#04342C;} .vc-2 .val-rule{color:#0F6E56;} .vc-2 .val-err{background:#F7C1C1;color:#501313;} .vc-2 .val-ok{background:#C0DD97;color:#173404;}
+  .vc-3{background:#FAEEDA;border-color:#EF9F27;} .vc-3 .val-field{color:#412402;} .vc-3 .val-rule{color:#854F0B;} .vc-3 .val-err{background:#F7C1C1;color:#501313;} .vc-3 .val-ok{background:#C0DD97;color:#173404;}
+  @media (prefers-color-scheme:dark){
+    .vc-1{background:#042C53;border-color:#378ADD;} .vc-1 .val-field{color:#B5D4F4;} .vc-1 .val-rule{color:#85B7EB;} .vc-1 .val-err{background:#791F1F;color:#F7C1C1;} .vc-1 .val-ok{background:#27500A;color:#C0DD97;}
+    .vc-2{background:#04342C;border-color:#1D9E75;} .vc-2 .val-field{color:#9FE1CB;} .vc-2 .val-rule{color:#5DCAA5;} .vc-2 .val-err{background:#791F1F;color:#F7C1C1;} .vc-2 .val-ok{background:#27500A;color:#C0DD97;}
+    .vc-3{background:#412402;border-color:#BA7517;} .vc-3 .val-field{color:#FAC775;} .vc-3 .val-rule{color:#EF9F27;} .vc-3 .val-err{background:#791F1F;color:#F7C1C1;} .vc-3 .val-ok{background:#27500A;color:#C0DD97;}
+  }
+
+  /* DO/DONT */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-green  { background:#C0DD97; color:#173404; }
+  .pill-teal   { background:#9FE1CB; color:#04342C; }
+  .pill-blue   { background:#B5D4F4; color:#042C53; }
+  .pill-red    { background:#F7C1C1; color:#501313; }
+  .pill-amber  { background:#FAC775; color:#412402; }
+  @media (prefers-color-scheme:dark){
+    .pill-green{background:#27500A;color:#C0DD97;} .pill-teal{background:#085041;color:#9FE1CB;}
+    .pill-blue{background:#0C447C;color:#B5D4F4;} .pill-red{background:#791F1F;color:#F7C1C1;} .pill-amber{background:#633806;color:#FAC775;}
+  }
+</style>
+
+<h1>Free inspection popup — complete design & mechanism guide</h1>
+<p class="subtitle">3 fields · 1 submit · zero friction · two states: form + success confirmation<br>Every element, every trigger, every line of code explained</p>
+
+<!-- THE COMPLETE VISUAL MOCKUP -->
+<div class="divider-label"><span>The popup — open state (what the visitor sees)</span></div>
+
+<div class="popup-demo-wrap">
+  <div class="demo-bar">Popup open state — appears over blurred page content on button click</div>
+  <div class="page-behind">
+    <div class="pb-block" style="height:60px;"></div>
+    <div class="pb-block" style="height:60px;"></div>
+    <div class="pb-block" style="height:40px;"></div>
+    <div class="pb-block" style="height:40px;"></div>
+    <div class="pb-block" style="height:50px;"></div>
+    <div class="pb-block" style="height:50px;"></div>
+  </div>
+  <div class="popup-overlay">
+    <div class="popup-card">
+      <div class="popup-inner">
+        <div class="popup-accent"></div>
+        <div class="popup-content">
+          <div class="popup-top">
+            <div>
+              <div class="popup-eyebrow">Free · No obligation</div>
+              <div class="popup-headline">Book your free roof inspection</div>
+            </div>
+            <div class="popup-close">✕</div>
+          </div>
+          <div class="popup-sub">Takes 30 seconds. We'll call you within 2 hours to confirm your slot.</div>
+          <div class="popup-field">
+            <label class="popup-label">Your name</label>
+            <div class="popup-input-row">
+              <input class="popup-input valid" value="Sarah Mitchell" readonly/>
+              <div class="popup-check">✓</div>
+            </div>
+          </div>
+          <div class="popup-field">
+            <label class="popup-label">Phone number</label>
+            <div class="popup-input-row">
+              <input class="popup-input valid" value="(555) 000-0000" readonly/>
+              <div class="popup-check">✓</div>
+            </div>
+          </div>
+          <div class="popup-field">
+            <label class="popup-label">Zip code</label>
+            <div class="popup-input-row">
+              <input class="popup-input" placeholder="Enter your zip code" readonly style="border-color:var(--color-border-secondary);"/>
+            </div>
+          </div>
+          <button class="popup-btn">Book My Free Inspection →</button>
+          <div class="popup-trust">
+            <div class="popup-trust-item"><div class="popup-trust-dot"></div>No commitment</div>
+            <div class="popup-trust-item"><div class="popup-trust-dot"></div>Same-day available</div>
+            <div class="popup-trust-item"><div class="popup-trust-dot"></div>Licensed & insured</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS STATE -->
+<div class="divider-label"><span>The success state — what happens immediately after submit</span></div>
+
+<div class="popup-demo-wrap">
+  <div class="demo-bar">Success state — form disappears, confirmation appears · page stays visible · auto-closes after 5 seconds</div>
+  <div class="page-behind">
+    <div class="pb-block" style="height:60px;"></div>
+    <div class="pb-block" style="height:60px;"></div>
+    <div class="pb-block" style="height:40px;"></div>
+    <div class="pb-block" style="height:40px;"></div>
+  </div>
+  <div class="popup-overlay">
+    <div class="success-card">
+      <div class="success-inner">
+        <div class="success-icon">✓</div>
+        <div class="success-headline">You're booked, Sarah.<br>We'll call you within 2 hours.</div>
+        <div class="success-sub">Check your phone — we'll confirm your inspection slot and answer any questions you have.</div>
+        <div class="success-time">📞 Calling from (555) 000-0000</div>
+        <div class="success-close">Close this window</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANATOMY -->
+<div class="divider-label"><span>Anatomy — every element and why it's there</span></div>
+
+<div class="anatomy-box ab-teal spacer">
+  <div class="anat-row">
+    <div class="anat-label">Dark overlay</div>
+    <div class="anat-desc">A semi-transparent dark layer (rgba 0,0,0,0.55) covers the entire page behind the popup. This creates focus — the visitor's eye has nowhere to go except the popup. Clicking the overlay closes the popup (this is the expected browser behaviour and must work).
+      <div class="anat-ex">backdrop: rgba(0,0,0,0.55) · backdrop-filter: blur(3px) on modern browsers · click-to-close on the overlay itself</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Left accent bar</div>
+    <div class="anat-desc">A 4px vertical bar in your brand teal/green on the left edge of the popup card. Subtle but effective — it signals brand identity and premium quality without adding visual noise. Your custom estimator had this dark card design — this is the lighter-background equivalent.
+      <div class="anat-ex">4px wide · full card height · brand color (#0F6E56 or your equivalent) · no border-radius</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Close button (✕)</div>
+    <div class="anat-desc">Top-right corner. Small circle, 24px. Must be immediately visible and work on first click. This is non-negotiable — a popup that traps visitors destroys trust instantly. Also must close on Escape key press and on clicking the dark overlay.
+      <div class="anat-ex">Three close triggers: ✕ button click · Escape key · clicking outside the card on the overlay</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Eyebrow line</div>
+    <div class="anat-desc">Small uppercase text above the headline: "Free · No obligation." Kills commitment anxiety before the visitor even reads the headline. Sets the emotional tone of the entire popup in 3 words.
+      <div class="anat-ex">"Free · No obligation" · "Takes 30 seconds" · "No sales pitch" — pick the fear you most need to kill first</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Headline</div>
+    <div class="anat-desc">Direct and specific — names the exact action. Not "Get in touch" or "Contact us." The visitor just clicked "Book a Free Inspection" — the popup headline must confirm exactly that action so they feel they're in the right place.
+      <div class="anat-ex">"Book your free roof inspection" — mirrors the button text exactly. Never a surprise or redirect.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Subheadline</div>
+    <div class="anat-desc">One sentence that answers "what happens after I submit?" The visitor needs to know what the next step is before they commit to filling the form. "We'll call you within 2 hours" sets a clear expectation and removes the fear of submitting into a void.
+      <div class="anat-ex">"Takes 30 seconds. We'll call you within 2 hours to confirm your slot." — time to fill + response time + what happens next</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">3 fields only</div>
+    <div class="anat-desc">Name · Phone · Zip code. Nothing else. No email (you have the phone), no address (you'll get it on the call), no "describe your problem" textarea (you'll ask on the call). Every additional field drops conversion rate. Your notes were explicit: "Only collect 2–3 bits of info — get everything else over the phone."
+      <div class="anat-ex">Name → Phone → Zip. Tab order must flow naturally downward. No optional fields. No dropdowns.</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Green checkmark on valid input</div>
+    <div class="anat-desc">The moment a field passes validation (name has 2+ chars, phone has 10 digits, zip has 5 digits), a small green checkmark appears inside the right edge of the field and the border turns green. This is the micro-interaction from your notes — positive reinforcement that creates momentum through the form.
+      <div class="anat-ex">Appears on blur (when the visitor leaves the field) · green border + green ✓ icon inside field · instant visual reward</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Submit button</div>
+    <div class="anat-desc">Full width, brand color, direct action text. "Book My Free Inspection →" — first person ("My") makes it feel like their action not yours. Arrow signals forward movement. Never "Submit" or "Send."
+      <div class="anat-ex">"Book My Free Inspection →" · disabled state when fields are invalid (lighter opacity) · loading spinner on click while submitting</div>
+    </div>
+  </div>
+  <div class="anat-row">
+    <div class="anat-label">Trust micro-signals</div>
+    <div class="anat-desc">Three tiny dot-separated reassurances below the button. At the exact moment of commitment these kill last-second doubt. Keep them to 2–3 words each so they can be read in under a second.
+      <div class="anat-ex">"No commitment · Same-day available · Licensed & insured" — three fears, three kills, zero extra space needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT OPENS — TRIGGERS -->
+<div class="divider-label"><span>The 4 triggers that open the popup — wire all of these</span></div>
+
+<div class="trigger-grid spacer">
+  <div class="trig-card tc-1">
+    <div class="trig-label">Trigger 1 — primary</div>
+    <div class="trig-title">Hero CTA button click</div>
+    <div class="trig-desc">Every "Book a Free Inspection" button across the entire site opens this popup. Not a new page — a modal over the current page.</div>
+    <div class="trig-code">document.querySelectorAll('.cta-inspection')<br>.forEach(btn => btn.addEventListener<br>('click', openPopup));</div>
+  </div>
+  <div class="trig-card tc-2">
+    <div class="trig-label">Trigger 2 — scroll timer</div>
+    <div class="trig-title">15-second scroll trigger</div>
+    <div class="trig-desc">After 15 seconds of active scrolling (not just page load), the popup slides in from bottom-right as a smaller card. Only fires once per session.</div>
+    <div class="trig-code">let scrolled = false;<br>window.addEventListener('scroll', () => {<br>  if(!scrolled) { scrolled=true;<br>  setTimeout(openMiniPopup, 15000); }<br>});</div>
+  </div>
+  <div class="trig-card tc-3">
+    <div class="trig-label">Trigger 3 — exit intent</div>
+    <div class="trig-title">Mouse leaves viewport (desktop)</div>
+    <div class="trig-desc">On desktop, when the mouse moves toward the top of the browser (exit intent), the popup fires. Catches visitors about to leave. Only fires once per session.</div>
+    <div class="trig-code">document.addEventListener('mouseleave',<br>(e) => {<br>  if(e.clientY < 10 && !firedExit) {<br>    firedExit = true; openPopup();<br>  }<br>});</div>
+  </div>
+  <div class="trig-card tc-4">
+    <div class="trig-label">Trigger 4 — section CTAs</div>
+    <div class="trig-title">All mid-page inspection buttons</div>
+    <div class="trig-desc">Every CTA button throughout the page that says "Book Inspection" or "Get a Free Inspection" gets the same class and opens the same popup. One popup, many triggers.</div>
+    <div class="trig-code">/* Add class to every inspection CTA */<br>&lt;button class="cta-inspection"&gt;<br>  Book a Free Inspection<br>&lt;/button&gt;</div>
+  </div>
+</div>
+
+<!-- COMPLETE MECHANISM FLOW -->
+<div class="divider-label"><span>The complete mechanism — step by step what happens</span></div>
+
+<div class="flow-box spacer">
+  <div class="flow-title">Full interaction flow from button click to booked lead</div>
+  <div class="flow-row">
+    <div class="flow-step fs-1">
+      <div class="flow-step-num">Step 1</div>
+      <div class="flow-step-text">Visitor clicks any inspection CTA</div>
+      <div class="flow-step-sub">Any button with class "cta-inspection" anywhere on page</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step fs-2">
+      <div class="flow-step-num">Step 2</div>
+      <div class="flow-step-text">Overlay fades in + popup slides up</div>
+      <div class="flow-step-sub">300ms fade for overlay · 250ms slide-up for card · body scroll locked</div>
+    </div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-step fs-2">
+      <div class="flow-step-num">Step 3</div>
+      <div class="flow-step-text">Name field auto-focuses</div>
+      <div class="flow-step-sub">Cursor lands in first field immediately · no extra click needed</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step fs-3">
+      <div class="flow-step-num">Step 4</div>
+      <div class="flow-step-text">Visitor fills 3 fields</div>
+      <div class="flow-step-sub">Green ✓ appears on each valid field · button activates when all 3 valid</div>
+    </div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-step fs-3">
+      <div class="flow-step-num">Step 5</div>
+      <div class="flow-step-text">Submit → loading state</div>
+      <div class="flow-step-sub">Button shows spinner · fields disabled · "Booking..." text · prevents double-submit</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step fs-4">
+      <div class="flow-step-num">Step 6</div>
+      <div class="flow-step-text">Data sent to your backend</div>
+      <div class="flow-step-sub">POST to your form handler (Formspree / Netlify Forms / custom API) · also sends you an email/SMS notification</div>
+    </div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-step fs-4">
+      <div class="flow-step-num">Step 7</div>
+      <div class="flow-step-text">Form swaps to success state</div>
+      <div class="flow-step-sub">Form content fades out · success card fades in · personalised with their name · shows your callback number</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step fs-5">
+      <div class="flow-step-num">Step 8</div>
+      <div class="flow-step-text">Popup auto-closes after 5s</div>
+      <div class="flow-step-sub">OR visitor clicks "Close this window" · scroll unlocks · visitor returns to page exactly where they were</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETE CODE -->
+<div class="divider-label"><span>The complete HTML + CSS + JS implementation</span></div>
+
+<div class="code-box spacer">
+  <div class="code-title">HTML — popup markup (place before closing &lt;/body&gt; tag)</div>
+  <div class="code-block">
+<span class="c-comment">&lt;!-- Popup overlay --&gt;</span><br>
+<span class="c-keyword">&lt;div</span> <span class="c-var">id</span>=<span class="c-string">"inspection-popup"</span> <span class="c-var">class</span>=<span class="c-string">"popup-overlay hidden"</span> <span class="c-var">role</span>=<span class="c-string">"dialog"</span><span class="c-keyword">&gt;</span><br>
+&nbsp;&nbsp;<span class="c-keyword">&lt;div</span> <span class="c-var">class</span>=<span class="c-string">"popup-backdrop"</span><span class="c-keyword">&gt;&lt;/div&gt;</span><br>
+&nbsp;&nbsp;<span class="c-keyword">&lt;div</span> <span class="c-var">class</span>=<span class="c-string">"popup-card"</span><span class="c-keyword">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-comment">&lt;!-- Form state --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;div</span> <span class="c-var">id</span>=<span class="c-string">"popup-form-state"</span><span class="c-keyword">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;button</span> <span class="c-var">class</span>=<span class="c-string">"popup-close"</span> <span class="c-var">aria-label</span>=<span class="c-string">"Close"</span><span class="c-keyword">&gt;</span>✕<span class="c-keyword">&lt;/button&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;p</span> <span class="c-var">class</span>=<span class="c-string">"eyebrow"</span><span class="c-keyword">&gt;</span>Free · No obligation<span class="c-keyword">&lt;/p&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;h2&gt;</span>Book your free roof inspection<span class="c-keyword">&lt;/h2&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;p</span> <span class="c-var">class</span>=<span class="c-string">"popup-sub"</span><span class="c-keyword">&gt;</span>Takes 30 seconds. We'll call you within 2 hours.<span class="c-keyword">&lt;/p&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;form</span> <span class="c-var">id</span>=<span class="c-string">"inspection-form"</span> <span class="c-var">novalidate</span><span class="c-keyword">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;input</span> <span class="c-var">id</span>=<span class="c-string">"f-name"</span> <span class="c-var">type</span>=<span class="c-string">"text"</span> <span class="c-var">placeholder</span>=<span class="c-string">"Your name"</span> <span class="c-var">autocomplete</span>=<span class="c-string">"name"</span><span class="c-keyword">/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;input</span> <span class="c-var">id</span>=<span class="c-string">"f-phone"</span> <span class="c-var">type</span>=<span class="c-string">"tel"</span> <span class="c-var">placeholder</span>=<span class="c-string">"Phone number"</span> <span class="c-var">autocomplete</span>=<span class="c-string">"tel"</span><span class="c-keyword">/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;input</span> <span class="c-var">id</span>=<span class="c-string">"f-zip"</span> <span class="c-var">type</span>=<span class="c-string">"text"</span> <span class="c-var">placeholder</span>=<span class="c-string">"Zip code"</span> <span class="c-var">inputmode</span>=<span class="c-string">"numeric"</span> <span class="c-var">maxlength</span>=<span class="c-string">"5"</span><span class="c-keyword">/&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;button</span> <span class="c-var">type</span>=<span class="c-string">"submit"</span> <span class="c-var">id</span>=<span class="c-string">"popup-submit"</span> <span class="c-var">disabled</span><span class="c-keyword">&gt;</span>Book My Free Inspection →<span class="c-keyword">&lt;/button&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;/form&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;/div&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-comment">&lt;!-- Success state (hidden initially) --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;div</span> <span class="c-var">id</span>=<span class="c-string">"popup-success-state"</span> <span class="c-var">class</span>=<span class="c-string">"hidden"</span><span class="c-keyword">&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;div</span> <span class="c-var">class</span>=<span class="c-string">"success-icon"</span><span class="c-keyword">&gt;</span>✓<span class="c-keyword">&lt;/div&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;h2</span> <span class="c-var">id</span>=<span class="c-string">"success-name"</span><span class="c-keyword">&gt;&lt;/h2&gt;</span> <span class="c-comment">&lt;!-- filled by JS --&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;p&gt;</span>Check your phone — we'll call to confirm your slot.<span class="c-keyword">&lt;/p&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;button</span> <span class="c-var">class</span>=<span class="c-string">"popup-close"</span><span class="c-keyword">&gt;</span>Close this window<span class="c-keyword">&lt;/button&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">&lt;/div&gt;</span><br>
+&nbsp;&nbsp;<span class="c-keyword">&lt;/div&gt;</span><br>
+<span class="c-keyword">&lt;/div&gt;</span>
+  </div>
+</div>
+
+<div class="code-box spacer">
+  <div class="code-title">JavaScript — complete mechanism (open · close · validate · submit · success)</div>
+  <div class="code-block">
+<span class="c-keyword">const</span> <span class="c-var">popup</span>     = <span class="c-func">document.getElementById</span>(<span class="c-string">'inspection-popup'</span>);<br>
+<span class="c-keyword">const</span> <span class="c-var">formState</span> = <span class="c-func">document.getElementById</span>(<span class="c-string">'popup-form-state'</span>);<br>
+<span class="c-keyword">const</span> <span class="c-var">succState</span> = <span class="c-func">document.getElementById</span>(<span class="c-string">'popup-success-state'</span>);<br>
+<span class="c-keyword">const</span> <span class="c-var">submitBtn</span> = <span class="c-func">document.getElementById</span>(<span class="c-string">'popup-submit'</span>);<br>
+<span class="c-keyword">let</span> <span class="c-var">scrollFired</span> = <span class="c-string">false</span>, <span class="c-var">exitFired</span> = <span class="c-string">false</span>;<br>
+<br>
+<span class="c-comment">// ── OPEN / CLOSE ──</span><br>
+<span class="c-keyword">function</span> <span class="c-func">openPopup</span>() {<br>
+&nbsp;&nbsp;<span class="c-var">popup</span>.classList.<span class="c-func">remove</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;<span class="c-var">document.body</span>.style.overflow = <span class="c-string">'hidden'</span>; <span class="c-comment">// lock scroll</span><br>
+&nbsp;&nbsp;<span class="c-func">setTimeout</span>(() => <span class="c-func">document.getElementById</span>(<span class="c-string">'f-name'</span>).<span class="c-func">focus</span>(), <span class="c-string">300</span>);<br>
+}<br>
+<span class="c-keyword">function</span> <span class="c-func">closePopup</span>() {<br>
+&nbsp;&nbsp;<span class="c-var">popup</span>.classList.<span class="c-func">add</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;<span class="c-var">document.body</span>.style.overflow = <span class="c-string">''</span>; <span class="c-comment">// unlock scroll</span><br>
+&nbsp;&nbsp;<span class="c-func">setTimeout</span>(<span class="c-func">resetPopup</span>, <span class="c-string">400</span>); <span class="c-comment">// reset after fade</span><br>
+}<br>
+<span class="c-keyword">function</span> <span class="c-func">resetPopup</span>() {<br>
+&nbsp;&nbsp;<span class="c-var">formState</span>.classList.<span class="c-func">remove</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;<span class="c-var">succState</span>.classList.<span class="c-func">add</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;<span class="c-func">document.getElementById</span>(<span class="c-string">'inspection-form'</span>).<span class="c-func">reset</span>();<br>
+}<br>
+<br>
+<span class="c-comment">// ── TRIGGERS ──</span><br>
+<span class="c-func">document.querySelectorAll</span>(<span class="c-string">'.cta-inspection'</span>)<br>
+&nbsp;&nbsp;.<span class="c-func">forEach</span>(<span class="c-var">btn</span> => <span class="c-var">btn</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'click'</span>, <span class="c-func">openPopup</span>));<br>
+<span class="c-var">document</span>.<span class="c-func">querySelector</span>(<span class="c-string">'.popup-backdrop'</span>)<br>
+&nbsp;&nbsp;.<span class="c-func">addEventListener</span>(<span class="c-string">'click'</span>, <span class="c-func">closePopup</span>);<br>
+<span class="c-func">document.querySelectorAll</span>(<span class="c-string">'.popup-close'</span>)<br>
+&nbsp;&nbsp;.<span class="c-func">forEach</span>(<span class="c-var">btn</span> => <span class="c-var">btn</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'click'</span>, <span class="c-func">closePopup</span>));<br>
+<span class="c-var">document</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'keydown'</span>, <span class="c-var">e</span> => { <span class="c-keyword">if</span>(<span class="c-var">e</span>.key===<span class="c-string">'Escape'</span>) <span class="c-func">closePopup</span>(); });<br>
+<br>
+<span class="c-comment">// 15-second scroll trigger (fires once)</span><br>
+<span class="c-var">window</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'scroll'</span>, () => {<br>
+&nbsp;&nbsp;<span class="c-keyword">if</span>(!<span class="c-var">scrollFired</span>) { <span class="c-var">scrollFired</span>=<span class="c-string">true</span>; <span class="c-func">setTimeout</span>(<span class="c-func">openPopup</span>, <span class="c-string">15000</span>); }<br>
+});<br>
+<br>
+<span class="c-comment">// Exit intent — desktop only</span><br>
+<span class="c-var">document</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'mouseleave'</span>, <span class="c-var">e</span> => {<br>
+&nbsp;&nbsp;<span class="c-keyword">if</span>(<span class="c-var">e</span>.clientY &lt; <span class="c-string">10</span> && !<span class="c-var">exitFired</span>) { <span class="c-var">exitFired</span>=<span class="c-string">true</span>; <span class="c-func">openPopup</span>(); }<br>
+});<br>
+<br>
+<span class="c-comment">// ── VALIDATION ──</span><br>
+<span class="c-keyword">function</span> <span class="c-func">validate</span>(<span class="c-var">id</span>, <span class="c-var">testFn</span>) {<br>
+&nbsp;&nbsp;<span class="c-keyword">const</span> <span class="c-var">el</span> = <span class="c-func">document.getElementById</span>(<span class="c-var">id</span>);<br>
+&nbsp;&nbsp;<span class="c-var">el</span>.<span class="c-func">addEventListener</span>(<span class="c-string">'blur'</span>, () => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">el</span>.classList.<span class="c-func">toggle</span>(<span class="c-string">'valid'</span>, <span class="c-func">testFn</span>(<span class="c-var">el</span>.value));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-func">checkAllValid</span>();<br>
+&nbsp;&nbsp;});<br>
+}<br>
+<span class="c-func">validate</span>(<span class="c-string">'f-name'</span>,  <span class="c-var">v</span> => <span class="c-var">v</span>.trim().length >= <span class="c-string">2</span>);<br>
+<span class="c-func">validate</span>(<span class="c-string">'f-phone'</span>, <span class="c-var">v</span> => <span class="c-var">v</span>.replace(/\D/g,<span class="c-string">''</span>).length >= <span class="c-string">10</span>);<br>
+<span class="c-func">validate</span>(<span class="c-string">'f-zip'</span>,   <span class="c-var">v</span> => /^\d{5}$/.test(<span class="c-var">v</span>.trim()));<br>
+<span class="c-keyword">function</span> <span class="c-func">checkAllValid</span>() {<br>
+&nbsp;&nbsp;<span class="c-keyword">const</span> <span class="c-var">allOk</span> = [<span class="c-string">'f-name'</span>,<span class="c-string">'f-phone'</span>,<span class="c-string">'f-zip'</span>].<span class="c-func">every</span>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">id</span> => <span class="c-func">document.getElementById</span>(<span class="c-var">id</span>).classList.<span class="c-func">contains</span>(<span class="c-string">'valid'</span>));<br>
+&nbsp;&nbsp;<span class="c-var">submitBtn</span>.disabled = !<span class="c-var">allOk</span>;<br>
+}<br>
+<br>
+<span class="c-comment">// ── SUBMIT ──</span><br>
+<span class="c-func">document.getElementById</span>(<span class="c-string">'inspection-form'</span>)<br>
+&nbsp;&nbsp;.<span class="c-func">addEventListener</span>(<span class="c-string">'submit'</span>, <span class="c-keyword">async</span> (<span class="c-var">e</span>) => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">e</span>.<span class="c-func">preventDefault</span>();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">submitBtn</span>.textContent = <span class="c-string">'Booking...'</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">submitBtn</span>.disabled = <span class="c-string">true</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">const</span> <span class="c-var">name</span> = <span class="c-func">document.getElementById</span>(<span class="c-string">'f-name'</span>).value;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">await</span> <span class="c-func">fetch</span>(<span class="c-string">'YOUR_FORM_ENDPOINT'</span>, {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method: <span class="c-string">'POST'</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headers: {<span class="c-string">'Content-Type'</span>: <span class="c-string">'application/json'</span>},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;body: <span class="c-func">JSON.stringify</span>({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name, phone: <span class="c-func">document.getElementById</span>(<span class="c-string">'f-phone'</span>).value,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zip: <span class="c-func">document.getElementById</span>(<span class="c-string">'f-zip'</span>).value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-comment">// Show success state with their name</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-func">document.getElementById</span>(<span class="c-string">'success-name'</span>).textContent =<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-string">`You're booked, ${name.split(' ')[0]}. We'll call you within 2 hours.`</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">formState</span>.classList.<span class="c-func">add</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-var">succState</span>.classList.<span class="c-func">remove</span>(<span class="c-string">'hidden'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-func">setTimeout</span>(<span class="c-func">closePopup</span>, <span class="c-string">5000</span>); <span class="c-comment">// auto-close after 5s</span><br>
+&nbsp;&nbsp;});
+  </div>
+</div>
+
+<!-- FORM ENDPOINTS -->
+<div class="divider-label"><span>Where to send the form data — 3 options ranked easiest to hardest</span></div>
+
+<div class="grid-3 spacer">
+  <div class="el-card teal-card" onclick="sendPrompt('How do I set up Formspree for my roofing website contact form?')">
+    <div class="el-tag">Option 1 — easiest</div>
+    <h3>Formspree</h3>
+    <p>Sign up at formspree.io, create a form, get an endpoint URL. Replace "YOUR_FORM_ENDPOINT" with it. Formspree emails you every submission instantly. Free tier handles 50 submissions/month.</p>
+    <div class="why">Endpoint: https://formspree.io/f/yourformid — zero backend code needed.</div>
+  </div>
+  <div class="el-card blue-card" onclick="sendPrompt('How do I set up Netlify Forms for my website?')">
+    <div class="el-tag">Option 2 — if on Netlify</div>
+    <h3>Netlify Forms</h3>
+    <p>Add netlify to your form tag. Netlify auto-detects it and creates a submissions dashboard. Free up to 100 submissions/month. Also sends email notifications.</p>
+    <div class="why">Zero cost if already on Netlify. The cleanest solution if your site is already deployed there.</div>
+  </div>
+  <div class="el-card amber-card" onclick="sendPrompt('How do I connect a website form to send me an SMS notification?')">
+    <div class="el-tag">Option 3 — best for roofing</div>
+    <h3>Custom API + SMS (Twilio)</h3>
+    <p>Build a small serverless function (Netlify Function or Vercel) that receives the form data and sends you an SMS via Twilio. You get a text the second someone books. Fastest possible response time.</p>
+    <div class="why">For roofing especially — getting a text within seconds means you can call back in under 2 minutes, which converts at a dramatically higher rate than an email notification you read an hour later.</div>
+  </div>
+</div>
+
+<!-- VALIDATION RULES -->
+<div class="divider-label"><span>Field validation rules — exactly what to check</span></div>
+
+<div class="val-grid spacer">
+  <div class="val-card vc-1">
+    <div class="val-field">Name field</div>
+    <div class="val-rule">Minimum 2 characters after trim · any characters allowed · validates on blur (when they leave the field)</div>
+    <div class="val-err">❌ "J" — too short</div>
+    <div class="val-ok">✓ "Jo" — valid · "Sarah M." — valid</div>
+  </div>
+  <div class="val-card vc-2">
+    <div class="val-field">Phone field</div>
+    <div class="val-rule">Strip all non-digits first, then check length ≥ 10 · accepts (555) 000-0000, 5550000000, 555-000-0000 all equally</div>
+    <div class="val-err">❌ "555-000" — only 6 digits</div>
+    <div class="val-ok">✓ "(555) 000-0000" — 10 digits</div>
+  </div>
+  <div class="val-card vc-3">
+    <div class="val-field">Zip code field</div>
+    <div class="val-rule">Exactly 5 digits · numeric input only (inputmode="numeric") · maxlength="5" prevents overlength · US only</div>
+    <div class="val-err">❌ "9021" — only 4 digits</div>
+    <div class="val-ok">✓ "90210" — exactly 5 digits</div>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>3 fields maximum: name, phone, zip</li>
+      <li>Auto-focus the name field when popup opens</li>
+      <li>Show green ✓ on valid fields immediately</li>
+      <li>Disable submit button until all 3 fields valid</li>
+      <li>Lock body scroll when popup is open</li>
+      <li>Close on: ✕ button, Escape key, backdrop click</li>
+      <li>Show personalised success state with their first name</li>
+      <li>Auto-close success state after 5 seconds</li>
+      <li>Get SMS notification — call back within 2 minutes</li>
+      <li>Wire every "Book Inspection" button to same popup</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Add more than 3 fields — kills conversion</li>
+      <li>Add an email field — you have their phone</li>
+      <li>Redirect to a new page — always a modal</li>
+      <li>Make the popup hard to close</li>
+      <li>Skip the success state — visitor needs confirmation</li>
+      <li>Use generic success: "Thank you for your submission"</li>
+      <li>Fire the scroll/exit trigger more than once per session</li>
+      <li>Leave submit button active on invalid fields</li>
+      <li>Check email for leads — set up SMS so you respond fast</li>
+      <li>Have the popup freeze body scroll permanently on close</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The most important mechanic nobody talks about — response time</h3>
+  <p>The popup itself is only half the mechanism. The other half is how fast you call back. Studies on lead response time consistently show that calling back within 5 minutes of a form submission converts at 4–8× the rate of calling back an hour later. For roofing especially — where the homeowner is often stressed about an active problem — being the first contractor to call after they submit the form is often the entire reason they book with you and not a competitor. Set up SMS notifications so you get a text the moment the form submits. That text contains their name and phone number. You call within 2 minutes. That speed is a conversion mechanism in itself.</p>
+</div>

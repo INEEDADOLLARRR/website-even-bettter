@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 28px; line-height: 1.6; }
+
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; }
+  .divider-label span { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--color-text-secondary); }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  .el-card { border-radius: 10px; border: 1px solid; padding: 14px; cursor: pointer; transition: transform 0.15s; }
+  .el-card:hover { transform: translateX(3px); }
+  .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .el-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 5px; }
+  .el-card p { font-size: 12px; line-height: 1.6; }
+  .el-card .why { margin-top: 8px; font-size: 11px; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .blue-card { background: #E6F1FB; border-color: #85B7EB; }
+  .blue-card .el-tag { color: #185FA5; } .blue-card h3 { color: #042C53; } .blue-card p { color: #185FA5; } .blue-card .why { background: #B5D4F4; color: #042C53; }
+  .teal-card { background: #E1F5EE; border-color: #5DCAA5; }
+  .teal-card .el-tag { color: #0F6E56; } .teal-card h3 { color: #04342C; } .teal-card p { color: #0F6E56; } .teal-card .why { background: #9FE1CB; color: #04342C; }
+  .amber-card { background: #FAEEDA; border-color: #EF9F27; }
+  .amber-card .el-tag { color: #854F0B; } .amber-card h3 { color: #412402; } .amber-card p { color: #854F0B; } .amber-card .why { background: #FAC775; color: #412402; }
+  .purple-card { background: #EEEDFE; border-color: #AFA9EC; }
+  .purple-card .el-tag { color: #534AB7; } .purple-card h3 { color: #26215C; } .purple-card p { color: #534AB7; } .purple-card .why { background: #CECBF6; color: #26215C; }
+  .gray-card { background: #F1EFE8; border-color: #B4B2A9; }
+  .gray-card .el-tag { color: #5F5E5A; } .gray-card h3 { color: #2C2C2A; } .gray-card p { color: #5F5E5A; } .gray-card .why { background: #D3D1C7; color: #2C2C2A; }
+  .coral-card { background: #FAECE7; border-color: #F0997B; }
+  .coral-card .el-tag { color: #993C1D; } .coral-card h3 { color: #4A1B0C; } .coral-card p { color: #993C1D; } .coral-card .why { background: #F5C4B3; color: #4A1B0C; }
+  .green-card { background: #EAF3DE; border-color: #97C459; }
+  .green-card .el-tag { color: #3B6D11; } .green-card h3 { color: #173404; } .green-card p { color: #3B6D11; } .green-card .why { background: #C0DD97; color: #173404; }
+
+  @media (prefers-color-scheme: dark) {
+    .blue-card { background: #042C53; border-color: #378ADD; } .blue-card h3 { color: #B5D4F4; } .blue-card p { color: #85B7EB; } .blue-card .why { background: #0C447C; color: #B5D4F4; }
+    .teal-card { background: #04342C; border-color: #1D9E75; } .teal-card h3 { color: #9FE1CB; } .teal-card p { color: #5DCAA5; } .teal-card .why { background: #085041; color: #9FE1CB; }
+    .amber-card { background: #412402; border-color: #BA7517; } .amber-card h3 { color: #FAC775; } .amber-card p { color: #EF9F27; } .amber-card .why { background: #633806; color: #FAC775; }
+    .purple-card { background: #26215C; border-color: #7F77DD; } .purple-card h3 { color: #CECBF6; } .purple-card p { color: #AFA9EC; } .purple-card .why { background: #3C3489; color: #CECBF6; }
+    .gray-card { background: #2C2C2A; border-color: #888780; } .gray-card h3 { color: #D3D1C7; } .gray-card p { color: #888780; } .gray-card .why { background: #444441; color: #D3D1C7; }
+    .coral-card { background: #4A1B0C; border-color: #D85A30; } .coral-card h3 { color: #F5C4B3; } .coral-card p { color: #F0997B; } .coral-card .why { background: #711B0C; color: #F5C4B3; }
+    .green-card { background: #173404; border-color: #639922; } .green-card h3 { color: #C0DD97; } .green-card p { color: #97C459; } .green-card .why { background: #27500A; color: #C0DD97; }
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .spacer { margin-top: 10px; }
+
+  /* ── 3-STEP MOCKUP ── */
+  .mockup { border: 1px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; }
+  .mockup-bar { background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); padding: 7px 12px; font-size: 11px; color: var(--color-text-tertiary); }
+  .mockup-body { padding: 20px 16px; }
+  .mock-section-label { font-size: 11px; font-weight: 500; text-align: center; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .mock-headline { font-size: 15px; font-weight: 500; text-align: center; color: var(--color-text-primary); margin-bottom: 18px; }
+
+  .steps-row { display: flex; align-items: flex-start; gap: 0; }
+  .step-block { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .step-connector { flex: 0 0 40px; display: flex; align-items: center; justify-content: center; padding-top: 20px; }
+  .step-connector-line { width: 100%; height: 2px; background: var(--color-border-secondary); position: relative; }
+  .step-connector-arrow { position: absolute; right: -4px; top: -5px; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid var(--color-border-secondary); }
+
+  .step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; margin-bottom: 10px; flex-shrink: 0; }
+  .step-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 10px; }
+  .step-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .step-sub { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; max-width: 110px; }
+  .step-time { font-size: 10px; color: var(--color-text-tertiary); margin-top: 4px; font-style: italic; }
+
+  .s1 .step-num { background: #E1F5EE; color: #0F6E56; }
+  .s1 .step-icon { background: #E1F5EE; }
+  .s2 .step-num { background: #E6F1FB; color: #185FA5; }
+  .s2 .step-icon { background: #E6F1FB; }
+  .s3 .step-num { background: #EAF3DE; color: #3B6D11; }
+  .s3 .step-icon { background: #EAF3DE; }
+
+  @media (prefers-color-scheme: dark) {
+    .s1 .step-num { background: #085041; color: #9FE1CB; }
+    .s1 .step-icon { background: #085041; }
+    .s2 .step-num { background: #0C447C; color: #B5D4F4; }
+    .s2 .step-icon { background: #0C447C; }
+    .s3 .step-num { background: #27500A; color: #C0DD97; }
+    .s3 .step-icon { background: #27500A; }
+  }
+
+  /* ── COPY BREAKDOWN ── */
+  .step-detail { border-radius: 10px; border: 1px solid; padding: 16px; }
+  .step-detail-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .step-detail-num { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; flex-shrink: 0; }
+  .step-detail-title { font-size: 15px; font-weight: 500; }
+  .step-detail p { font-size: 12px; line-height: 1.7; margin-bottom: 8px; }
+  .step-detail .copy-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; margin-top: 10px; }
+  .copy-box { border-radius: 6px; padding: 10px 12px; font-size: 12px; font-style: italic; line-height: 1.6; }
+  .copy-bad { font-size: 11px; border-radius: 6px; padding: 7px 10px; margin-top: 6px; line-height: 1.5; }
+  .objection-row { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--color-border-tertiary); }
+  .objection-row:last-child { border-bottom: none; }
+  .obj-q { font-size: 12px; font-weight: 500; flex: 1; color: var(--color-text-primary); }
+  .obj-a { font-size: 12px; flex: 1.5; color: var(--color-text-secondary); line-height: 1.5; }
+
+  /* step 1 colors */
+  .sd-teal { background: #E1F5EE; border-color: #5DCAA5; }
+  .sd-teal .step-detail-num { background: #0F6E56; color: #fff; }
+  .sd-teal .step-detail-title { color: #04342C; }
+  .sd-teal p { color: #0F6E56; }
+  .sd-teal .copy-label { color: #0F6E56; }
+  .sd-teal .copy-box { background: #9FE1CB; color: #04342C; }
+  .sd-teal .copy-bad { background: #F7C1C1; color: #501313; }
+  @media (prefers-color-scheme: dark) {
+    .sd-teal { background: #04342C; border-color: #1D9E75; }
+    .sd-teal .step-detail-title { color: #9FE1CB; }
+    .sd-teal p { color: #5DCAA5; }
+    .sd-teal .copy-label { color: #5DCAA5; }
+    .sd-teal .copy-box { background: #085041; color: #9FE1CB; }
+    .sd-teal .copy-bad { background: #791F1F; color: #F7C1C1; }
+  }
+
+  /* step 2 colors */
+  .sd-blue { background: #E6F1FB; border-color: #85B7EB; }
+  .sd-blue .step-detail-num { background: #185FA5; color: #fff; }
+  .sd-blue .step-detail-title { color: #042C53; }
+  .sd-blue p { color: #185FA5; }
+  .sd-blue .copy-label { color: #185FA5; }
+  .sd-blue .copy-box { background: #B5D4F4; color: #042C53; }
+  .sd-blue .copy-bad { background: #F7C1C1; color: #501313; }
+  @media (prefers-color-scheme: dark) {
+    .sd-blue { background: #042C53; border-color: #378ADD; }
+    .sd-blue .step-detail-title { color: #B5D4F4; }
+    .sd-blue p { color: #85B7EB; }
+    .sd-blue .copy-label { color: #85B7EB; }
+    .sd-blue .copy-box { background: #0C447C; color: #B5D4F4; }
+    .sd-blue .copy-bad { background: #791F1F; color: #F7C1C1; }
+  }
+
+  /* step 3 colors */
+  .sd-green { background: #EAF3DE; border-color: #97C459; }
+  .sd-green .step-detail-num { background: #3B6D11; color: #fff; }
+  .sd-green .step-detail-title { color: #173404; }
+  .sd-green p { color: #3B6D11; }
+  .sd-green .copy-label { color: #3B6D11; }
+  .sd-green .copy-box { background: #C0DD97; color: #173404; }
+  .sd-green .copy-bad { background: #F7C1C1; color: #501313; }
+  @media (prefers-color-scheme: dark) {
+    .sd-green { background: #173404; border-color: #639922; }
+    .sd-green .step-detail-title { color: #C0DD97; }
+    .sd-green p { color: #97C459; }
+    .sd-green .copy-label { color: #97C459; }
+    .sd-green .copy-box { background: #27500A; color: #C0DD97; }
+    .sd-green .copy-bad { background: #791F1F; color: #F7C1C1; }
+  }
+
+  /* ── VARIATIONS ── */
+  .var-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .var-card { border-radius: 10px; border: 1px solid; padding: 14px; }
+  .var-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .var-steps { display: flex; flex-direction: column; gap: 6px; }
+  .var-step { display: flex; align-items: center; gap: 8px; }
+  .var-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; flex-shrink: 0; }
+  .var-text { font-size: 12px; }
+  .var-arrow { font-size: 10px; color: var(--color-text-tertiary); margin-left: 28px; }
+
+  .vc-1 { background: #E6F1FB; border-color: #85B7EB; }
+  .vc-1 .var-label { color: #185FA5; }
+  .vc-1 .var-dot { background: #185FA5; color: #fff; }
+  .vc-1 .var-text { color: #042C53; }
+
+  .vc-2 { background: #EEEDFE; border-color: #AFA9EC; }
+  .vc-2 .var-label { color: #534AB7; }
+  .vc-2 .var-dot { background: #534AB7; color: #fff; }
+  .vc-2 .var-text { color: #26215C; }
+
+  .vc-3 { background: #FAEEDA; border-color: #EF9F27; }
+  .vc-3 .var-label { color: #854F0B; }
+  .vc-3 .var-dot { background: #854F0B; color: #fff; }
+  .vc-3 .var-text { color: #412402; }
+
+  .vc-4 { background: #EAF3DE; border-color: #97C459; }
+  .vc-4 .var-label { color: #3B6D11; }
+  .vc-4 .var-dot { background: #3B6D11; color: #fff; }
+  .vc-4 .var-text { color: #173404; }
+
+  @media (prefers-color-scheme: dark) {
+    .vc-1 { background: #042C53; border-color: #378ADD; }
+    .vc-1 .var-text { color: #B5D4F4; }
+    .vc-2 { background: #26215C; border-color: #7F77DD; }
+    .vc-2 .var-text { color: #CECBF6; }
+    .vc-3 { background: #412402; border-color: #BA7517; }
+    .vc-3 .var-text { color: #FAC775; }
+    .vc-4 { background: #173404; border-color: #639922; }
+    .vc-4 .var-text { color: #C0DD97; }
+  }
+
+  /* DO/DONT */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .do-box { background: #EAF3DE; border: 1px solid #97C459; border-radius: 10px; padding: 14px; }
+  .do-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #3B6D11; margin-bottom: 8px; }
+  .do-box li { font-size: 12px; color: #3B6D11; line-height: 1.8; margin-left: 14px; }
+  .dont-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 10px; padding: 14px; }
+  .dont-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #A32D2D; margin-bottom: 8px; }
+  .dont-box li { font-size: 12px; color: #A32D2D; line-height: 1.8; margin-left: 14px; }
+  @media (prefers-color-scheme: dark) {
+    .do-box { background: #173404; border-color: #639922; } .do-box .dd-label, .do-box li { color: #C0DD97; }
+    .dont-box { background: #501313; border-color: #E24B4A; } .dont-box .dd-label, .dont-box li { color: #F7C1C1; }
+  }
+
+  .note-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 16px; margin-top: 10px; }
+  .note-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .note-box p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+
+  .objection-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px; margin-top: 10px; }
+  .objection-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; }
+
+  .cta-strip { background: #E1F5EE; border: 1px solid #5DCAA5; border-radius: 10px; padding: 14px 16px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .cta-strip p { font-size: 12px; color: #0F6E56; line-height: 1.6; flex: 1; }
+  .cta-btn { background: #0F6E56; color: #fff; border-radius: 6px; padding: 8px 16px; font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer; border: none; }
+  @media (prefers-color-scheme: dark) {
+    .cta-strip { background: #04342C; border-color: #1D9E75; }
+    .cta-strip p { color: #9FE1CB; }
+  }
+</style>
+
+<h1>Section 5 — How it works (3-step process)</h1>
+<p class="subtitle">The friction remover · placed right after the video because that's when the visitor asks<br>"OK I'm interested — but what actually happens if I call?"</p>
+
+<!-- WHY IT EXISTS -->
+<div class="divider-label"><span>Why this section exists — the psychology</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core problem it solves</div>
+  <h3>A roof is unfamiliar, expensive, and disruptive — homeowners are scared of the unknown</h3>
+  <p>Most homeowners have never hired a roofer before. They don't know what happens after they click the button. Will a salesperson show up and hard-sell them? Will they get locked into something? Will workers be in their house? How long will it take? How messy will it be? All of these unspoken fears live in the gap between "I need a roofer" and "I'll actually call one." This section closes that gap completely by making the entire process visible, predictable, and safe-feeling before they commit to anything.</p>
+  <div class="why">From your notes: "Removes uncertainty about the process — prospects need to know what happens next before they commit." This is the section that takes a hesitant visitor and turns them into a caller.</div>
+</div>
+
+<div class="note-box">
+  <h3>Why it goes here — after video, before reviews</h3>
+  <p>By section 5 the visitor is emotionally convinced (video did that) but hasn't committed yet. The "How It Works" section is the bridge between conviction and action. It comes before the deep reviews because it answers a more urgent question — "what do I actually do next?" — and reviews are there for people who still have lingering doubts after they understand the process. Get the process clear first, then pile on more social proof.</p>
+</div>
+
+<!-- THE MOCKUP -->
+<div class="divider-label"><span>What it looks like on the page</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 5 — horizontal 3-step visual with connecting arrows</div>
+  <div class="mockup-body">
+    <div class="mock-section-label">Simple · Fast · No obligation</div>
+    <div class="mock-headline">Here's exactly what happens when you call us</div>
+    <div class="steps-row">
+      <div class="step-block s1">
+        <div class="step-num">1</div>
+        <div class="step-icon">📞</div>
+        <div class="step-title">Book a free inspection</div>
+        <div class="step-sub">We come to you — no obligation, no sales pressure</div>
+        <div class="step-time">Same day or next morning</div>
+      </div>
+      <div class="step-connector">
+        <div class="step-connector-line">
+          <div class="step-connector-arrow"></div>
+        </div>
+      </div>
+      <div class="step-block s2">
+        <div class="step-num">2</div>
+        <div class="step-icon">📋</div>
+        <div class="step-title">Get a detailed quote</div>
+        <div class="step-sub">Written breakdown of exactly what needs doing and the cost</div>
+        <div class="step-time">Within 24 hours</div>
+      </div>
+      <div class="step-connector">
+        <div class="step-connector-line">
+          <div class="step-connector-arrow"></div>
+        </div>
+      </div>
+      <div class="step-block s3">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏠</div>
+        <div class="step-title">Enjoy a leak-free home</div>
+        <div class="step-sub">We handle everything — clean up included</div>
+        <div class="step-time">Most jobs done in 1–2 days</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EACH STEP DEEP DIVE -->
+<div class="divider-label"><span>Each step — what to write and why</span></div>
+
+<!-- Step 1 -->
+<div class="step-detail sd-teal spacer" onclick="sendPrompt('What should I write for step 1 of the how it works section on a roofing website?')">
+  <div class="step-detail-header">
+    <div class="step-detail-num" style="background:#0F6E56;color:#fff;">1</div>
+    <div class="step-detail-title">Book a free inspection</div>
+  </div>
+  <p>This step must answer the homeowner's first and biggest fear: "If I contact them, am I committing to anything?" The word "free" and "no obligation" need to appear either in the step title or immediately below it. The CTA here is low-risk — you're not asking them to buy, you're asking them to let you look. That's a much smaller commitment and converts far more easily.</p>
+  <p>Also add a timeframe. "Same-day or next morning" tells them they won't be waiting a week. For storm damage especially, speed is everything.</p>
+  <div class="copy-label">Copy that converts</div>
+  <div class="copy-box">"Book a Free Roof Inspection — we come to you, no sales pressure, no obligation. Available same-day."</div>
+  <div class="copy-label" style="margin-top:8px;">Copy that kills conversion</div>
+  <div class="copy-bad">"Contact us to schedule a consultation." — No "free," no timeframe, sounds like a formal business meeting. Adds friction instead of removing it.</div>
+</div>
+
+<!-- Step 2 -->
+<div class="step-detail sd-blue spacer" onclick="sendPrompt('What should I write for step 2 of the how it works section on a roofing website?')">
+  <div class="step-detail-header">
+    <div class="step-detail-num" style="background:#185FA5;color:#fff;">2</div>
+    <div class="step-detail-title">Get a detailed quote</div>
+  </div>
+  <p>This step answers the second biggest fear: "Will I understand what I'm paying for or will it be a confusing invoice I can't read?" The word "detailed" is doing real work here — it signals transparency. Add "written" if you give written quotes, because verbal quotes feel unreliable. Add a timeframe again: "within 24 hours" tells them it won't drag on.</p>
+  <p>Mention that the quote covers exactly what needs doing — this preemptively kills the fear of being upsold on work that isn't needed. For insurance jobs, you can replace this step with "We handle your insurance claim" — which is an even stronger friction remover for storm damage leads.</p>
+  <div class="copy-label">Copy that converts</div>
+  <div class="copy-box">"Get a written breakdown of exactly what needs fixing, what it costs, and how long it takes — within 24 hours of your inspection."</div>
+  <div class="copy-label" style="margin-top:8px;">Insurance variation (storm season)</div>
+  <div class="copy-box" style="background:#B5D4F4;color:#042C53;">"We work directly with your insurance adjuster and handle all the paperwork — at no extra cost to you."</div>
+</div>
+
+<!-- Step 3 -->
+<div class="step-detail sd-green spacer" onclick="sendPrompt('What should I write for step 3 of the how it works section on a roofing website?')">
+  <div class="step-detail-header">
+    <div class="step-detail-num" style="background:#3B6D11;color:#fff;">3</div>
+    <div class="step-detail-title">Enjoy a leak-free home</div>
+  </div>
+  <p>This is the outcome step — the desired result the homeowner actually wants. Notice it's not "We complete the job" or "Installation is finished." Those describe your action. "Enjoy a leak-free home" describes their outcome — the feeling of relief and safety they're actually buying. Always frame step 3 around the customer's life after the work, not around your process.</p>
+  <p>Add "clean-up included" explicitly. Mess is one of the most common unspoken fears — nails in the driveway, debris in the garden. Saying "we clean up completely" removes a real objection. Add a timeframe: "most jobs done in 1–2 days" tells them their life won't be disrupted for a week.</p>
+  <div class="copy-label">Copy that converts</div>
+  <div class="copy-box">"We handle everything from start to finish — including full clean-up. Most jobs completed in 1–2 days. You just enjoy a dry, protected home."</div>
+  <div class="copy-label" style="margin-top:8px;">Copy that kills conversion</div>
+  <div class="copy-bad">"We complete your roofing project." — Describes the contractor's action, not the homeowner's outcome. Bland, forgettable, zero emotional pull.</div>
+</div>
+
+<!-- SECTION HEADLINE -->
+<div class="divider-label"><span>The section headline — the most overlooked element</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">Don't call it "How It Works"</div>
+  <h3>The section headline sets the emotional tone before they read a single step</h3>
+  <p>Most roofers title this section "How It Works" or "Our Process." Technically correct, completely forgettable. The headline is a conversion opportunity. It should either remove fear, set an expectation of ease, or make a direct promise — before the homeowner even reads step 1.</p>
+  <div class="why">A better headline pre-answers the question the visitor is silently asking as they scroll into this section.</div>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+    <div style="background:#FAC775;border-radius:6px;padding:8px 12px;font-size:12px;color:#412402;"><strong>Generic:</strong> "How It Works" or "Our Process"</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Better:</strong> "Here's exactly what happens when you call us"</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Better:</strong> "Getting your roof fixed is simpler than you think"</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Better:</strong> "From your first call to a leak-free home — 3 steps"</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Best for storm damage:</strong> "Storm damage? Here's what we do — starting today"</div>
+  </div>
+</div>
+
+<!-- STEP LABEL VARIATIONS -->
+<div class="divider-label"><span>4 proven step label variations to model from</span></div>
+
+<div class="var-grid">
+  <div class="var-card vc-1">
+    <div class="var-label">Standard — works for all roofing</div>
+    <div class="var-steps">
+      <div class="var-step"><div class="var-dot">1</div><div class="var-text">Book a free inspection</div></div>
+      <div class="var-step"><div class="var-dot">2</div><div class="var-text">Get a detailed written quote</div></div>
+      <div class="var-step"><div class="var-dot">3</div><div class="var-text">Enjoy a leak-free home</div></div>
+    </div>
+  </div>
+  <div class="var-card vc-2">
+    <div class="var-label">Storm damage / insurance focus</div>
+    <div class="var-steps">
+      <div class="var-step"><div class="var-dot">1</div><div class="var-text">Call us for a same-day inspection</div></div>
+      <div class="var-step"><div class="var-dot">2</div><div class="var-text">We handle your insurance claim</div></div>
+      <div class="var-step"><div class="var-dot">3</div><div class="var-text">Roof repaired — often at no cost to you</div></div>
+    </div>
+  </div>
+  <div class="var-card vc-3">
+    <div class="var-label">Emergency / urgency focus</div>
+    <div class="var-steps">
+      <div class="var-step"><div class="var-dot">1</div><div class="var-text">Call now — we respond in 2 hours</div></div>
+      <div class="var-step"><div class="var-dot">2</div><div class="var-text">Emergency tarp and assessment today</div></div>
+      <div class="var-step"><div class="var-dot">3</div><div class="var-text">Full repair scheduled within 48 hours</div></div>
+    </div>
+  </div>
+  <div class="var-card vc-4">
+    <div class="var-label">Premium / full replacement focus</div>
+    <div class="var-steps">
+      <div class="var-step"><div class="var-dot">1</div><div class="var-text">Free inspection + material consultation</div></div>
+      <div class="var-step"><div class="var-dot">2</div><div class="var-text">Detailed quote with material options</div></div>
+      <div class="var-step"><div class="var-dot">3</div><div class="var-text">Full replacement — 1–2 days, full clean-up</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OBJECTIONS THIS SECTION KILLS -->
+<div class="divider-label"><span>The 5 silent fears this section kills — homeowners never say these out loud</span></div>
+
+<div class="objection-box">
+  <h3>Unspoken doubts cleared by each element of the 3 steps</h3>
+  <div class="objection-row">
+    <div class="obj-q">"If I contact them am I committing to buy?"</div>
+    <div class="obj-a">Killed by "free inspection, no obligation" in step 1. Removes the fear of being trapped.</div>
+  </div>
+  <div class="objection-row">
+    <div class="obj-q">"Will a pushy salesperson show up?"</div>
+    <div class="obj-a">Killed by "no sales pressure" phrasing in step 1. Names the fear and dismisses it directly.</div>
+  </div>
+  <div class="objection-row">
+    <div class="obj-q">"Will I understand what I'm paying for?"</div>
+    <div class="obj-a">Killed by "detailed written quote" in step 2. "Written" signals accountability and transparency.</div>
+  </div>
+  <div class="objection-row">
+    <div class="obj-q">"Will my house be a mess for days?"</div>
+    <div class="obj-a">Killed by "clean-up included, most jobs 1–2 days" in step 3. Timeframe + cleanliness promise.</div>
+  </div>
+  <div class="objection-row">
+    <div class="obj-q">"How long will this whole thing take?"</div>
+    <div class="obj-a">Killed by timeframes on every step: "same-day," "within 24 hours," "1–2 days." No mystery left.</div>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Exactly 3 steps — not 4, not 5</li>
+      <li>Put "free" and "no obligation" in step 1</li>
+      <li>Add a timeframe to every step</li>
+      <li>Frame step 3 as the customer's outcome</li>
+      <li>Write the section headline as a promise</li>
+      <li>Say "clean-up included" explicitly</li>
+      <li>Use icons — one per step, simple and clear</li>
+      <li>Keep each step to 1 sentence max</li>
+      <li>Add a CTA button directly below the steps</li>
+      <li>Choose the variation that matches your main service</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Use more than 3 steps — it feels complex</li>
+      <li>Title it just "How It Works" or "Our Process"</li>
+      <li>Write steps that describe your actions not their outcomes</li>
+      <li>Skip timeframes — vagueness creates anxiety</li>
+      <li>Use paragraphs — steps must be scannable</li>
+      <li>Leave out "free" and "no obligation"</li>
+      <li>Use complicated icons that need decoding</li>
+      <li>Put this section at the bottom of the page</li>
+      <li>Have no CTA button after the steps</li>
+      <li>Write steps in passive voice ("you will be contacted")</li>
+    </ul>
+  </div>
+</div>
+
+<!-- CTA AFTER STEPS -->
+<div class="divider-label"><span>The CTA that goes directly below the steps</span></div>
+
+<div class="cta-strip">
+  <p>Every "How It Works" section must end with a CTA button directly below the 3 steps. The visitor just learned the process is easy and free — strike while the iron is hot. Don't make them scroll to find the button.</p>
+  <button class="cta-btn" onclick="sendPrompt('What CTA button should go below the how it works section?')">Book a Free Inspection →</button>
+</div>
+
+<div class="note-box spacer">
+  <h3>The rule from your notes: one primary goal per section</h3>
+  <p>This entire section has one job — convert a hesitant visitor into someone who picks up the phone or clicks the button. Every word, every timeframe, every "no obligation" phrase is engineered toward that one moment. Don't add secondary links, don't add navigation, don't add a gallery. Three steps, one headline, one CTA button. That's the whole section.</p>
+</div>

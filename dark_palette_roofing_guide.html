@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+
+  @media (prefers-color-scheme:dark){
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  /* ── FULL PALETTE SYSTEM ── */
+  .palette-system { background:#050505; border-radius:14px; padding:24px; border:1px solid rgba(255,255,255,0.06); }
+  .ps-title { font-size:13px; font-weight:500; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:18px; text-align:center; }
+
+  .ps-row { margin-bottom:20px; }
+  .ps-row-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:rgba(255,255,255,0.3); margin-bottom:8px; }
+  .ps-swatches { display:flex; gap:6px; flex-wrap:wrap; }
+  .ps-swatch { border-radius:8px; padding:10px 12px; min-width:110px; }
+  .ps-swatch-hex { font-size:11px; font-family:monospace; font-weight:500; margin-bottom:2px; }
+  .ps-swatch-name { font-size:10px; opacity:0.7; }
+  .ps-swatch-use  { font-size:9px; opacity:0.5; margin-top:3px; line-height:1.4; }
+
+  /* bg swatches */
+  .sw-bg1  { background:#050505; border:1px solid rgba(255,255,255,0.08); }
+  .sw-bg1  .ps-swatch-hex,.sw-bg1 .ps-swatch-name,.sw-bg1 .ps-swatch-use { color:rgba(255,255,255,0.7); }
+  .sw-bg2  { background:#0a0a0a; border:1px solid rgba(255,255,255,0.08); }
+  .sw-bg2  .ps-swatch-hex,.sw-bg2 .ps-swatch-name,.sw-bg2 .ps-swatch-use { color:rgba(255,255,255,0.7); }
+  .sw-bg3  { background:#111111; border:1px solid rgba(255,255,255,0.08); }
+  .sw-bg3  .ps-swatch-hex,.sw-bg3 .ps-swatch-name,.sw-bg3 .ps-swatch-use { color:rgba(255,255,255,0.7); }
+  .sw-bg4  { background:#1a1a1a; border:1px solid rgba(255,255,255,0.08); }
+  .sw-bg4  .ps-swatch-hex,.sw-bg4 .ps-swatch-name,.sw-bg4 .ps-swatch-use { color:rgba(255,255,255,0.7); }
+  .sw-bg5  { background:#222222; border:1px solid rgba(255,255,255,0.08); }
+  .sw-bg5  .ps-swatch-hex,.sw-bg5 .ps-swatch-name,.sw-bg5 .ps-swatch-use { color:rgba(255,255,255,0.7); }
+
+  /* text swatches */
+  .sw-t1 { background:#F5F5F0; }
+  .sw-t1 .ps-swatch-hex,.sw-t1 .ps-swatch-name,.sw-t1 .ps-swatch-use { color:#1a1a1a; }
+  .sw-t2 { background:#A8A8A0; }
+  .sw-t2 .ps-swatch-hex,.sw-t2 .ps-swatch-name,.sw-t2 .ps-swatch-use { color:#1a1a1a; }
+  .sw-t3 { background:#555550; }
+  .sw-t3 .ps-swatch-hex,.sw-t3 .ps-swatch-name,.sw-t3 .ps-swatch-use { color:rgba(255,255,255,0.8); }
+
+  /* accent swatches — CTA options */
+  .sw-cta-teal { background:#1DB574; }
+  .sw-cta-teal .ps-swatch-hex,.sw-cta-teal .ps-swatch-name,.sw-cta-teal .ps-swatch-use { color:#04342C; }
+  .sw-cta-amber { background:#E8A020; }
+  .sw-cta-amber .ps-swatch-hex,.sw-cta-amber .ps-swatch-name,.sw-cta-amber .ps-swatch-use { color:#3a2000; }
+  .sw-cta-white { background:#F5F5F0; }
+  .sw-cta-white .ps-swatch-hex,.sw-cta-white .ps-swatch-name,.sw-cta-white .ps-swatch-use { color:#1a1a1a; }
+
+  /* border swatches */
+  .sw-bdr1 { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); }
+  .sw-bdr1 .ps-swatch-hex,.sw-bdr1 .ps-swatch-name,.sw-bdr1 .ps-swatch-use { color:rgba(255,255,255,0.5); }
+  .sw-bdr2 { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); }
+  .sw-bdr2 .ps-swatch-hex,.sw-bdr2 .ps-swatch-name,.sw-bdr2 .ps-swatch-use { color:rgba(255,255,255,0.6); }
+
+  /* ── CONTRAST DEMO ── */
+  .contrast-wrap { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .cw-title { font-size:11px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:14px; }
+  .cw-rows  { display:flex; flex-direction:column; gap:10px; }
+  .cw-row   { display:flex; align-items:center; gap:10px; }
+  .cw-label { font-size:11px; color:rgba(255,255,255,0.4); min-width:120px; flex-shrink:0; }
+  .cw-demo  { flex:1; border-radius:6px; padding:8px 12px; font-size:12px; font-weight:500; }
+  .cw-ratio { font-size:10px; min-width:50px; text-align:right; flex-shrink:0; }
+
+  .cw-fail { color:#E24B4A; }
+  .cw-pass { color:#1DB574; }
+  .cw-good { color:#E8A020; }
+
+  /* ── CTA OPTIONS ── */
+  .cta-options { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .co-title { font-size:11px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:14px; }
+  .co-grid  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .co-card  { border-radius:8px; padding:12px; }
+  .co-btn   { border-radius:6px; padding:10px 16px; font-size:12px; font-weight:500; text-align:center; margin-bottom:8px; cursor:pointer; border:none; }
+  .co-name  { font-size:11px; font-weight:500; margin-bottom:3px; }
+  .co-desc  { font-size:10px; line-height:1.5; }
+  .co-verdict { font-size:10px; font-weight:500; margin-top:6px; border-radius:20px; padding:2px 8px; display:inline-block; }
+
+  .co-1 { background:#0a0a0a; border:1px solid rgba(255,255,255,0.06); }
+  .co-1 .co-btn { background:#1DB574; color:#04342C; }
+  .co-1 .co-name { color:#F5F5F0; }
+  .co-1 .co-desc { color:rgba(255,255,255,0.4); }
+  .co-1 .co-verdict { background:rgba(29,181,116,0.15); color:#1DB574; }
+
+  .co-2 { background:#0a0a0a; border:1px solid rgba(255,255,255,0.06); }
+  .co-2 .co-btn { background:#E8A020; color:#3a2000; }
+  .co-2 .co-name { color:#F5F5F0; }
+  .co-2 .co-desc { color:rgba(255,255,255,0.4); }
+  .co-2 .co-verdict { background:rgba(232,160,32,0.15); color:#E8A020; }
+
+  .co-3 { background:#0a0a0a; border:1px solid rgba(255,255,255,0.06); }
+  .co-3 .co-btn { background:#F5F5F0; color:#050505; }
+  .co-3 .co-name { color:#F5F5F0; }
+  .co-3 .co-desc { color:rgba(255,255,255,0.4); }
+  .co-3 .co-verdict { background:rgba(245,245,240,0.1); color:rgba(255,255,255,0.6); }
+
+  /* ── SECTION BACKGROUNDS ── */
+  .section-bg-demo { display:flex; flex-direction:column; gap:0; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); }
+  .sbd-section { padding:18px 16px; position:relative; }
+  .sbd-label { font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:rgba(255,255,255,0.25); margin-bottom:6px; }
+  .sbd-content { display:flex; justify-content:space-between; align-items:center; }
+  .sbd-text { font-size:13px; font-weight:500; }
+  .sbd-sub  { font-size:11px; margin-top:2px; }
+  .sbd-hex  { font-size:10px; font-family:monospace; }
+  .sbd-divider { height:1px; }
+
+  .s-main { background:#050505; }
+  .s-main .sbd-text,.s-main .sbd-hex { color:rgba(255,255,255,0.8); }
+  .s-main .sbd-sub { color:rgba(255,255,255,0.35); }
+  .s-main .sbd-divider { background:rgba(255,255,255,0.04); }
+
+  .s-lift { background:#0a0a0a; }
+  .s-lift .sbd-text,.s-lift .sbd-hex { color:rgba(255,255,255,0.8); }
+  .s-lift .sbd-sub { color:rgba(255,255,255,0.35); }
+
+  .s-card { background:#111111; }
+  .s-card .sbd-text,.s-card .sbd-hex { color:rgba(255,255,255,0.8); }
+  .s-card .sbd-sub { color:rgba(255,255,255,0.35); }
+
+  .s-breather { background:#1a1a1a; }
+  .s-breather .sbd-text,.s-breather .sbd-hex { color:rgba(255,255,255,0.9); }
+  .s-breather .sbd-sub { color:rgba(255,255,255,0.4); }
+
+  .s-hover { background:#1e1e1e; }
+  .s-hover .sbd-text,.s-hover .sbd-hex { color:rgba(255,255,255,0.8); }
+  .s-hover .sbd-sub { color:rgba(255,255,255,0.35); }
+
+  /* ── CARD MOCKUP ON DARK ── */
+  .dark-mockup { background:#050505; border-radius:14px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .dm-title { font-size:11px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:14px; }
+
+  .dm-hero { padding:20px; background:#050505; border-radius:8px; border:1px solid rgba(255,255,255,0.04); margin-bottom:10px; }
+  .dm-hero-eyebrow { font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:#1DB574; margin-bottom:6px; }
+  .dm-hero-h { font-size:16px; font-weight:500; color:#F5F5F0; line-height:1.3; margin-bottom:6px; }
+  .dm-hero-p { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:12px; }
+  .dm-hero-btns { display:flex; gap:8px; flex-wrap:wrap; }
+  .dm-btn-p { background:#1DB574; color:#04342C; border-radius:6px; padding:9px 16px; font-size:11px; font-weight:500; border:none; cursor:pointer; }
+  .dm-btn-s { background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:9px 16px; font-size:11px; cursor:pointer; }
+
+  .dm-trust { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .dm-badge { background:#111111; border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:6px 10px; font-size:10px; color:rgba(255,255,255,0.5); }
+
+  .dm-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:10px; }
+  .dm-card  { background:#111111; border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px; }
+  .dm-card.featured { background:#1a1a1a; border-color:rgba(255,255,255,0.1); }
+  .dm-card-icon { width:24px; height:24px; border-radius:6px; background:rgba(29,181,116,0.12); display:flex; align-items:center; justify-content:center; margin-bottom:6px; font-size:12px; }
+  .dm-card-title { font-size:11px; font-weight:500; color:#F5F5F0; margin-bottom:3px; }
+  .dm-card-desc  { font-size:10px; color:rgba(255,255,255,0.35); line-height:1.4; margin-bottom:6px; }
+  .dm-card-btn   { font-size:10px; font-weight:500; color:#1DB574; }
+
+  .dm-faq { background:#0a0a0a; border-radius:8px; border:1px solid rgba(255,255,255,0.04); }
+  .dm-faq-item { padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; }
+  .dm-faq-item:last-child { border-bottom:none; }
+  .dm-faq-q { font-size:11px; color:rgba(255,255,255,0.6); }
+  .dm-faq-arrow { font-size:11px; color:rgba(255,255,255,0.2); }
+
+  /* ── TEXT ON DARK RULES ── */
+  .text-hierarchy-demo { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .thd-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:14px; }
+  .thd-row   { display:flex; align-items:center; gap:12px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .thd-row:last-child { border-bottom:none; }
+  .thd-role  { font-size:10px; color:rgba(255,255,255,0.25); min-width:110px; flex-shrink:0; }
+  .thd-hex   { font-size:10px; font-family:monospace; color:rgba(255,255,255,0.25); min-width:70px; flex-shrink:0; }
+  .thd-sample{ font-size:13px; }
+
+  /* ── BAD PALETTE DEMO ── */
+  .bad-demo { background:#050505; border-radius:12px; padding:16px; border:2px solid rgba(226,75,74,0.3); }
+  .bd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#E24B4A; margin-bottom:10px; }
+  .bd-swatches { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .bd-swatch  { width:44px; height:44px; border-radius:8px; }
+
+  .good-demo { background:#050505; border-radius:12px; padding:16px; border:2px solid rgba(29,181,116,0.3); }
+  .gd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#1DB574; margin-bottom:10px; }
+  .gd-swatches { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .gd-swatch  { width:44px; height:44px; border-radius:8px; }
+
+  .demo-desc { font-size:11px; line-height:1.6; }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  /* pills */
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-amber { background:#FAC775; color:#412402; }
+  @media (prefers-color-scheme:dark){
+    .pill-green{background:#27500A;color:#C0DD97;} .pill-red{background:#791F1F;color:#F7C1C1;} .pill-amber{background:#633806;color:#FAC775;}
+  }
+
+  /* anatomy rows */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anat-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anat-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:120px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-ex    { font-size:11px; font-style:italic; margin-top:3px; border-radius:5px; padding:5px 8px; font-family:monospace; }
+  .ab-amber { background:#FAEEDA; border-color:#EF9F27; }
+  .ab-amber .anat-label{color:#854F0B;} .ab-amber .anat-desc{color:#854F0B;} .ab-amber .anat-ex{background:#FAC775;color:#412402;}
+  @media (prefers-color-scheme:dark){
+    .ab-amber{background:#412402;border-color:#BA7517;} .ab-amber .anat-desc{color:#EF9F27;} .ab-amber .anat-ex{background:#633806;color:#FAC775;}
+  }
+</style>
+
+<h1>Nailing the color palette on a dark roofing website</h1>
+<p class="subtitle">Your base: #050505 main · #111111 card sections · built on darkness<br>This guide gives you every color, every role, every exact value — nothing missing</p>
+
+<!-- THE PROBLEM WITH #050505 ONLY -->
+<div class="divider-label"><span>The problem you need to solve — why #050505 and #111111 alone aren't enough</span></div>
+
+<div class="el-card amber-card" style="margin-bottom:10px;">
+  <div class="el-tag">The core issue</div>
+  <h3>Two background values creates a flat, depthless page — you need a 5-level background system to create hierarchy on dark</h3>
+  <p>On a light site, whitespace and contrast do the work of creating depth and hierarchy. On a dark site, you need more background levels because the contrast range is compressed. With only #050505 and #111111, everything sits on the same visual plane — cards don't feel elevated, sections don't feel distinct, and the page reads as one long dark wall. The fix isn't to add bright colors — it's to build a precise 5-step background system where each level is subtly lighter than the last, creating depth without ever looking colorful.</p>
+  <div class="why">Your notes said "the brain reads premium through visual hierarchy." On dark sites, that hierarchy is built almost entirely through subtle background variations and precise text opacity levels — not through hue changes.</div>
+</div>
+
+<!-- THE 5-LEVEL BACKGROUND SYSTEM -->
+<div class="divider-label"><span>Your complete 5-level background system</span></div>
+
+<div class="section-bg-demo">
+  <div class="sbd-section s-main">
+    <div class="sbd-label">Level 1 — deepest (your current main)</div>
+    <div class="sbd-content">
+      <div>
+        <div class="sbd-text">Page background — #050505</div>
+        <div class="sbd-sub">Hero section · page base · space between sections · never use for cards</div>
+      </div>
+      <div class="sbd-hex">#050505</div>
+    </div>
+  </div>
+  <div class="sbd-section s-lift" style="border-top:1px solid rgba(255,255,255,0.04);">
+    <div class="sbd-label">Level 2 — barely lifted</div>
+    <div class="sbd-content">
+      <div>
+        <div class="sbd-text">Section backgrounds — #0a0a0a</div>
+        <div class="sbd-sub">FAQ section · footer content area · long text sections · subtle page zones</div>
+      </div>
+      <div class="sbd-hex">#0a0a0a</div>
+    </div>
+  </div>
+  <div class="sbd-section s-card" style="border-top:1px solid rgba(255,255,255,0.04);">
+    <div class="sbd-label">Level 3 — cards (your current card sections)</div>
+    <div class="sbd-content">
+      <div>
+        <div class="sbd-text">Card backgrounds — #111111</div>
+        <div class="sbd-sub">Service cards · pricing cards · review cards · authority badges · all interactive cards</div>
+      </div>
+      <div class="sbd-hex">#111111</div>
+    </div>
+  </div>
+  <div class="sbd-section s-breather" style="border-top:1px solid rgba(255,255,255,0.04);">
+    <div class="sbd-label">Level 4 — elevated (breather sections)</div>
+    <div class="sbd-content">
+      <div>
+        <div class="sbd-text">Breather / featured sections — #1a1a1a</div>
+        <div class="sbd-sub">Section 8 breather · section 11 final CTA · featured pricing card · any section needing emphasis</div>
+      </div>
+      <div class="sbd-hex">#1a1a1a</div>
+    </div>
+  </div>
+  <div class="sbd-section s-hover" style="border-top:1px solid rgba(255,255,255,0.04);">
+    <div class="sbd-label">Level 5 — highest (hover states only)</div>
+    <div class="sbd-content">
+      <div>
+        <div class="sbd-text">Hover / active states — #222222</div>
+        <div class="sbd-sub">Card hover · button hover background · active nav item · input field focus background</div>
+      </div>
+      <div class="sbd-hex">#222222</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why these exact 5 values and not others</h3>
+  <p>The gap between each level is carefully calculated. #050505 → #0a0a0a is a 5-point jump — barely perceptible, just enough to suggest "this is a different zone." #0a0a0a → #111111 is a 7-point jump — visible but subtle. #111111 → #1a1a1a is a 9-point jump — clearly a different level, creates the "elevated" feeling for featured sections. The jumps get slightly larger as you go up because the human eye is less sensitive to value differences in very dark tones. Arbitrary values (like #0d0d0d or #181818) will look slightly off — these exact hex values align to clean visual steps.</p>
+</div>
+
+<!-- THE FULL PALETTE SYSTEM -->
+<div class="divider-label"><span>Your complete palette system — every color, every role</span></div>
+
+<div class="palette-system">
+  <div class="ps-title">Complete dark roofing palette</div>
+
+  <div class="ps-row">
+    <div class="ps-row-label">Background levels (the 5-step system above)</div>
+    <div class="ps-swatches">
+      <div class="ps-swatch sw-bg1">
+        <div class="ps-swatch-hex">#050505</div>
+        <div class="ps-swatch-name">Page base</div>
+        <div class="ps-swatch-use">Hero, page bg</div>
+      </div>
+      <div class="ps-swatch sw-bg2">
+        <div class="ps-swatch-hex">#0a0a0a</div>
+        <div class="ps-swatch-name">Section lift</div>
+        <div class="ps-swatch-use">FAQ, footer</div>
+      </div>
+      <div class="ps-swatch sw-bg3">
+        <div class="ps-swatch-hex">#111111</div>
+        <div class="ps-swatch-name">Cards</div>
+        <div class="ps-swatch-use">All card BGs</div>
+      </div>
+      <div class="ps-swatch sw-bg4">
+        <div class="ps-swatch-hex">#1a1a1a</div>
+        <div class="ps-swatch-name">Elevated</div>
+        <div class="ps-swatch-use">Breather, featured</div>
+      </div>
+      <div class="ps-swatch sw-bg5">
+        <div class="ps-swatch-hex">#222222</div>
+        <div class="ps-swatch-name">Hover only</div>
+        <div class="ps-swatch-use">Card/btn hover</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-row">
+    <div class="ps-row-label">Text hierarchy (opacity-based, not hue-based)</div>
+    <div class="ps-swatches">
+      <div class="ps-swatch sw-t1">
+        <div class="ps-swatch-hex">#F5F5F0</div>
+        <div class="ps-swatch-name">Primary text</div>
+        <div class="ps-swatch-use">Headlines, card titles, nav</div>
+      </div>
+      <div class="ps-swatch sw-t2">
+        <div class="ps-swatch-hex">rgba white 55%</div>
+        <div class="ps-swatch-name">Secondary text</div>
+        <div class="ps-swatch-use">Body copy, descriptions</div>
+      </div>
+      <div class="ps-swatch sw-t3">
+        <div class="ps-swatch-hex">rgba white 30%</div>
+        <div class="ps-swatch-name">Muted text</div>
+        <div class="ps-swatch-use">Labels, captions, meta</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-row">
+    <div class="ps-row-label">CTA accent — pick one, use it everywhere</div>
+    <div class="ps-swatches">
+      <div class="ps-swatch sw-cta-teal">
+        <div class="ps-swatch-hex">#1DB574</div>
+        <div class="ps-swatch-name">Teal — recommended</div>
+        <div class="ps-swatch-use">Trust, growth, safety — ideal for roofing</div>
+      </div>
+      <div class="ps-swatch sw-cta-amber">
+        <div class="ps-swatch-hex">#E8A020</div>
+        <div class="ps-swatch-name">Amber — alternative</div>
+        <div class="ps-swatch-use">Energy, urgency — use for urgency only</div>
+      </div>
+      <div class="ps-swatch sw-cta-white">
+        <div class="ps-swatch-hex">#F5F5F0</div>
+        <div class="ps-swatch-name">Off-white — safe option</div>
+        <div class="ps-swatch-use">Always works on dark, less emotional</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ps-row">
+    <div class="ps-row-label">Borders (opacity-based — never solid hex borders on dark)</div>
+    <div class="ps-swatches">
+      <div class="ps-swatch sw-bdr1">
+        <div class="ps-swatch-hex">rgba white 6%</div>
+        <div class="ps-swatch-name">Default border</div>
+        <div class="ps-swatch-use">All card borders, section dividers</div>
+      </div>
+      <div class="ps-swatch sw-bdr2">
+        <div class="ps-swatch-hex">rgba white 12%</div>
+        <div class="ps-swatch-name">Hover border</div>
+        <div class="ps-swatch-use">Card hover, input focus, active states</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA COLOR CHOICE -->
+<div class="divider-label"><span>Choosing your one CTA accent color — the most important decision</span></div>
+
+<div class="cta-options">
+  <div class="co-title">3 options for your CTA color on #050505 background — pick one and use it everywhere</div>
+  <div class="co-grid">
+    <div class="co-card co-1">
+      <button class="co-btn">Book Free Inspection →</button>
+      <div class="co-name">Teal #1DB574</div>
+      <div class="co-desc">Signals trust, safety, and growth. Psychologically associated with reliability — ideal for a service business where the homeowner's biggest fear is being scammed. High contrast on #050505 at 7.2:1 ratio.</div>
+      <div class="co-verdict">Recommended for roofing</div>
+    </div>
+    <div class="co-card co-2">
+      <button class="co-btn">Book Free Inspection →</button>
+      <div class="co-name">Amber #E8A020</div>
+      <div class="co-desc">Signals energy and urgency. Excellent for urgency banners and storm season messaging. Can work as the primary CTA but feels more aggressive — better as a secondary accent for urgency elements only.</div>
+      <div class="co-verdict">Better as urgency accent</div>
+    </div>
+    <div class="co-card co-3">
+      <button class="co-btn">Book Free Inspection →</button>
+      <div class="co-name">Off-white #F5F5F0</div>
+      <div class="co-desc">Maximum contrast at 15:1 ratio. Safe, clean, always works. But psychologically neutral — carries no emotional meaning. Use as a fallback or for secondary buttons. Less memorable than a brand color.</div>
+      <div class="co-verdict">Safe but emotionless</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEXT HIERARCHY ON DARK -->
+<div class="divider-label"><span>Text hierarchy on dark — the opacity system that makes everything readable</span></div>
+
+<div class="text-hierarchy-demo">
+  <div class="thd-title">4-level text opacity system on #050505 background</div>
+  <div class="thd-row">
+    <div class="thd-role">H1 headline</div>
+    <div class="thd-hex">#F5F5F0</div>
+    <div class="thd-sample" style="color:#F5F5F0;font-weight:500;">Protect Your Home From Leaks — 15:1 contrast</div>
+  </div>
+  <div class="thd-row">
+    <div class="thd-role">H2 / card title</div>
+    <div class="thd-hex">#DEDEDD</div>
+    <div class="thd-sample" style="color:#DEDEDD;font-weight:500;">Book a Free Inspection Today — 11:1 contrast</div>
+  </div>
+  <div class="thd-row">
+    <div class="thd-role">Body / description</div>
+    <div class="thd-hex">rgba w 55%</div>
+    <div class="thd-sample" style="color:rgba(255,255,255,0.55);">Emergency repairs within 24 hours. We handle all insurance claims directly. — 7:1 contrast</div>
+  </div>
+  <div class="thd-row">
+    <div class="thd-role">Labels / captions</div>
+    <div class="thd-hex">rgba w 30%</div>
+    <div class="thd-sample" style="color:rgba(255,255,255,0.30);">STEP 01 · FREE · NO OBLIGATION · Posted on Google — 3.5:1 contrast</div>
+  </div>
+  <div class="thd-row">
+    <div class="thd-role">CTA accent text</div>
+    <div class="thd-hex">#1DB574</div>
+    <div class="thd-sample" style="color:#1DB574;font-weight:500;">View all reviews → · Licensed & insured — 7.2:1 contrast</div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why rgba opacity instead of fixed hex values for body text</h3>
+  <p>On a dark site, using rgba(255,255,255,0.55) for body text instead of a fixed hex like #8a8a8a is critical because your background isn't perfectly consistent — you have #050505, #0a0a0a, #111111, and #1a1a1a. If you use a fixed grey hex, that grey will look slightly different on each background. With rgba opacity, the text automatically adjusts its apparent brightness relative to whatever background it sits on — giving you consistent visual hierarchy across all 5 background levels without having to calculate different values for each.</p>
+</div>
+
+<!-- FULL SECTION MOCKUP ON DARK -->
+<div class="divider-label"><span>How the full system looks together — live page preview</span></div>
+
+<div class="dark-mockup">
+  <div class="dm-title">Your palette in action — roofing site sections on #050505</div>
+
+  <!-- Hero section -->
+  <div class="dm-hero">
+    <div class="dm-hero-eyebrow">★★★★★ Rated #1 Roofer in [City]</div>
+    <div class="dm-hero-h">Protect Your Home<br>From Leaks — Guaranteed</div>
+    <div class="dm-hero-p">Emergency repairs within 24 hours. 10-year workmanship warranty in writing. Serving Oak Park since 2004.</div>
+    <div class="dm-hero-btns">
+      <button class="dm-btn-p">Book Free Inspection →</button>
+      <button class="dm-btn-s">Get Custom Estimate</button>
+    </div>
+  </div>
+
+  <!-- Trust badges -->
+  <div class="dm-trust">
+    <div class="dm-badge">Licensed #CR-12345</div>
+    <div class="dm-badge">Fully Insured</div>
+    <div class="dm-badge">GAF Certified</div>
+    <div class="dm-badge">★★★★★ 4.9 Google</div>
+    <div class="dm-badge">20 Years in [City]</div>
+  </div>
+
+  <!-- Service cards on #111111 -->
+  <div class="dm-cards">
+    <div class="dm-card">
+      <div class="dm-card-icon">🔍</div>
+      <div class="dm-card-title">Inspection</div>
+      <div class="dm-card-desc">Same-day available. No commitment.</div>
+      <div class="dm-card-btn">Free →</div>
+    </div>
+    <div class="dm-card featured">
+      <div class="dm-card-icon">🔧</div>
+      <div class="dm-card-title">Repair & Patch</div>
+      <div class="dm-card-desc">Emergency same-day. Insurance handled.</div>
+      <div class="dm-card-btn">From $499 →</div>
+    </div>
+    <div class="dm-card">
+      <div class="dm-card-icon">🏠</div>
+      <div class="dm-card-title">Replacement</div>
+      <div class="dm-card-desc">Full re-roof in 1–2 days. Clean-up included.</div>
+      <div class="dm-card-btn">Free estimate →</div>
+    </div>
+  </div>
+
+  <!-- FAQ on #0a0a0a -->
+  <div class="dm-faq">
+    <div class="dm-faq-item">
+      <div class="dm-faq-q">Does my insurance cover this?</div>
+      <div class="dm-faq-arrow">▾</div>
+    </div>
+    <div class="dm-faq-item">
+      <div class="dm-faq-q">How long does a replacement take?</div>
+      <div class="dm-faq-arrow">▾</div>
+    </div>
+    <div class="dm-faq-item">
+      <div class="dm-faq-q">Are you licensed and insured?</div>
+      <div class="dm-faq-arrow">▾</div>
+    </div>
+  </div>
+</div>
+
+<!-- BORDER SYSTEM -->
+<div class="divider-label"><span>The border system — why solid hex borders look wrong on dark</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">The most common dark-site mistake</div>
+  <h3>Never use solid hex colors for borders on a dark background — use rgba opacity only</h3>
+  <p>If you write <code style="background:rgba(0,0,0,0.1);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">border: 1px solid #333333</code> on your cards, it will look fine on #050505 but slightly too harsh on #111111 and #1a1a1a sections. The border appears to change weight depending on background. Instead write <code style="background:rgba(0,0,0,0.1);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">border: 1px solid rgba(255,255,255,0.06)</code> — this border is always 6% white regardless of background, so it stays visually consistent across all 5 background levels automatically.</p>
+  <div class="why">Default card border: rgba(255,255,255,0.06) · Hover border: rgba(255,255,255,0.12) · Focus border: your CTA color at full opacity · Section dividers: rgba(255,255,255,0.04)</div>
+</div>
+
+<!-- GOOD VS BAD PALETTE USE -->
+<div class="divider-label"><span>Good palette vs bad palette — the difference on a dark site</span></div>
+
+<div class="grid-2 spacer">
+  <div class="bad-demo">
+    <div class="bd-label">Wrong — too many colors, random hues</div>
+    <div class="bd-swatches">
+      <div class="bd-swatch" style="background:#050505;border:1px solid rgba(255,255,255,0.1);"></div>
+      <div class="bd-swatch" style="background:#1a6b3a;"></div>
+      <div class="bd-swatch" style="background:#c43c2a;"></div>
+      <div class="bd-swatch" style="background:#2a5cc4;"></div>
+      <div class="bd-swatch" style="background:#c4a22a;"></div>
+      <div class="bd-swatch" style="background:#8b2ac4;"></div>
+    </div>
+    <div class="demo-desc" style="color:rgba(255,255,255,0.4);">Using 6 accent colors creates visual chaos. The eye doesn't know what to focus on. Every element competes equally. Nothing stands out — including the CTA. Your notes: "Random colors create a messy feeling that drives users away."</div>
+  </div>
+  <div class="good-demo">
+    <div class="gd-label">Right — one accent, everything else neutral</div>
+    <div class="gd-swatches">
+      <div class="gd-swatch" style="background:#050505;border:1px solid rgba(255,255,255,0.1);"></div>
+      <div class="gd-swatch" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.08);"></div>
+      <div class="gd-swatch" style="background:#111111;border:1px solid rgba(255,255,255,0.08);"></div>
+      <div class="gd-swatch" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);"></div>
+      <div class="gd-swatch" style="background:#1DB574;"></div>
+      <div class="gd-swatch" style="background:#F5F5F0;"></div>
+    </div>
+    <div class="demo-desc" style="color:rgba(255,255,255,0.4);">4 background levels + 1 accent + off-white text. The accent color (#1DB574) is the only hue on the page — so it commands 100% of the eye when it appears. Every CTA, every important link, every trust signal uses this one color. Nothing competes with it.</div>
+  </div>
+</div>
+
+<!-- CSS VARIABLES -->
+<div class="divider-label"><span>The complete CSS variables — copy and paste this into your stylesheet</span></div>
+
+<div style="background:#0a0a0a;border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.06);">
+  <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">:root { — paste at the top of your CSS file }</div>
+  <div style="font-family:monospace;font-size:11px;line-height:2;color:rgba(255,255,255,0.5);">
+    <span style="color:rgba(255,255,255,0.2);">/* Backgrounds — the 5-level system */</span><br>
+    <span style="color:#AFA9EC;">--bg-base</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#050505</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--bg-lift</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#0a0a0a</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--bg-card</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#111111</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--bg-elevated</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#1a1a1a</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--bg-hover</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#222222</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <br>
+    <span style="color:rgba(255,255,255,0.2);">/* Text — opacity system */</span><br>
+    <span style="color:#AFA9EC;">--text-primary</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#F5F5F0</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--text-secondary</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">rgba(255,255,255,0.55)</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--text-muted</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">rgba(255,255,255,0.30)</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <br>
+    <span style="color:rgba(255,255,255,0.2);">/* Borders — opacity system */</span><br>
+    <span style="color:#AFA9EC;">--border-default</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">rgba(255,255,255,0.06)</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--border-hover</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">rgba(255,255,255,0.12)</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <br>
+    <span style="color:rgba(255,255,255,0.2);">/* CTA accent — your one brand color */</span><br>
+    <span style="color:#AFA9EC;">--accent</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#1DB574</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--accent-dark</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#17965f</span><span style="color:rgba(255,255,255,0.4);"> </span><span style="color:rgba(255,255,255,0.2);">/* hover state */</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--accent-glow</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">rgba(29,181,116,0.12)</span><span style="color:rgba(255,255,255,0.4);"> </span><span style="color:rgba(255,255,255,0.2);">/* subtle tinted bg */</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <span style="color:#AFA9EC;">--accent-text</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#04342C</span><span style="color:rgba(255,255,255,0.4);"> </span><span style="color:rgba(255,255,255,0.2);">/* text ON the accent button */</span><span style="color:rgba(255,255,255,0.4);">;</span><br>
+    <br>
+    <span style="color:rgba(255,255,255,0.2);">/* Urgency only */</span><br>
+    <span style="color:#AFA9EC;">--urgency</span><span style="color:rgba(255,255,255,0.4);">: </span><span style="color:#9FE1CB;">#E8A020</span><span style="color:rgba(255,255,255,0.4);">;</span>
+  </div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use the 5-level background system — never just 2 values</li>
+      <li>Define all colors as CSS variables — never hardcode in components</li>
+      <li>Use rgba opacity for all borders — never solid hex borders</li>
+      <li>Use rgba opacity for secondary/muted text — not fixed greys</li>
+      <li>Pick ONE accent color and use it only for CTAs and key links</li>
+      <li>Make sure your CTA passes 4.5:1 contrast ratio on all backgrounds</li>
+      <li>Use --accent-glow for subtle accent-tinted card backgrounds</li>
+      <li>Keep amber/orange for urgency banners only — not as a second accent</li>
+      <li>Test every text level on every background level for readability</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Use more than 1 accent hue as a "brand color" — it splits attention</li>
+      <li>Use solid hex borders like #333 — they look wrong across bg levels</li>
+      <li>Use pure white (#ffffff) for text — too harsh, feels cheap on dark</li>
+      <li>Use pure black (#000000) for the deepest background — too flat</li>
+      <li>Add a colored section background (red/blue/green) on a dark site</li>
+      <li>Use your accent color for decorative elements — reserve it for action</li>
+      <li>Use more than 5 background levels — creates visual noise not depth</li>
+      <li>Use rgba(255,255,255,0.3) for anything important — too low contrast</li>
+    </ul>
+  </div>
+</div>

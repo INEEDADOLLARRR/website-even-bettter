@@ -1,0 +1,711 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card  { background:#FAECE7; border-color:#F0997B; }
+  .coral-card  .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+
+  @media (prefers-color-scheme:dark){
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  /* ── KEEP/KILL/ADD TABLE ── */
+  .decision-table { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .dt-header { display:grid; grid-template-columns:1.8fr 1fr 1fr; background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); }
+  .dt-row    { display:grid; grid-template-columns:1.8fr 1fr 1fr; border-bottom:1px solid var(--color-border-tertiary); }
+  .dt-row:last-child { border-bottom:none; }
+  .dt-cell   { padding:10px 12px; font-size:12px; color:var(--color-text-secondary); border-right:1px solid var(--color-border-tertiary); vertical-align:middle; line-height:1.5; }
+  .dt-cell:last-child { border-right:none; }
+  .dt-cell.head { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); }
+  .dt-cell.name { font-weight:500; color:var(--color-text-primary); font-size:12px; }
+  .tag-keep { background:#EAF3DE; color:#3B6D11; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:500; display:inline-block; }
+  .tag-kill { background:#FCEBEB; color:#A32D2D; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:500; display:inline-block; }
+  .tag-add  { background:#E1F5EE; color:#0F6E56; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:500; display:inline-block; }
+  .tag-maybe{ background:#FAEEDA; color:#854F0B; border-radius:20px; padding:2px 8px; font-size:10px; font-weight:500; display:inline-block; }
+  @media (prefers-color-scheme:dark){
+    .tag-keep{background:#173404;color:#C0DD97;} .tag-kill{background:#501313;color:#F7C1C1;} .tag-add{background:#04342C;color:#9FE1CB;} .tag-maybe{background:#412402;color:#FAC775;}
+  }
+
+  /* ── LIVE DEMO AREA ON DARK ── */
+  .demo-dark { background:#050505; border-radius:14px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .dd-title { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:rgba(255,255,255,0.25); margin-bottom:16px; }
+
+  /* buttons */
+  .demo-btns { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+  .demo-btn-primary {
+    background:#1DB574; color:#04342C; border-radius:8px; padding:11px 22px;
+    font-size:12px; font-weight:500; border:none; cursor:pointer;
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .demo-btn-primary:hover { background:#17965f; transform:scale(1.02); box-shadow:0 4px 16px rgba(29,181,116,0.25); }
+  .demo-btn-secondary {
+    background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.12);
+    border-radius:8px; padding:11px 22px; font-size:12px; cursor:pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .demo-btn-secondary:hover { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.22); }
+  .btn-label { font-size:10px; color:rgba(255,255,255,0.25); }
+
+  /* cards */
+  .demo-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:16px; }
+  .demo-card {
+    background:#111111; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:14px;
+    cursor:pointer; transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .demo-card:hover { background:#1a1a1a; border-color:rgba(255,255,255,0.12); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+  .dc-icon { font-size:18px; margin-bottom:6px; }
+  .dc-title { font-size:12px; font-weight:500; color:#F5F5F0; margin-bottom:3px; }
+  .dc-desc  { font-size:10px; color:rgba(255,255,255,0.35); line-height:1.4; margin-bottom:8px; }
+  .dc-link  { font-size:10px; font-weight:500; color:#1DB574; transition:gap 0.18s; display:inline-flex; align-items:center; gap:4px; }
+  .demo-card:hover .dc-link { gap:8px; }
+
+  /* form fields */
+  .demo-form { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+  .demo-field-wrap { position:relative; }
+  .demo-field {
+    width:100%; background:#111111; border:1.5px solid rgba(255,255,255,0.08);
+    border-radius:8px; padding:10px 36px 10px 14px; font-size:12px; color:#F5F5F0;
+    outline:none; font-family:var(--font-sans);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .demo-field:focus { border-color:#1DB574; background:#0a0a0a; }
+  .demo-field.valid { border-color:#1DB574; }
+  .field-check {
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    width:16px; height:16px; border-radius:50%; background:#1DB574;
+    display:flex; align-items:center; justify-content:center;
+    font-size:9px; color:#04342C; opacity:0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform:translateY(-50%) scale(0.6);
+  }
+  .demo-field.valid + .field-check { opacity:1; transform:translateY(-50%) scale(1); }
+
+  /* nav hover */
+  .demo-nav { display:flex; gap:0; background:#0a0a0a; border-radius:8px; padding:8px 12px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.04); }
+  .demo-nav-item {
+    font-size:12px; color:rgba(255,255,255,0.45); padding:5px 10px; cursor:pointer;
+    position:relative; transition:color 0.2s ease;
+  }
+  .demo-nav-item::after {
+    content:''; position:absolute; bottom:0; left:10px; right:10px; height:1.5px;
+    background:#1DB574; transform:scaleX(0); transform-origin:left;
+    transition:transform 0.2s ease;
+  }
+  .demo-nav-item:hover { color:#F5F5F0; }
+  .demo-nav-item:hover::after { transform:scaleX(1); }
+
+  /* image zoom */
+  .demo-images { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+  .demo-img-wrap { border-radius:8px; overflow:hidden; height:64px; cursor:pointer; }
+  .demo-img-inner {
+    width:100%; height:100%; background:linear-gradient(135deg,#1a1a1a,#222);
+    display:flex; align-items:center; justify-content:center; font-size:10px;
+    color:rgba(255,255,255,0.25); transition:transform 0.4s ease;
+  }
+  .demo-img-wrap:hover .demo-img-inner { transform:scale(1.04); }
+
+  /* scroll fade simulation */
+  .demo-scroll-fade { margin-bottom:16px; }
+  .dsf-items { display:flex; flex-direction:column; gap:6px; }
+  .dsf-item {
+    background:#111111; border:1px solid rgba(255,255,255,0.05); border-radius:8px;
+    padding:10px 14px; display:flex; align-items:center; gap:10px;
+    animation:fadeSlideUp 0.4s ease-out both;
+  }
+  .dsf-item:nth-child(2) { animation-delay:0.1s; }
+  .dsf-item:nth-child(3) { animation-delay:0.2s; }
+  .dsf-dot { width:6px; height:6px; border-radius:50%; background:#1DB574; flex-shrink:0; }
+  .dsf-text { font-size:11px; color:rgba(255,255,255,0.5); }
+  @keyframes fadeSlideUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* FAQ animation */
+  .demo-faq { background:#0a0a0a; border-radius:8px; border:1px solid rgba(255,255,255,0.04); overflow:hidden; margin-bottom:16px; }
+  .faq-row { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background 0.18s ease; }
+  .faq-row:last-child { border-bottom:none; }
+  .faq-row:hover { background:rgba(255,255,255,0.02); }
+  .faq-q { font-size:11px; color:rgba(255,255,255,0.55); }
+  .faq-icon { font-size:11px; color:#1DB574; transition:transform 0.25s ease; font-weight:500; }
+  .faq-row.open .faq-icon { transform:rotate(45deg); }
+  .faq-answer { font-size:11px; color:rgba(255,255,255,0.35); padding:0 14px; max-height:0; overflow:hidden; transition:max-height 0.3s ease, padding 0.3s ease; line-height:1.6; }
+  .faq-row.open + .faq-answer { max-height:80px; padding:8px 14px 12px; }
+
+  /* ── CODE BLOCKS ── */
+  .code-wrap { background:#0a0a0a; border-radius:10px; padding:14px; border:1px solid rgba(255,255,255,0.06); overflow-x:auto; }
+  .code-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px; }
+  .code-block { font-family:var(--font-mono); font-size:11px; line-height:1.9; }
+  .c-c { color:#5F5E5A; }
+  .c-k { color:#AFA9EC; }
+  .c-s { color:#9FE1CB; }
+  .c-f { color:#FAC775; }
+  .c-v { color:#B5D4F4; }
+  .c-p { color:#D3D1C7; }
+
+  /* ── TIMING REF ── */
+  .timing-ref { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .tr-header { display:grid; grid-template-columns:1.5fr 80px 100px 1fr; background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); }
+  .tr-row    { display:grid; grid-template-columns:1.5fr 80px 100px 1fr; border-bottom:1px solid var(--color-border-tertiary); }
+  .tr-row:last-child { border-bottom:none; }
+  .tr-cell   { padding:9px 12px; font-size:11px; color:var(--color-text-secondary); border-right:1px solid var(--color-border-tertiary); line-height:1.4; }
+  .tr-cell:last-child { border-right:none; }
+  .tr-cell.head { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); }
+  .tr-cell.anim-name { font-weight:500; color:var(--color-text-primary); font-size:12px; }
+  .tr-cell.good-val  { color:#0F6E56; font-weight:500; font-family:monospace; font-size:11px; }
+  .tr-cell.bad-val   { color:#A32D2D; font-family:monospace; font-size:11px; }
+  @media (prefers-color-scheme:dark){
+    .tr-cell.good-val { color:#9FE1CB; } .tr-cell.bad-val { color:#F09595; }
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-amber { background:#FAC775; color:#412402; }
+  @media (prefers-color-scheme:dark){
+    .pill-green{background:#27500A;color:#C0DD97;} .pill-red{background:#791F1F;color:#F7C1C1;} .pill-amber{background:#633806;color:#FAC775;}
+  }
+</style>
+
+<h1>Animations & micro-interactions — complete guide for your dark roofing site</h1>
+<p class="subtitle">What to keep · what to kill · what to add · exact CSS and JS for every interaction<br>Every demo below is live — hover the elements to see the correct behaviour</p>
+
+<!-- THE RULE FIRST -->
+<div class="el-card amber-card" style="margin-bottom:10px;">
+  <div class="el-tag">The one rule that governs all animations on a conversion site</div>
+  <h3>Every animation must do one of two things: guide the eye toward a CTA, or give positive feedback that reduces friction. Everything else gets deleted.</h3>
+  <p>Your notes said it plainly: "If an animation doesn't guide attention toward the CTA or clarify information, remove it." This is the filter you run on every existing animation and every new one you consider adding. Animation for decoration is noise. Animation for conversion is a tool. The difference is intention.</p>
+  <div class="why">On a dark site this matters even more — any animation on a near-black background draws enormous attention because there's so little competing for the eye. A decorative animation on #050505 will actually pull focus away from your CTA. That's the opposite of what you need.</div>
+</div>
+
+<!-- KEEP / KILL / ADD TABLE -->
+<div class="divider-label"><span>The audit table — keep · kill · add for every animation type</span></div>
+
+<div class="decision-table">
+  <div class="dt-header">
+    <div class="dt-cell head">Animation / interaction</div>
+    <div class="dt-cell head">Decision</div>
+    <div class="dt-cell head">Reason</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Scroll fade-in on sections (opacity + translateY)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Makes site feel alive not static. The #1 animation that separates premium from cheap.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">CTA button hover (color shift + scale + glow)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Directly guides toward conversion. Peak-End Rule micro-delight at the most important moment.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Card hover lift (translateY -2px + shadow + bg)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Signals interactivity. On dark sites the subtle lift is highly visible and feels premium.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Form field focus (border color → accent)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Guides through the form. Reduces abandonment. Green checkmark on valid field = positive reinforcement.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Nav link underline slide-in on hover</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Signals each link is interactive without adding visual noise when not hovered.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Photo/image hover zoom (scale 1.03)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Makes the before/after gallery feel interactive and inviting. Subtle enough to not distract.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">FAQ accordion expand/collapse (max-height)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Smooth expand feels premium. Instant show/hide feels broken. Required for any accordion.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Arrow/chevron rotation on FAQ open</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Communicates state change clearly. 45° rotation on + icon is cleaner than ▼/▲ swap.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Popup open (overlay fade + card slide-up)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">Required for the inspection popup. Without animation it feels like a page glitch.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Link arrow movement on hover (→ slides right)</div>
+    <div class="dt-cell"><span class="tag-keep">Keep / Add</span></div>
+    <div class="dt-cell">CTA text links like "View all reviews →" should have the arrow move right on hover — subtle momentum signal.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Spinning / rotating decorative elements</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">"Elements wildly bouncing or spinning distract the user — that is the opposite of premium." No roofing context makes this appropriate.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Parallax scrolling backgrounds</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Kills page speed. Creates motion sickness on mobile. Zero conversion benefit for a local service site.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Auto-playing text typing / typewriter effect</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Forces the visitor to wait to read the headline. Clarity is the #1 conversion driver — anything that delays understanding hurts conversion.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Floating / bobbing elements that loop forever</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Constant motion in peripheral vision is cognitively exhausting. The brain can't stop attending to it even when trying to read.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Number counter animations (500+ → counts up)</div>
+    <div class="dt-cell"><span class="tag-maybe">Keep if fast</span></div>
+    <div class="dt-cell">Only acceptable if the count completes in under 1.5 seconds and only triggers once. Otherwise looks gimmicky and distracts from reading.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Gradient color-shift background animations</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Creates visual noise without guiding toward any action. On dark sites the shifting colors will pull the eye away from text and CTAs constantly.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Page loading / intro animation (full-screen)</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Delays the visitor seeing your content. Every extra millisecond before the hero loads costs conversions. A 1-second intro animation is a 1-second delay on your most important section.</div>
+  </div>
+  <div class="dt-row">
+    <div class="dt-cell name">Scroll-triggered slide-in from left/right (not up)</div>
+    <div class="dt-cell"><span class="tag-kill">Kill it</span></div>
+    <div class="dt-cell">Horizontal slide-ins feel disorienting — the page scrolls vertically so elements appearing from the side break the natural reading direction. Only fade + translateY (upward) is natural.</div>
+  </div>
+</div>
+
+<!-- LIVE DEMOS -->
+<div class="divider-label"><span>Live interactive demos — hover every element to see the correct behaviour</span></div>
+
+<div class="demo-dark">
+  <div class="dd-title">Hover everything — these are the exact animations your site should have</div>
+
+  <!-- Buttons -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">CTA buttons — hover to see glow + scale</div>
+  <div class="demo-btns">
+    <button class="demo-btn-primary">Book Free Inspection →</button>
+    <button class="demo-btn-secondary">Get Custom Estimate</button>
+    <span class="btn-label">Primary: bg darkens + scale(1.02) + green glow shadow · Secondary: bg lifts + border brightens</span>
+  </div>
+
+  <!-- Cards -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">Service cards — hover to see lift + border + arrow movement</div>
+  <div class="demo-cards">
+    <div class="demo-card">
+      <div class="dc-icon">🔍</div>
+      <div class="dc-title">Inspection</div>
+      <div class="dc-desc">Same-day available. No commitment required.</div>
+      <div class="dc-link">Free <span>→</span></div>
+    </div>
+    <div class="demo-card">
+      <div class="dc-icon">🔧</div>
+      <div class="dc-title">Repair & Patch</div>
+      <div class="dc-desc">Emergency same-day. Insurance handled.</div>
+      <div class="dc-link">From $499 <span>→</span></div>
+    </div>
+    <div class="demo-card">
+      <div class="dc-icon">🏠</div>
+      <div class="dc-title">Full Replacement</div>
+      <div class="dc-desc">1–2 days. Full clean-up included.</div>
+      <div class="dc-link">Free estimate <span>→</span></div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">Navigation — hover to see underline slide-in</div>
+  <div class="demo-nav">
+    <div class="demo-nav-item">Home</div>
+    <div class="demo-nav-item">Services</div>
+    <div class="demo-nav-item">Reviews</div>
+    <div class="demo-nav-item">About</div>
+    <div class="demo-nav-item">Contact</div>
+  </div>
+
+  <!-- Form fields -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">Form fields — click to see focus state · type enough to see green checkmark</div>
+  <div class="demo-form">
+    <div class="demo-field-wrap">
+      <input class="demo-field" placeholder="Your name" oninput="this.classList.toggle('valid', this.value.trim().length >= 2)"/>
+      <div class="field-check">✓</div>
+    </div>
+    <div class="demo-field-wrap">
+      <input class="demo-field" placeholder="Phone number (555) 000-0000" oninput="this.classList.toggle('valid', this.value.replace(/\D/g,'').length >= 10)"/>
+      <div class="field-check">✓</div>
+    </div>
+    <div class="demo-field-wrap">
+      <input class="demo-field" placeholder="Zip code" maxlength="5" oninput="this.classList.toggle('valid', /^\d{5}$/.test(this.value))"/>
+      <div class="field-check">✓</div>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">Before/after photos — hover to see subtle zoom</div>
+  <div class="demo-images">
+    <div class="demo-img-wrap">
+      <div class="demo-img-inner">Before — hover to zoom</div>
+    </div>
+    <div class="demo-img-wrap">
+      <div class="demo-img-inner">After — hover to zoom</div>
+    </div>
+  </div>
+
+  <!-- Scroll fade preview -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">Section scroll fade-in — staggered children (refreshes on page load)</div>
+  <div class="demo-scroll-fade">
+    <div class="dsf-items">
+      <div class="dsf-item"><div class="dsf-dot"></div><div class="dsf-text">★★★★★ "Fixed our leak same day. No mess left behind." — Sarah M., Oak Park</div></div>
+      <div class="dsf-item"><div class="dsf-dot"></div><div class="dsf-text">★★★★★ "Handled our entire insurance claim. We paid nothing." — Mike T., Riverside</div></div>
+      <div class="dsf-item"><div class="dsf-dot"></div><div class="dsf-text">★★★★★ "Called at 8am, roof done by 4pm. Incredible." — David C., North End</div></div>
+    </div>
+  </div>
+
+  <!-- FAQ accordion -->
+  <div style="margin-bottom:6px;font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em;">FAQ accordion — click to expand with smooth animation</div>
+  <div class="demo-faq">
+    <div class="faq-row" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Does my insurance cover roof damage?</div>
+      <div class="faq-icon">+</div>
+    </div>
+    <div class="faq-answer">In most cases yes — storm, hail, and wind damage is typically covered. We handle the entire insurance claim process at no extra cost. Most homeowners pay only their deductible.</div>
+    <div class="faq-row" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How long does a full replacement take?</div>
+      <div class="faq-icon">+</div>
+    </div>
+    <div class="faq-answer">Most full replacements are completed in 1–2 days. We start at 7am and include full clean-up before we leave.</div>
+    <div class="faq-row" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Are you licensed and insured?</div>
+      <div class="faq-icon">+</div>
+    </div>
+    <div class="faq-answer">Yes. State license #CR-12345 · General liability + workers' compensation fully active. Certificates available on request.</div>
+  </div>
+</div>
+
+<!-- TIMING REFERENCE -->
+<div class="divider-label"><span>Exact timing values for every animation — use these, nothing else</span></div>
+
+<div class="timing-ref spacer">
+  <div class="tr-header">
+    <div class="tr-cell head">Animation</div>
+    <div class="tr-cell head">Duration</div>
+    <div class="tr-cell head">Easing</div>
+    <div class="tr-cell head">What it does</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Section scroll fade-in</div>
+    <div class="tr-cell good-val">350ms</div>
+    <div class="tr-cell good-val">ease-out</div>
+    <div class="tr-cell">opacity 0→1 + translateY(20px)→0. Child stagger: 80ms per element.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Button hover (all states)</div>
+    <div class="tr-cell good-val">180ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">background + transform + box-shadow all transition together.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Card hover lift</div>
+    <div class="tr-cell good-val">200ms</div>
+    <div class="tr-cell good-val">ease-out</div>
+    <div class="tr-cell">translateY(-2px) + box-shadow + bg color + border color.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Form field focus</div>
+    <div class="tr-cell good-val">150ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">border-color → accent only. Never move the field itself.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Form checkmark appear</div>
+    <div class="tr-cell good-val">200ms</div>
+    <div class="tr-cell good-val">ease-out</div>
+    <div class="tr-cell">opacity 0→1 + scale(0.6)→scale(1). Springy arrival.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Nav underline slide</div>
+    <div class="tr-cell good-val">200ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">scaleX(0)→scaleX(1) from left via transform-origin: left.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Image hover zoom</div>
+    <div class="tr-cell good-val">400ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">scale(1)→scale(1.04). Slower than hover states — feels deliberate.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">FAQ accordion expand</div>
+    <div class="tr-cell good-val">300ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">max-height: 0→content height. Use max-height not height for CSS animation.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">FAQ icon rotation</div>
+    <div class="tr-cell good-val">250ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">rotate(0)→rotate(45deg) on + icon when open class added.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Popup open (overlay)</div>
+    <div class="tr-cell good-val">300ms</div>
+    <div class="tr-cell good-val">ease</div>
+    <div class="tr-cell">backdrop opacity 0→1. Card translateY(16px)→0 simultaneously.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Popup close</div>
+    <div class="tr-cell good-val">200ms</div>
+    <div class="tr-cell good-val">ease-in</div>
+    <div class="tr-cell">Faster than open — closing feels snappier and less obstructive.</div>
+  </div>
+  <div class="tr-row">
+    <div class="tr-cell anim-name">Anything longer than →</div>
+    <div class="tr-cell bad-val">500ms+</div>
+    <div class="tr-cell bad-val">avoid</div>
+    <div class="tr-cell">Feels sluggish. Users interpret slow animations as a slow site.</div>
+  </div>
+</div>
+
+<!-- THE COMPLETE CSS -->
+<div class="divider-label"><span>Complete CSS for all correct animations — paste into your stylesheet</span></div>
+
+<div class="code-wrap spacer">
+  <div class="code-title">All animation CSS — the complete system</div>
+  <div class="code-block">
+<span class="c-c">/* ── 1. SCROLL FADE-IN (add .fade-in class to every section) ── */</span><br>
+<span class="c-k">.fade-in</span> {<br>
+&nbsp;&nbsp;<span class="c-v">opacity</span>: <span class="c-s">0</span>;<br>
+&nbsp;&nbsp;<span class="c-v">transform</span>: <span class="c-f">translateY</span>(<span class="c-s">20px</span>);<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>: opacity <span class="c-s">350ms ease-out</span>, transform <span class="c-s">350ms ease-out</span>;<br>
+}<br>
+<span class="c-k">.fade-in.visible</span> { <span class="c-v">opacity</span>:<span class="c-s">1</span>; <span class="c-v">transform</span>:<span class="c-f">translateY</span>(<span class="c-s">0</span>); }<br>
+<br>
+<span class="c-c">/* ── 2. CTA BUTTON — primary (accent color) ── */</span><br>
+<span class="c-k">.btn-primary</span> {<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>: background <span class="c-s">180ms ease</span>, transform <span class="c-s">180ms ease</span>, box-shadow <span class="c-s">180ms ease</span>;<br>
+}<br>
+<span class="c-k">.btn-primary:hover</span> {<br>
+&nbsp;&nbsp;<span class="c-v">background</span>: <span class="c-s">#17965f</span>; <span class="c-c">/* darken accent */</span><br>
+&nbsp;&nbsp;<span class="c-v">transform</span>: <span class="c-f">scale</span>(<span class="c-s">1.02</span>);<br>
+&nbsp;&nbsp;<span class="c-v">box-shadow</span>: <span class="c-s">0 4px 20px rgba(29,181,116,0.30)</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── 3. SECONDARY BUTTON ── */</span><br>
+<span class="c-k">.btn-secondary</span> {<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>: background <span class="c-s">180ms ease</span>, border-color <span class="c-s">180ms ease</span>;<br>
+}<br>
+<span class="c-k">.btn-secondary:hover</span> {<br>
+&nbsp;&nbsp;<span class="c-v">background</span>: <span class="c-s">rgba(255,255,255,0.04)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">border-color</span>: <span class="c-s">rgba(255,255,255,0.22)</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── 4. CARD HOVER LIFT ── */</span><br>
+<span class="c-k">.card</span> {<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>: background <span class="c-s">200ms ease-out</span>, border-color <span class="c-s">200ms ease-out</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform <span class="c-s">200ms ease-out</span>, box-shadow <span class="c-s">200ms ease-out</span>;<br>
+}<br>
+<span class="c-k">.card:hover</span> {<br>
+&nbsp;&nbsp;<span class="c-v">background</span>: <span class="c-s">#1a1a1a</span>;<br>
+&nbsp;&nbsp;<span class="c-v">border-color</span>: <span class="c-s">rgba(255,255,255,0.12)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">transform</span>: <span class="c-f">translateY</span>(<span class="c-s">-2px</span>);<br>
+&nbsp;&nbsp;<span class="c-v">box-shadow</span>: <span class="c-s">0 8px 28px rgba(0,0,0,0.45)</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── 5. NAV LINK UNDERLINE SLIDE ── */</span><br>
+<span class="c-k">.nav-link</span> { <span class="c-v">position</span>:<span class="c-s">relative</span>; <span class="c-v">transition</span>:color <span class="c-s">200ms ease</span>; }<br>
+<span class="c-k">.nav-link::after</span> {<br>
+&nbsp;&nbsp;<span class="c-v">content</span>:<span class="c-s">''</span>; <span class="c-v">position</span>:<span class="c-s">absolute</span>;<br>
+&nbsp;&nbsp;<span class="c-v">bottom</span>:<span class="c-s">-2px</span>; <span class="c-v">left</span>:<span class="c-s">0</span>; <span class="c-v">right</span>:<span class="c-s">0</span>; <span class="c-v">height</span>:<span class="c-s">1.5px</span>;<br>
+&nbsp;&nbsp;<span class="c-v">background</span>:<span class="c-s">#1DB574</span>;<br>
+&nbsp;&nbsp;<span class="c-v">transform</span>:<span class="c-f">scaleX</span>(<span class="c-s">0</span>); <span class="c-v">transform-origin</span>:<span class="c-s">left</span>;<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>:transform <span class="c-s">200ms ease</span>;<br>
+}<br>
+<span class="c-k">.nav-link:hover::after</span> { <span class="c-v">transform</span>:<span class="c-f">scaleX</span>(<span class="c-s">1</span>); }<br>
+<br>
+<span class="c-c">/* ── 6. IMAGE ZOOM ── */</span><br>
+<span class="c-k">.img-wrap</span> { <span class="c-v">overflow</span>:<span class="c-s">hidden</span>; <span class="c-v">border-radius</span>:<span class="c-s">8px</span>; }<br>
+<span class="c-k">.img-wrap img</span> { <span class="c-v">transition</span>:transform <span class="c-s">400ms ease</span>; }<br>
+<span class="c-k">.img-wrap:hover img</span> { <span class="c-v">transform</span>:<span class="c-f">scale</span>(<span class="c-s">1.04</span>); }<br>
+<br>
+<span class="c-c">/* ── 7. FORM FIELD FOCUS + VALID CHECKMARK ── */</span><br>
+<span class="c-k">.form-input</span> { <span class="c-v">transition</span>:border-color <span class="c-s">150ms ease</span>, background <span class="c-s">150ms ease</span>; }<br>
+<span class="c-k">.form-input:focus</span> { <span class="c-v">border-color</span>:<span class="c-s">#1DB574</span>; <span class="c-v">background</span>:<span class="c-s">#0a0a0a</span>; }<br>
+<span class="c-k">.form-input.valid</span> { <span class="c-v">border-color</span>:<span class="c-s">#1DB574</span>; }<br>
+<span class="c-k">.field-check</span> {<br>
+&nbsp;&nbsp;<span class="c-v">opacity</span>:<span class="c-s">0</span>; <span class="c-v">transform</span>:<span class="c-f">scale</span>(<span class="c-s">0.6</span>);<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>:opacity <span class="c-s">200ms ease-out</span>, transform <span class="c-s">200ms ease-out</span>;<br>
+}<br>
+<span class="c-k">.form-input.valid ~ .field-check</span> {<br>
+&nbsp;&nbsp;<span class="c-v">opacity</span>:<span class="c-s">1</span>; <span class="c-v">transform</span>:<span class="c-f">scale</span>(<span class="c-s">1</span>);<br>
+}<br>
+<br>
+<span class="c-c">/* ── 8. FAQ ACCORDION ── */</span><br>
+<span class="c-k">.faq-answer</span> {<br>
+&nbsp;&nbsp;<span class="c-v">max-height</span>:<span class="c-s">0</span>; <span class="c-v">overflow</span>:<span class="c-s">hidden</span>;<br>
+&nbsp;&nbsp;<span class="c-v">transition</span>:max-height <span class="c-s">300ms ease</span>, padding <span class="c-s">300ms ease</span>;<br>
+}<br>
+<span class="c-k">.faq-row.open + .faq-answer</span> { <span class="c-v">max-height</span>:<span class="c-s">200px</span>; }<br>
+<span class="c-k">.faq-icon</span> { <span class="c-v">transition</span>:transform <span class="c-s">250ms ease</span>; }<br>
+<span class="c-k">.faq-row.open .faq-icon</span> { <span class="c-v">transform</span>:<span class="c-f">rotate</span>(<span class="c-s">45deg</span>); }<br>
+<br>
+<span class="c-c">/* ── 9. ACCESSIBILITY WRAPPER (REQUIRED) ── */</span><br>
+<span class="c-k">@media (prefers-reduced-motion: reduce)</span> {<br>
+&nbsp;&nbsp;<span class="c-k">*, *::before, *::after</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">animation-duration</span>: <span class="c-s">0.01ms !important</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">transition-duration</span>: <span class="c-s">0.01ms !important</span>;<br>
+&nbsp;&nbsp;}<br>
+}
+  </div>
+</div>
+
+<!-- SCROLL FADE JS -->
+<div class="divider-label"><span>The scroll fade-in JavaScript — wire it to every section</span></div>
+
+<div class="code-wrap spacer">
+  <div class="code-title">Intersection Observer — add .fade-in to any element you want to animate in on scroll</div>
+  <div class="code-block">
+<span class="c-c">// Trigger fade-in when elements enter viewport</span><br>
+<span class="c-k">const</span> <span class="c-v">observer</span> = <span class="c-k">new</span> <span class="c-f">IntersectionObserver</span>((<span class="c-v">entries</span>) => {<br>
+&nbsp;&nbsp;<span class="c-v">entries</span>.<span class="c-f">forEach</span>((<span class="c-v">entry</span>) => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-k">if</span> (<span class="c-v">entry</span>.isIntersecting) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">entry</span>.target.classList.<span class="c-f">add</span>(<span class="c-s">'visible'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">observer</span>.<span class="c-f">unobserve</span>(<span class="c-v">entry</span>.target); <span class="c-c">// fire once only</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;});<br>
+}, { <span class="c-v">threshold</span>: <span class="c-s">0.12</span>, <span class="c-v">rootMargin</span>: <span class="c-s">'0px 0px -40px 0px'</span> });<br>
+<br>
+<span class="c-c">// Apply to all sections and stagger child cards</span><br>
+<span class="c-f">document.querySelectorAll</span>(<span class="c-s">'.fade-in'</span>).<span class="c-f">forEach</span>(<span class="c-v">el</span> => <span class="c-v">observer</span>.<span class="c-f">observe</span>(<span class="c-v">el</span>));<br>
+<br>
+<span class="c-c">// Stagger children inside a section (e.g. service cards)</span><br>
+<span class="c-f">document.querySelectorAll</span>(<span class="c-s">'.stagger-children'</span>).<span class="c-f">forEach</span>(<span class="c-v">parent</span> => {<br>
+&nbsp;&nbsp;<span class="c-v">parent</span>.querySelectorAll(<span class="c-s">':scope > *'</span>).<span class="c-f">forEach</span>((<span class="c-v">child</span>, <span class="c-v">i</span>) => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">child</span>.style.transitionDelay = <span class="c-s">`${i * 80}ms`</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">child</span>.classList.<span class="c-f">add</span>(<span class="c-s">'fade-in'</span>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-v">observer</span>.<span class="c-f">observe</span>(<span class="c-v">child</span>);<br>
+&nbsp;&nbsp;});<br>
+});
+  </div>
+</div>
+
+<!-- WHERE TO ADD WHAT -->
+<div class="divider-label"><span>Where to apply each animation — section by section map</span></div>
+
+<div class="note-box">
+  <h3>Section-by-section animation map</h3>
+  <p><strong>Section 1 (Hero):</strong> No scroll fade — it must be instantly visible. Headline, subheadline, and CTA buttons get no entrance animation. Only button hover states apply here.</p>
+  <p style="margin-top:6px;"><strong>Section 2 (Trust strip):</strong> Fade-in as one unit. The badges inside stagger by 80ms each left to right.</p>
+  <p style="margin-top:6px;"><strong>Section 3 (Authority stack):</strong> Cards stagger in with 80ms delay between each badge/credential card.</p>
+  <p style="margin-top:6px;"><strong>Section 4 (Photos):</strong> Fade-in the grid as one unit. Each image gets the hover zoom effect.</p>
+  <p style="margin-top:6px;"><strong>Section 5 (Video):</strong> Section fades in. No animation on the video player itself.</p>
+  <p style="margin-top:6px;"><strong>Section 6 (How It Works):</strong> The 3 steps stagger in with 100ms delay between each step.</p>
+  <p style="margin-top:6px;"><strong>Section 7 (Reviews):</strong> Cards stagger in. No animation inside video thumbnails.</p>
+  <p style="margin-top:6px;"><strong>Section 8 (Services):</strong> Service cards stagger in with 80ms delay. Urgency banner fades in last.</p>
+  <p style="margin-top:6px;"><strong>Section 9 (Breather):</strong> The whole section fades in as one unit — headline, then buttons 150ms later.</p>
+  <p style="margin-top:6px;"><strong>Section 10 (Pricing):</strong> 3 pricing cards stagger in with 100ms delay. Featured card appears slightly earlier (0ms delay, flanking cards at 100ms and 200ms).</p>
+  <p style="margin-top:6px;"><strong>Section 11 (FAQ):</strong> Each FAQ row fades in with 60ms stagger. Accordion open/close uses the max-height CSS animation.</p>
+  <p style="margin-top:6px;"><strong>Section 12 (Final CTA):</strong> Headline fades in, then buttons 150ms later. Phone number 250ms after that.</p>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Wrap everything in prefers-reduced-motion</li>
+      <li>Keep all transitions under 400ms</li>
+      <li>Use ease-out for entrances (fast start, slow end)</li>
+      <li>Use ease-in for exits (slow start, fast end)</li>
+      <li>Stagger child elements by 80ms — never all at once</li>
+      <li>Only animate transform and opacity — never width/height</li>
+      <li>Use translateY(20px) for scroll fade — not translateX</li>
+      <li>Apply hover state on card container not inner elements</li>
+      <li>Fire scroll animations once — never re-trigger on scroll back</li>
+      <li>Test every animation on a real phone before shipping</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Animate width, height, top, left — causes repaints (slow)</li>
+      <li>Use transitions longer than 400ms anywhere</li>
+      <li>Loop decorative animations forever</li>
+      <li>Add a page intro / loading animation</li>
+      <li>Use slide-in from left or right on sections</li>
+      <li>Animate the hero section entrance (it must load instantly)</li>
+      <li>Use parallax scrolling — kills mobile performance</li>
+      <li>Add a typewriter effect on any headline</li>
+      <li>Use JavaScript for something CSS can do</li>
+      <li>Forget prefers-reduced-motion — it's not optional</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>The performance rule — only animate transform and opacity</h3>
+  <p>This is non-negotiable. When you animate <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">transform</code> and <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">opacity</code>, the browser handles them on the GPU — they're essentially free. When you animate <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">width</code>, <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">height</code>, <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">top</code>, <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">left</code>, or <code style="background:var(--color-background-secondary);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">margin</code>, the browser has to recalculate the layout of the entire page on every frame — this creates jank on mobile. Every animation in this guide uses only transform and opacity. The only exception is border-color and background transitions on hover states, which are acceptable because they're triggered by user input not continuous loops.</p>
+</div>

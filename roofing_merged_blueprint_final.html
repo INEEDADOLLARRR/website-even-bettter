@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  .title-block { text-align: center; margin-bottom: 32px; }
+  .title-block h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+  .title-block p { font-size: 13px; color: var(--color-text-secondary); }
+
+  .section-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: stretch; }
+
+  .num-col { display: flex; flex-direction: column; align-items: center; gap: 0; width: 36px; flex-shrink: 0; }
+  .num-badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+  .connector { width: 2px; flex: 1; min-height: 8px; margin: 0 auto; }
+
+  .card { flex: 1; border-radius: 10px; border: 1px solid; padding: 14px 16px; cursor: pointer; transition: transform 0.15s; }
+  .card:hover { transform: translateX(3px); }
+
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+  .card-tag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+
+  .card h2 { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 5px; }
+  .card p { font-size: 12px; line-height: 1.6; color: var(--color-text-secondary); }
+
+  .card .items { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .item-pill { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 400; }
+
+  /* above fold banner */
+  .fold-banner { text-align: center; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 0 14px; color: var(--color-text-tertiary); display: flex; align-items: center; gap: 8px; }
+  .fold-banner::before, .fold-banner::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  .scroll-banner { text-align: center; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 0 14px; color: var(--color-text-tertiary); display: flex; align-items: center; gap: 8px; }
+  .scroll-banner::before, .scroll-banner::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); border-style: dashed; }
+
+  /* source tags */
+  .src-merged { background: #EAF3DE; color: #3B6D11; }
+  .src-both   { background: #E6F1FB; color: #185FA5; }
+  .src-theirs { background: #FAEEDA; color: #854F0B; }
+  .src-yours  { background: #EEEDFE; color: #534AB7; }
+
+  @media (prefers-color-scheme: dark) {
+    .src-merged { background: #27500A; color: #C0DD97; }
+    .src-both   { background: #0C447C; color: #B5D4F4; }
+    .src-theirs { background: #633806; color: #FAC775; }
+    .src-yours  { background: #3C3489; color: #CECBF6; }
+  }
+
+  /* card color themes */
+  .purple { background: #EEEDFE; border-color: #AFA9EC; }
+  .purple .card-label { color: #534AB7; }
+  .purple .num-badge { background: #534AB7; color: #fff; }
+  .purple .connector { background: #AFA9EC; }
+  .purple .item-pill { background: #CECBF6; color: #3C3489; }
+
+  .teal { background: #E1F5EE; border-color: #5DCAA5; }
+  .teal .card-label { color: #0F6E56; }
+  .teal .num-badge { background: #0F6E56; color: #fff; }
+  .teal .connector { background: #5DCAA5; }
+  .teal .item-pill { background: #9FE1CB; color: #085041; }
+
+  .blue { background: #E6F1FB; border-color: #85B7EB; }
+  .blue .card-label { color: #185FA5; }
+  .blue .num-badge { background: #185FA5; color: #fff; }
+  .blue .connector { background: #85B7EB; }
+  .blue .item-pill { background: #B5D4F4; color: #0C447C; }
+
+  .amber { background: #FAEEDA; border-color: #EF9F27; }
+  .amber .card-label { color: #854F0B; }
+  .amber .num-badge { background: #854F0B; color: #fff; }
+  .amber .connector { background: #EF9F27; }
+  .amber .item-pill { background: #FAC775; color: #633806; }
+
+  .gray { background: #F1EFE8; border-color: #B4B2A9; }
+  .gray .card-label { color: #5F5E5A; }
+  .gray .num-badge { background: #5F5E5A; color: #fff; }
+  .gray .connector { background: #B4B2A9; }
+  .gray .item-pill { background: #D3D1C7; color: #444441; }
+
+  .coral { background: #FAECE7; border-color: #F0997B; }
+  .coral .card-label { color: #993C1D; }
+  .coral .num-badge { background: #993C1D; color: #fff; }
+  .coral .connector { background: #F0997B; }
+  .coral .item-pill { background: #F5C4B3; color: #711B0C; }
+
+  .green { background: #EAF3DE; border-color: #97C459; }
+  .green .card-label { color: #3B6D11; }
+  .green .num-badge { background: #3B6D11; color: #fff; }
+  .green .connector { background: #97C459; }
+  .green .item-pill { background: #C0DD97; color: #27500A; }
+
+  @media (prefers-color-scheme: dark) {
+    .purple { background: #26215C; border-color: #7F77DD; }
+    .purple .card-label { color: #CECBF6; }
+    .purple .item-pill { background: #3C3489; color: #CECBF6; }
+    .teal { background: #04342C; border-color: #1D9E75; }
+    .teal .card-label { color: #9FE1CB; }
+    .teal .item-pill { background: #085041; color: #9FE1CB; }
+    .blue { background: #042C53; border-color: #378ADD; }
+    .blue .card-label { color: #B5D4F4; }
+    .blue .item-pill { background: #0C447C; color: #B5D4F4; }
+    .amber { background: #412402; border-color: #BA7517; }
+    .amber .card-label { color: #FAC775; }
+    .amber .item-pill { background: #633806; color: #FAC775; }
+    .gray { background: #2C2C2A; border-color: #888780; }
+    .gray .card-label { color: #D3D1C7; }
+    .gray .item-pill { background: #444441; color: #D3D1C7; }
+    .coral { background: #4A1B0C; border-color: #D85A30; }
+    .coral .card-label { color: #F5C4B3; }
+    .coral .item-pill { background: #711B0C; color: #F5C4B3; }
+    .green { background: #173404; border-color: #639922; }
+    .green .card-label { color: #C0DD97; }
+    .green .item-pill { background: #27500A; color: #C0DD97; }
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; justify-content: center; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--color-text-secondary); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .ld-blue   { background: #185FA5; }
+  .ld-amber  { background: #854F0B; }
+  .ld-purple { background: #534AB7; }
+  .ld-green  { background: #3B6D11; }
+
+  .conversion-note { margin-top: 24px; border-radius: 10px; padding: 14px 16px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); }
+  .conversion-note h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .conversion-note p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+
+</style>
+
+<div class="title-block">
+  <h1>The merged roofing website blueprint</h1>
+  <p>Best-of-both structure · optimized for local, urgent, high-ticket conversion</p>
+</div>
+
+<div class="fold-banner">Above the fold — visible without scrolling</div>
+
+<!-- 1. Hero -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#534AB7;color:#fff;">1</div>
+    <div class="connector" style="background:#AFA9EC;"></div>
+  </div>
+  <div class="card purple" onclick="sendPrompt('Give me a detailed breakdown of exactly what to put in the hero section for a roofing website')">
+    <div class="card-header">
+      <span class="card-label">Hero section</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>The "50-millisecond judge" — first impression is everything</h2>
+    <p>Users decide to stay or leave in 50ms. Every element here must work together to create one feeling: "these people are legit, local, and ready."</p>
+    <div class="items">
+      <span class="item-pill purple">★★★★★ kicker above headline</span>
+      <span class="item-pill purple">Action → Problem → Outcome headline</span>
+      <span class="item-pill purple">1–2 sentence subheadline</span>
+      <span class="item-pill purple">Real crew photo (gaze toward CTA)</span>
+      <span class="item-pill purple">"Get a Free Inspection" CTA button</span>
+      <span class="item-pill purple">Large click-to-call phone number</span>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Trust Strip -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#0F6E56;color:#fff;">2</div>
+    <div class="connector" style="background:#5DCAA5;"></div>
+  </div>
+  <div class="card teal" onclick="sendPrompt('What exactly goes in the trust strip and authority stack for a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Immediate trust</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>Trustimonials + authority stack — before any scroll</h2>
+    <p>Homeowners fear getting scammed by cowboy contractors. This section kills that fear before they've even thought about it. Must be visible without scrolling.</p>
+    <div class="items">
+      <span class="item-pill teal">5-star Google/Yelp badge</span>
+      <span class="item-pill teal">Short real quote + customer name</span>
+      <span class="item-pill teal">Contractor license number</span>
+      <span class="item-pill teal">Insurance status</span>
+      <span class="item-pill teal">BBB / GAF / manufacturer badges</span>
+      <span class="item-pill teal">"X years in business" stat</span>
+    </div>
+  </div>
+</div>
+
+<div class="scroll-banner">Scroll begins here</div>
+
+<!-- 3. Evidence -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#185FA5;color:#fff;">3</div>
+    <div class="connector" style="background:#85B7EB;"></div>
+  </div>
+  <div class="card blue" onclick="sendPrompt('How should I photograph and display local roofing work photos on the website?')">
+    <div class="card-header">
+      <span class="card-label">Local evidence</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>Before/after photos + live proof metrics</h2>
+    <p>Real local photos are the #1 trust signal for any local service. Use an alternating dynamic grid — not a boring uniform gallery. Mention specific neighborhoods to prove you're truly local.</p>
+    <div class="items">
+      <span class="item-pill blue">8–12 real local project photos</span>
+      <span class="item-pill blue">Alternating grid layout</span>
+      <span class="item-pill blue">Crew in branded shirts</span>
+      <span class="item-pill blue">Company truck visible</span>
+      <span class="item-pill blue">Smiling homeowner photo</span>
+      <span class="item-pill blue">"500+ roofs completed" live metric</span>
+      <span class="item-pill blue">Specific neighborhoods served</span>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Video -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#854F0B;color:#fff;">4</div>
+    <div class="connector" style="background:#EF9F27;"></div>
+  </div>
+  <div class="card amber" onclick="sendPrompt('What kind of video should a roofing company put on their website and where exactly does it go?')">
+    <div class="card-header">
+      <span class="card-label">Video demo + value prop</span>
+      <span class="card-tag src-theirs">Their addition ✦</span>
+    </div>
+    <h2>Crew in action video — the highest-trust element on the page</h2>
+    <p>A 30–60 second video converts harder than any text or photo because it proves the business is real, active, and professional. Pair it with your specific unique promise — not "we fix roofs."</p>
+    <div class="items">
+      <span class="item-pill amber">Drone shot of finished roof OR crew working</span>
+      <span class="item-pill amber">30–60 seconds max</span>
+      <span class="item-pill amber">Unique value prop below video</span>
+      <span class="item-pill amber">"24-hr emergency response" type promise</span>
+      <span class="item-pill amber">No jargon — stupidly simple language</span>
+    </div>
+  </div>
+</div>
+
+<!-- 5. How It Works -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#5F5E5A;color:#fff;">5</div>
+    <div class="connector" style="background:#B4B2A9;"></div>
+  </div>
+  <div class="card gray" onclick="sendPrompt('How do I design the how it works 3-step section for a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Process clarity</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>How it works — 3-step friction remover</h2>
+    <p>A roof replacement is unfamiliar and expensive. Homeowners won't call until they know exactly what they're committing to. This section answers that before they talk themselves out of it.</p>
+    <div class="items">
+      <span class="item-pill gray">Step 1: Book a Free Inspection</span>
+      <span class="item-pill gray">Step 2: Get a Detailed Quote</span>
+      <span class="item-pill gray">Step 3: Enjoy a Leak-Free Home</span>
+      <span class="item-pill gray">Icons or numbered visual</span>
+      <span class="item-pill gray">One sentence per step max</span>
+    </div>
+  </div>
+</div>
+
+<!-- 6. Deep Reviews -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#0F6E56;color:#fff;">6</div>
+    <div class="connector" style="background:#5DCAA5;"></div>
+  </div>
+  <div class="card teal" onclick="sendPrompt('How do I set up the deep reviews and video testimonials section for a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Deep social proof</span>
+      <span class="card-tag src-yours">Your addition ✦</span>
+    </div>
+    <h2>Video testimonials + text reviews — the verification mix</h2>
+    <p>One brief review widget at the top isn't enough for a $10,000 decision. This is the full social proof section. Raw unpolished smartphone videos work better than produced ones — they feel real.</p>
+    <div class="items">
+      <span class="item-pill teal">Raw vertical smartphone videos</span>
+      <span class="item-pill teal">Text reviews side by side</span>
+      <span class="item-pill teal">Real name + neighborhood on every review</span>
+      <span class="item-pill teal">Video proves person is real</span>
+      <span class="item-pill teal">Text allows quick scanning</span>
+      <span class="item-pill teal">Verifiable people only</span>
+    </div>
+  </div>
+</div>
+
+<!-- 7. Services + Urgency -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#854F0B;color:#fff;">7</div>
+    <div class="connector" style="background:#EF9F27;"></div>
+  </div>
+  <div class="card amber" onclick="sendPrompt('How do I write the services section with urgency copy for a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Services + urgency</span>
+      <span class="card-tag src-yours">Your addition ✦</span>
+    </div>
+    <h2>What you offer — with contextual urgency triggers</h2>
+    <p>This tells the visitor exactly what problems you solve. Urgency copy here must be contextual and real — generic "limited time offer" language destroys trust. Tie it to actual seasonal events.</p>
+    <div class="items">
+      <span class="item-pill amber">Inspection · Repair · Full Replacement</span>
+      <span class="item-pill amber">"Storm damage? We can meet today"</span>
+      <span class="item-pill amber">"Winter bookings filling fast"</span>
+      <span class="item-pill amber">One service per card</span>
+      <span class="item-pill amber">No vague "limited time offer" language</span>
+    </div>
+  </div>
+</div>
+
+<!-- 8. Breather -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#5F5E5A;color:#fff;">8</div>
+    <div class="connector" style="background:#B4B2A9;"></div>
+  </div>
+  <div class="card gray" onclick="sendPrompt('What does a mid-page breather section look like and how do I build it?')">
+    <div class="card-header">
+      <span class="card-label">Mid-page CTA</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>The mid-page breather — catches convinced mid-scrollers</h2>
+    <p>Dark background + massive whitespace = cognitive relief. By section 8 many visitors are ready to act. Catching them here prevents them from over-thinking their way out of it before the bottom.</p>
+    <div class="items">
+      <span class="item-pill gray">Dark background section</span>
+      <span class="item-pill gray">Generous whitespace — nothing crowded</span>
+      <span class="item-pill gray">"Call Us Now" button</span>
+      <span class="item-pill gray">"Get a Free Quote" button</span>
+      <span class="item-pill gray">Click-to-call on mobile</span>
+      <span class="item-pill gray">15-sec scroll form triggers here</span>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Pricing -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#534AB7;color:#fff;">9</div>
+    <div class="connector" style="background:#AFA9EC;"></div>
+  </div>
+  <div class="card purple" onclick="sendPrompt('How should I structure the pricing tiers for a roofing website to maximize conversions?')">
+    <div class="card-header">
+      <span class="card-label">Pricing tiers</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>3-tier pricing — make the choice obvious</h2>
+    <p>Too many options paralyze. Too few limit revenue. Three tiers hit the sweet spot. Visual contrast does the selling — the recommended tier on a dark card draws the eye without a word of copy.</p>
+    <div class="items">
+      <span class="item-pill purple">Basic Repair / Full Replacement / Premium Shield</span>
+      <span class="item-pill purple">Recommended tier on dark card</span>
+      <span class="item-pill purple">"Book This" not "Get a Quote"</span>
+      <span class="item-pill purple">No more than 3 tiers</span>
+      <span class="item-pill purple">Direct action button on each tier</span>
+    </div>
+  </div>
+</div>
+
+<!-- 10. FAQ -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#5F5E5A;color:#fff;">10</div>
+    <div class="connector" style="background:#B4B2A9;"></div>
+  </div>
+  <div class="card gray" onclick="sendPrompt('What questions should I put in the roofing website FAQ to clear objections?')">
+    <div class="card-header">
+      <span class="card-label">Objection handling</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>FAQ — your last objection remover before the final CTA</h2>
+    <p>Only list questions asked during real discovery calls — never generic filler. If one question gets asked constantly (e.g. "Does insurance cover this?"), pull it out and give it its own visual section above the FAQ.</p>
+    <div class="items">
+      <span class="item-pill gray">"Does insurance cover this?"</span>
+      <span class="item-pill gray">"How long does a repair take?"</span>
+      <span class="item-pill gray">"Are you licensed and insured?"</span>
+      <span class="item-pill gray">"Do you offer a warranty?"</span>
+      <span class="item-pill gray">Frequent questions get their own section</span>
+    </div>
+  </div>
+</div>
+
+<!-- 11. Final CTA -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#993C1D;color:#fff;">11</div>
+    <div class="connector" style="background:#F0997B;"></div>
+  </div>
+  <div class="card coral" onclick="sendPrompt('How do I design the final 40% section CTA for a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Final CTA</span>
+      <span class="card-tag src-both">Both structures</span>
+    </div>
+    <h2>The "40% section" — your highest-converting single element</h2>
+    <p>Users who reach the bottom have read everything and cleared all doubts. They just need a calm, low-pressure invitation. This single section drives ~40% of all conversions. Never crowd it.</p>
+    <div class="items">
+      <span class="item-pill coral">"Book a 15-Min Call" — low-risk framing</span>
+      <span class="item-pill coral">"Send an Email" — second path</span>
+      <span class="item-pill coral">Huge whitespace — nothing else competing</span>
+      <span class="item-pill coral">No navigation, no links, no distractions</span>
+      <span class="item-pill coral">One goal only: get the contact</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12. Footer -->
+<div class="section-row">
+  <div class="num-col">
+    <div class="num-badge" style="background:#3B6D11;color:#fff;">12</div>
+  </div>
+  <div class="card green" onclick="sendPrompt('What goes in the footer of a roofing website?')">
+    <div class="card-header">
+      <span class="card-label">Footer</span>
+      <span class="card-tag src-theirs">Their addition ✦</span>
+    </div>
+    <h2>Footer — clean, simple, trust-reinforcing</h2>
+    <p>Not a dumping ground. The footer should reinforce trust one last time and make it effortless to contact. Keep navigation minimal — anyone landing here already scrolled the entire page.</p>
+    <div class="items">
+      <span class="item-pill green">Phone number repeated</span>
+      <span class="item-pill green">Email address</span>
+      <span class="item-pill green">Service area / address</span>
+      <span class="item-pill green">License # repeated</span>
+      <span class="item-pill green">Simple nav links</span>
+      <span class="item-pill green">Google Maps embed</span>
+    </div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot ld-blue"></div> Both structures agreed</div>
+  <div class="legend-item"><div class="legend-dot ld-amber"></div> Added from their structure</div>
+  <div class="legend-item"><div class="legend-dot ld-purple"></div> Added from your blueprint</div>
+  <div class="legend-item"><div class="legend-dot ld-green"></div> Click any card for more detail</div>
+</div>
+
+<!-- Conversion note -->
+<div class="conversion-note">
+  <h3>Why this order is not random</h3>
+  <p>Sections 1–2 must work above the fold to stop the bounce. Sections 3–7 build a case progressively — evidence, then process, then social proof, then services — so the visitor arrives at the mid-page breather already 80% convinced. Sections 9–10 handle the final objections. Section 11 closes the fully-convinced visitor. The order follows the psychology of trust, not personal preference.</p>
+</div>

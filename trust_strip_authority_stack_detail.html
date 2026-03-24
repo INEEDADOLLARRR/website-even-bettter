@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; padding: 24px 16px 40px; }
+
+  h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); text-align: center; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); text-align: center; margin-bottom: 28px; }
+
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; }
+  .divider-label span { font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--color-text-secondary); }
+  .divider-label::before, .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-tertiary); }
+
+  /* ── MOCKUP ── */
+  .mockup { border: 1px solid var(--color-border-tertiary); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+  .mockup-bar { background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); padding: 8px 14px; display: flex; align-items: center; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .mockup-label { font-size: 11px; color: var(--color-text-tertiary); margin-left: 4px; }
+
+  .hero-mock { background: var(--color-background-secondary); padding: 16px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .hero-mock .hl { height: 10px; border-radius: 4px; background: var(--color-border-secondary); }
+  .hero-mock .hl.w80 { width: 80%; }
+  .hero-mock .hl.w60 { width: 60%; }
+  .hero-mock .hl.w40 { width: 40%; }
+  .hero-mock-row { display: flex; gap: 8px; margin-top: 6px; }
+  .hero-btn { height: 28px; border-radius: 6px; background: #534AB7; width: 130px; }
+  .hero-phone { height: 28px; border-radius: 6px; background: var(--color-border-secondary); width: 100px; }
+
+  .trust-strip-mock { padding: 14px 16px; background: var(--color-background-primary); }
+  .ts-label { font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: #0F6E56; margin-bottom: 10px; }
+  .ts-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+  .review-widget { display: flex; align-items: center; gap: 8px; background: #E1F5EE; border: 1px solid #5DCAA5; border-radius: 8px; padding: 8px 12px; }
+  .rw-logo { font-size: 11px; font-weight: 500; color: #0F6E56; }
+  .stars { color: #EF9F27; font-size: 13px; letter-spacing: 1px; }
+  .rw-text { font-size: 11px; color: var(--color-text-secondary); }
+  .rw-name { font-size: 11px; font-weight: 500; color: var(--color-text-primary); }
+
+  .separator { width: 1px; height: 32px; background: var(--color-border-tertiary); flex-shrink: 0; }
+
+  .badge { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .badge-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .badge-text { font-size: 9px; color: var(--color-text-tertiary); text-align: center; max-width: 48px; }
+
+  @media (prefers-color-scheme: dark) {
+    .review-widget { background: #04342C; border-color: #1D9E75; }
+    .rw-logo { color: #9FE1CB; }
+  }
+
+  /* ── ELEMENT CARDS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .el-card { border-radius: 10px; border: 1px solid; padding: 14px; }
+
+  .teal-card { background: #E1F5EE; border-color: #5DCAA5; }
+  .teal-card .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #0F6E56; margin-bottom: 6px; }
+  .teal-card h3 { font-size: 14px; font-weight: 500; color: #085041; margin-bottom: 5px; }
+  .teal-card p { font-size: 12px; color: #0F6E56; line-height: 1.6; }
+  .teal-card .why { margin-top: 8px; font-size: 11px; color: #085041; background: #9FE1CB; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .amber-card { background: #FAEEDA; border-color: #EF9F27; }
+  .amber-card .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #854F0B; margin-bottom: 6px; }
+  .amber-card h3 { font-size: 14px; font-weight: 500; color: #412402; margin-bottom: 5px; }
+  .amber-card p { font-size: 12px; color: #854F0B; line-height: 1.6; }
+  .amber-card .why { margin-top: 8px; font-size: 11px; color: #412402; background: #FAC775; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .blue-card { background: #E6F1FB; border-color: #85B7EB; }
+  .blue-card .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #185FA5; margin-bottom: 6px; }
+  .blue-card h3 { font-size: 14px; font-weight: 500; color: #042C53; margin-bottom: 5px; }
+  .blue-card p { font-size: 12px; color: #185FA5; line-height: 1.6; }
+  .blue-card .why { margin-top: 8px; font-size: 11px; color: #042C53; background: #B5D4F4; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .red-card { background: #FCEBEB; border-color: #F09595; }
+  .red-card .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #A32D2D; margin-bottom: 6px; }
+  .red-card h3 { font-size: 14px; font-weight: 500; color: #501313; margin-bottom: 5px; }
+  .red-card p { font-size: 12px; color: #A32D2D; line-height: 1.6; }
+  .red-card .why { margin-top: 8px; font-size: 11px; color: #501313; background: #F7C1C1; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  .gray-card { background: #F1EFE8; border-color: #B4B2A9; }
+  .gray-card .el-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: #5F5E5A; margin-bottom: 6px; }
+  .gray-card h3 { font-size: 14px; font-weight: 500; color: #2C2C2A; margin-bottom: 5px; }
+  .gray-card p { font-size: 12px; color: #5F5E5A; line-height: 1.6; }
+  .gray-card .why { margin-top: 8px; font-size: 11px; color: #2C2C2A; background: #D3D1C7; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+
+  @media (prefers-color-scheme: dark) {
+    .teal-card { background: #04342C; border-color: #1D9E75; }
+    .teal-card h3 { color: #9FE1CB; }
+    .teal-card p { color: #5DCAA5; }
+    .teal-card .why { background: #085041; color: #9FE1CB; }
+    .amber-card { background: #412402; border-color: #BA7517; }
+    .amber-card h3 { color: #FAC775; }
+    .amber-card p { color: #EF9F27; }
+    .amber-card .why { background: #633806; color: #FAC775; }
+    .blue-card { background: #042C53; border-color: #378ADD; }
+    .blue-card h3 { color: #B5D4F4; }
+    .blue-card p { color: #85B7EB; }
+    .blue-card .why { background: #0C447C; color: #B5D4F4; }
+    .red-card { background: #501313; border-color: #E24B4A; }
+    .red-card h3 { color: #F7C1C1; }
+    .red-card p { color: #F09595; }
+    .red-card .why { background: #791F1F; color: #F7C1C1; }
+    .gray-card { background: #2C2C2A; border-color: #888780; }
+    .gray-card h3 { color: #D3D1C7; }
+    .gray-card p { color: #888780; }
+    .gray-card .why { background: #444441; color: #D3D1C7; }
+  }
+
+  /* ── DO/DON'T ── */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .do-box { background: #EAF3DE; border: 1px solid #97C459; border-radius: 10px; padding: 14px; }
+  .do-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #3B6D11; margin-bottom: 8px; }
+  .do-box li { font-size: 12px; color: #3B6D11; line-height: 1.7; margin-left: 14px; }
+  .dont-box { background: #FCEBEB; border: 1px solid #F09595; border-radius: 10px; padding: 14px; }
+  .dont-box .dd-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #A32D2D; margin-bottom: 8px; }
+  .dont-box li { font-size: 12px; color: #A32D2D; line-height: 1.7; margin-left: 14px; }
+
+  @media (prefers-color-scheme: dark) {
+    .do-box { background: #173404; border-color: #639922; }
+    .do-box .dd-label, .do-box li { color: #C0DD97; }
+    .dont-box { background: #501313; border-color: #E24B4A; }
+    .dont-box .dd-label, .dont-box li { color: #F7C1C1; }
+  }
+
+  /* ── PLACEMENT RULE ── */
+  .placement-box { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 16px; margin-top: 10px; }
+  .placement-box h3 { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+  .placement-box p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+
+  .full-card { border-radius: 10px; border: 1px solid; padding: 14px; margin-bottom: 10px; }
+</style>
+
+<h1>Trust strip & authority stack — full breakdown</h1>
+<p class="subtitle">Section 2 of your roofing website · must be visible before any scroll</p>
+
+<!-- MOCKUP -->
+<div class="divider-label"><span>What it looks like on the page</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">
+    <div class="dot" style="background:#E24B4A;"></div>
+    <div class="dot" style="background:#EF9F27;"></div>
+    <div class="dot" style="background:#639922;"></div>
+    <span class="mockup-label">yourroofingsite.com</span>
+  </div>
+  <div class="hero-mock">
+    <div class="hl w60"></div>
+    <div class="hl w80"></div>
+    <div class="hl w40"></div>
+    <div class="hero-mock-row">
+      <div class="hero-btn"></div>
+      <div class="hero-phone"></div>
+    </div>
+  </div>
+  <div class="trust-strip-mock">
+    <div class="ts-label">Trust strip — visible here, no scroll needed</div>
+    <div class="ts-row">
+      <div class="review-widget">
+        <span class="rw-logo">G</span>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="rw-text">"Best roofer in the city"</div>
+          <div class="rw-name">— Sarah M., Oak Park</div>
+        </div>
+      </div>
+      <div class="separator"></div>
+      <div class="badge">
+        <div class="badge-icon" style="background:#E6F1FB;">🛡️</div>
+        <div class="badge-text">Licensed #CR12345</div>
+      </div>
+      <div class="badge">
+        <div class="badge-icon" style="background:#EAF3DE;">✓</div>
+        <div class="badge-text">Fully Insured</div>
+      </div>
+      <div class="badge">
+        <div class="badge-icon" style="background:#FAEEDA;">🏅</div>
+        <div class="badge-text">GAF Certified</div>
+      </div>
+      <div class="badge">
+        <div class="badge-icon" style="background:#EEEDFE;">20</div>
+        <div class="badge-text">Years in [City]</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 1: TRUST STRIP -->
+<div class="divider-label"><span>Part 1 — the trust strip (review widget)</span></div>
+
+<div class="grid-2">
+  <div class="el-card teal-card" onclick="sendPrompt('How do I get and display Google reviews on my roofing website?')">
+    <div class="el-tag">Element 1</div>
+    <h3>5-star Google or Yelp badge</h3>
+    <p>Show the platform logo (Google G or Yelp burst), the 5 stars in gold, and your overall rating (e.g. "4.9/5"). Link it to your live Google Business profile so visitors can verify it instantly.</p>
+    <div class="why">Why: The platform logo is the trust signal — it says a third party verified this, not just you.</div>
+  </div>
+
+  <div class="el-card teal-card" onclick="sendPrompt('How should I format the short review quote in the trust strip?')">
+    <div class="el-tag">Element 2</div>
+    <h3>Short real quote + real name</h3>
+    <p>Pick one short punchy quote (max 10–12 words) from a real review. Show the customer's first name and last initial, plus their neighborhood. Example: "Fixed our leak same day!" — Sarah M., Oak Park.</p>
+    <div class="why">Why: A name and neighborhood makes it verifiable — visitors know they could look this person up.</div>
+  </div>
+</div>
+
+<div style="margin-top:10px;">
+  <div class="el-card teal-card">
+    <div class="el-tag">Critical rule for the widget</div>
+    <h3>Make it look native — not designed</h3>
+    <p>The widget should look like it was pulled straight from Google — not a heavily styled banner with gradients and custom fonts. A plain card with the Google logo, stars, quote, and name is more convincing than a polished custom graphic. The more it looks like a real embed, the more the brain trusts it automatically.</p>
+    <div class="why">Why: Heavily designed "testimonial banners" look fake. Native widgets look real. You want cold traffic to think "oh that's actually their Google rating."</div>
+  </div>
+</div>
+
+<!-- PART 2: AUTHORITY STACK -->
+<div class="divider-label"><span>Part 2 — the authority stack (credentials & badges)</span></div>
+
+<div class="grid-2">
+  <div class="el-card amber-card" onclick="sendPrompt('Should I display my contractor license number on my roofing website?')">
+    <div class="el-tag">Badge 1 — most important</div>
+    <h3>Contractor license number</h3>
+    <p>Display it plainly: "Licensed · #CR12345" or "State License: CR-12345." Don't hide it. In the US market, an unlicensed contractor is the homeowner's biggest fear — showing the number immediately disarms that.</p>
+    <div class="why">Why: It's verifiable. Anyone can Google your license number and confirm you're real. That's exactly why it converts.</div>
+  </div>
+
+  <div class="el-card amber-card" onclick="sendPrompt('How do I show insurance and warranty info on a roofing website?')">
+    <div class="el-tag">Badge 2</div>
+    <h3>Insurance status</h3>
+    <p>A simple line or badge: "Fully Insured · General Liability + Workers' Comp." You don't need to show policy numbers — just the confirmation that both types of insurance are active.</p>
+    <div class="why">Why: If a worker gets hurt on their roof and you're not insured, the homeowner is liable. This removes that fear completely.</div>
+  </div>
+
+  <div class="el-card amber-card" onclick="sendPrompt('What are GAF and other roofing certifications and should I display them?')">
+    <div class="el-tag">Badge 3</div>
+    <h3>Industry certifications</h3>
+    <p>GAF Master Elite, Owens Corning Preferred Contractor, BBB Accredited, or any manufacturer certification. Show the actual logo — not just text. If you have multiple, show them all in a small row.</p>
+    <div class="why">Why: These are third-party endorsements. They signal you met someone else's standard — not just your own claim.</div>
+  </div>
+
+  <div class="el-card amber-card" onclick="sendPrompt('What live proof metrics should I show on my roofing website?')">
+    <div class="el-tag">Badge 4</div>
+    <h3>Years in business + project count</h3>
+    <p>Two numbers side by side: "20 Years in [City] · 500+ Roofs Completed." Keep it factual and conservative — never round up aggressively. "500+" is more believable than "thousands."</p>
+    <div class="why">Why: Numbers are scannable and concrete. "20 years" tells the brain "this business survived long enough to build real experience."</div>
+  </div>
+</div>
+
+<div style="margin-top:10px;">
+  <div class="el-card blue-card" onclick="sendPrompt('Should I show a warranty badge in the trust strip of my roofing website?')">
+    <div class="el-tag">Badge 5 — optional but powerful</div>
+    <h3>Warranty badge</h3>
+    <p>If you offer a workmanship warranty (e.g. "10-Year Workmanship Guarantee"), make it a badge. Pair it with the manufacturer's material warranty if applicable (e.g. "25-Year GAF Shingle Warranty"). This is often the single element that tips a hesitant homeowner into calling.</p>
+    <div class="why">Why: A roof is a $10,000–$20,000 decision. A warranty reduces perceived risk to near zero. It answers "what if something goes wrong?" before they ask it.</div>
+  </div>
+</div>
+
+<!-- DO / DON'T -->
+<div class="divider-label"><span>Do this / not that</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Make it visible above the fold</li>
+      <li>Use the real Google/Yelp logo</li>
+      <li>Show a real customer name + neighborhood</li>
+      <li>Display the actual license number</li>
+      <li>Keep it in a single compact horizontal strip</li>
+      <li>Link the rating to your live Google profile</li>
+      <li>Use the real certification logos (GAF, BBB)</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Use generic star graphics without a platform logo</li>
+      <li>Show "Anonymous Customer" on any review</li>
+      <li>Skip the license number — it's your #1 trust signal</li>
+      <li>Make it a huge designed banner — keep it subtle</li>
+      <li>Show fake or inflated stats ("1000s of happy clients")</li>
+      <li>Put this below the fold — it must be seen immediately</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLACEMENT RULE -->
+<div class="placement-box" style="margin-top:14px;">
+  <h3>The placement rule — why "above the fold" is non-negotiable</h3>
+  <p>Your notes stated that users form a judgment in 50 milliseconds and that trust signals must be visible before the visitor has any doubts. The moment someone arrives from a Google search, they're a cold stranger. They haven't decided to trust you yet. The trust strip does one job: convert that stranger into a warm lead before they scroll a single pixel. If it's below the fold, it's too late for most visitors — they've already bounced or formed their opinion.</p>
+</div>

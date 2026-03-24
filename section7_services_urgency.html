@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .blue-card  { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card  .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .teal-card  { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card  .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .amber-card { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .purple-card{ background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .gray-card  { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card  .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+  .coral-card { background:#FAECE7; border-color:#F0997B; }
+  .coral-card .el-tag{color:#993C1D;} .coral-card h3{color:#4A1B0C;} .coral-card p{color:#993C1D;} .coral-card .why{background:#F5C4B3;color:#4A1B0C;}
+  .green-card { background:#EAF3DE; border-color:#97C459; }
+  .green-card .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .red-card   { background:#FCEBEB; border-color:#F09595; }
+  .red-card   .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+
+  @media (prefers-color-scheme:dark){
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+    .coral-card{background:#4A1B0C;border-color:#D85A30;} .coral-card h3{color:#F5C4B3;} .coral-card p{color:#F0997B;} .coral-card .why{background:#711B0C;color:#F5C4B3;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  /* ── SECTION MOCKUP ── */
+  .mockup { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .mockup-bar { background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); padding:7px 12px; font-size:11px; color:var(--color-text-tertiary); }
+  .mockup-body { padding:18px 16px; }
+  .mock-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:var(--color-text-tertiary); text-align:center; margin-bottom:4px; }
+  .mock-headline { font-size:15px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:16px; }
+
+  /* service cards in mockup */
+  .service-cards-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+  .svc-card { border-radius:10px; border:1px solid; padding:12px; }
+  .svc-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; margin-bottom:8px; }
+  .svc-title { font-size:13px; font-weight:500; margin-bottom:4px; }
+  .svc-desc { font-size:11px; line-height:1.5; margin-bottom:8px; }
+  .svc-features { display:flex; flex-direction:column; gap:3px; margin-bottom:8px; }
+  .svc-feat { font-size:10px; display:flex; align-items:center; gap:4px; }
+  .svc-check { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .svc-price { font-size:11px; font-weight:500; }
+  .svc-btn { margin-top:8px; border-radius:6px; padding:6px 10px; font-size:11px; font-weight:500; text-align:center; cursor:pointer; border:none; }
+
+  /* inspection card */
+  .sc-inspect { background:var(--color-background-primary); border-color:var(--color-border-tertiary); }
+  .sc-inspect .svc-icon { background:#E1F5EE; }
+  .sc-inspect .svc-title { color:var(--color-text-primary); }
+  .sc-inspect .svc-desc { color:var(--color-text-secondary); }
+  .sc-inspect .svc-check { background:#0F6E56; }
+  .sc-inspect .svc-feat { color:var(--color-text-secondary); }
+  .sc-inspect .svc-price { color:var(--color-text-secondary); }
+  .sc-inspect .svc-btn { background:var(--color-background-secondary); color:var(--color-text-primary); border:1px solid var(--color-border-secondary); }
+
+  /* repair card — featured */
+  .sc-repair { background:#26215C; border-color:#7F77DD; }
+  .sc-repair .svc-icon { background:#3C3489; }
+  .sc-repair .svc-title { color:#EEEDFE; }
+  .sc-repair .svc-desc { color:#AFA9EC; }
+  .sc-repair .svc-check { background:#9FE1CB; }
+  .sc-repair .svc-feat { color:#CECBF6; }
+  .sc-repair .svc-price { color:#EEEDFE; }
+  .sc-repair .svc-btn { background:#534AB7; color:#fff; border:none; }
+  .sc-repair-badge { font-size:9px; font-weight:500; background:#9FE1CB; color:#04342C; border-radius:20px; padding:2px 7px; margin-bottom:6px; display:inline-block; }
+
+  /* replacement card */
+  .sc-replace { background:var(--color-background-primary); border-color:var(--color-border-tertiary); }
+  .sc-replace .svc-icon { background:#FAEEDA; }
+  .sc-replace .svc-title { color:var(--color-text-primary); }
+  .sc-replace .svc-desc { color:var(--color-text-secondary); }
+  .sc-replace .svc-check { background:#854F0B; }
+  .sc-replace .svc-feat { color:var(--color-text-secondary); }
+  .sc-replace .svc-price { color:var(--color-text-secondary); }
+  .sc-replace .svc-btn { background:var(--color-background-secondary); color:var(--color-text-primary); border:1px solid var(--color-border-secondary); }
+
+  /* urgency banner */
+  .urgency-banner { border-radius:8px; padding:12px 14px; display:flex; align-items:center; gap:10px; }
+  .ub-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .ub-text { font-size:12px; font-weight:500; flex:1; }
+  .ub-btn { font-size:11px; font-weight:500; padding:5px 12px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; }
+
+  .ub-storm { background:#FAECE7; }
+  .ub-storm .ub-dot { background:#D85A30; }
+  .ub-storm .ub-text { color:#4A1B0C; }
+  .ub-storm .ub-btn  { background:#993C1D; color:#fff; }
+
+  @media (prefers-color-scheme:dark){
+    .ub-storm { background:#4A1B0C; }
+    .ub-storm .ub-text { color:#F5C4B3; }
+  }
+
+  /* ── SERVICE ANATOMY ── */
+  .anatomy-box { border:1px solid; border-radius:10px; padding:14px; }
+  .anatomy-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid var(--color-border-tertiary); }
+  .anatomy-row:last-child { border-bottom:none; padding-bottom:0; }
+  .anat-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; min-width:110px; flex-shrink:0; padding-top:1px; }
+  .anat-desc  { font-size:12px; line-height:1.6; flex:1; }
+  .anat-example { font-size:11px; font-style:italic; margin-top:3px; }
+
+  .ab-purple { background:#EEEDFE; border-color:#AFA9EC; }
+  .ab-purple .anat-label { color:#534AB7; }
+  .ab-purple .anat-desc  { color:#534AB7; }
+  .ab-purple .anat-example { color:#26215C; }
+  @media (prefers-color-scheme:dark){
+    .ab-purple { background:#26215C; border-color:#7F77DD; }
+    .ab-purple .anat-desc { color:#AFA9EC; }
+    .ab-purple .anat-example { color:#CECBF6; }
+  }
+
+  /* ── URGENCY COMPARISON ── */
+  .urg-compare { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .urg-card { border-radius:10px; border:1px solid; padding:14px; }
+  .urg-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px; }
+  .urg-example { font-size:13px; font-weight:500; border-radius:8px; padding:10px 12px; margin-bottom:8px; line-height:1.5; }
+  .urg-why    { font-size:12px; line-height:1.6; }
+
+  .uc-bad  { background:#FCEBEB; border-color:#F09595; }
+  .uc-bad  .urg-label { color:#A32D2D; }
+  .uc-bad  .urg-example { background:#F7C1C1; color:#501313; }
+  .uc-bad  .urg-why { color:#A32D2D; }
+
+  .uc-good { background:#EAF3DE; border-color:#97C459; }
+  .uc-good .urg-label { color:#3B6D11; }
+  .uc-good .urg-example { background:#C0DD97; color:#173404; }
+  .uc-good .urg-why { color:#3B6D11; }
+
+  @media (prefers-color-scheme:dark){
+    .uc-bad  { background:#501313; border-color:#E24B4A; }
+    .uc-bad  .urg-example { background:#791F1F; color:#F7C1C1; }
+    .uc-bad  .urg-why { color:#F09595; }
+    .uc-good { background:#173404; border-color:#639922; }
+    .uc-good .urg-example { background:#27500A; color:#C0DD97; }
+    .uc-good .urg-why { color:#97C459; }
+  }
+
+  /* ── SEASONAL URGENCY TABLE ── */
+  .season-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .season-card { border-radius:10px; border:1px solid; padding:14px; }
+  .season-name { font-size:12px; font-weight:500; margin-bottom:4px; }
+  .season-copy { font-size:12px; font-style:italic; border-radius:6px; padding:8px 10px; margin-bottom:6px; line-height:1.5; }
+  .season-why  { font-size:11px; line-height:1.5; }
+
+  .ss-spring { background:#FAECE7; border-color:#F0997B; }
+  .ss-spring .season-name { color:#4A1B0C; }
+  .ss-spring .season-copy { background:#F5C4B3; color:#4A1B0C; }
+  .ss-spring .season-why  { color:#993C1D; }
+
+  .ss-summer { background:#FAEEDA; border-color:#EF9F27; }
+  .ss-summer .season-name { color:#412402; }
+  .ss-summer .season-copy { background:#FAC775; color:#412402; }
+  .ss-summer .season-why  { color:#854F0B; }
+
+  .ss-fall { background:#EEEDFE; border-color:#AFA9EC; }
+  .ss-fall .season-name { color:#26215C; }
+  .ss-fall .season-copy { background:#CECBF6; color:#26215C; }
+  .ss-fall .season-why  { color:#534AB7; }
+
+  .ss-winter { background:#E6F1FB; border-color:#85B7EB; }
+  .ss-winter .season-name { color:#042C53; }
+  .ss-winter .season-copy { background:#B5D4F4; color:#042C53; }
+  .ss-winter .season-why  { color:#185FA5; }
+
+  @media (prefers-color-scheme:dark){
+    .ss-spring { background:#4A1B0C; border-color:#D85A30; }
+    .ss-spring .season-name,.ss-spring .season-why { color:#F5C4B3; }
+    .ss-spring .season-copy { background:#711B0C; color:#F5C4B3; }
+    .ss-summer { background:#412402; border-color:#BA7517; }
+    .ss-summer .season-name,.ss-summer .season-why { color:#FAC775; }
+    .ss-summer .season-copy { background:#633806; color:#FAC775; }
+    .ss-fall { background:#26215C; border-color:#7F77DD; }
+    .ss-fall .season-name,.ss-fall .season-why { color:#CECBF6; }
+    .ss-fall .season-copy { background:#3C3489; color:#CECBF6; }
+    .ss-winter { background:#042C53; border-color:#378ADD; }
+    .ss-winter .season-name,.ss-winter .season-why { color:#B5D4F4; }
+    .ss-winter .season-copy { background:#0C447C; color:#B5D4F4; }
+  }
+
+  /* ── CTA STRIP ── */
+  .cta-strip { background:#E1F5EE; border:1px solid #5DCAA5; border-radius:10px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .cta-strip p { font-size:12px; color:#0F6E56; line-height:1.6; flex:1; }
+  .cta-btn  { background:#0F6E56; color:#fff; border-radius:6px; padding:8px 16px; font-size:12px; font-weight:500; white-space:nowrap; cursor:pointer; border:none; }
+  @media (prefers-color-scheme:dark){
+    .cta-strip { background:#04342C; border-color:#1D9E75; }
+    .cta-strip p { color:#9FE1CB; }
+  }
+
+  /* ── DO/DONT ── */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box { background:#173404; border-color:#639922; } .do-box .dd-label,.do-box li { color:#C0DD97; }
+    .dont-box{ background:#501313; border-color:#E24B4A; } .dont-box .dd-label,.dont-box li { color:#F7C1C1; }
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-red    { background:#F7C1C1; color:#501313; }
+  .pill-green  { background:#C0DD97; color:#173404; }
+  .pill-blue   { background:#B5D4F4; color:#042C53; }
+  .pill-amber  { background:#FAC775; color:#412402; }
+  .pill-purple { background:#CECBF6; color:#26215C; }
+  @media (prefers-color-scheme:dark){
+    .pill-red   { background:#791F1F; color:#F7C1C1; }
+    .pill-green { background:#27500A; color:#C0DD97; }
+    .pill-blue  { background:#0C447C; color:#B5D4F4; }
+    .pill-amber { background:#633806; color:#FAC775; }
+    .pill-purple{ background:#3C3489; color:#CECBF6; }
+  }
+</style>
+
+<h1>Section 7 — Services & urgency messaging</h1>
+<p class="subtitle">Tells the visitor exactly what problems you solve · and makes them act now, not later<br>The most skipped section by roofing sites — and one of the highest-leverage ones</p>
+
+<!-- WHY IT EXISTS -->
+<div class="divider-label"><span>Why this section exists — what job it does</span></div>
+
+<div class="el-card blue-card" style="margin-bottom:10px;">
+  <div class="el-tag">The two jobs this section does simultaneously</div>
+  <h3>Job 1: Clarity — "Do they even do what I need?" · Job 2: Urgency — "Why should I call today and not next week?"</h3>
+  <p>By section 7 the visitor trusts you. The remaining conversion barrier is not doubt — it's delay. Homeowners who don't call today rarely call at all. They get distracted, they "think about it," they compare other companies, and they never come back. The services section removes the clarity barrier ("yes, we do exactly that") while urgency messaging removes the delay barrier ("and you should do this now, not later"). Both jobs must be done in the same section, side by side.</p>
+  <div class="why">From your notes: "Use contextual urgency copy tied to real events. Generic 'limited time offer' language destroys trust." The urgency must feel real — because for roofing, it always is real.</div>
+</div>
+
+<!-- PAGE MOCKUP -->
+<div class="divider-label"><span>What the section looks like on the page</span></div>
+
+<div class="mockup">
+  <div class="mockup-bar">Section 7 layout — 3 service cards + urgency banner below</div>
+  <div class="mockup-body">
+    <div class="mock-label">What we do</div>
+    <div class="mock-headline">Choose the service that fits your situation</div>
+    <div class="service-cards-row">
+      <!-- Inspection -->
+      <div class="svc-card sc-inspect">
+        <div class="svc-icon">🔍</div>
+        <div class="svc-title">Roof Inspection</div>
+        <div class="svc-desc">Full assessment of your roof's condition with a written report.</div>
+        <div class="svc-features">
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">Same-day available</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">Written report included</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">No obligation</span></div>
+        </div>
+        <div class="svc-price">Free</div>
+        <div class="svc-btn">Book Inspection</div>
+      </div>
+      <!-- Repair — featured -->
+      <div class="svc-card sc-repair">
+        <div class="sc-repair-badge">Most popular</div>
+        <div class="svc-icon">🔧</div>
+        <div class="svc-title">Repair & Patch</div>
+        <div class="svc-desc">Fix leaks, damaged shingles, flashing — fast and clean.</div>
+        <div class="svc-features">
+          <div class="svc-feat"><div class="svc-check"></div><span style="font-size:10px;color:#CECBF6;">Same-day emergency option</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span style="font-size:10px;color:#CECBF6;">Insurance claims handled</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span style="font-size:10px;color:#CECBF6;">5-year workmanship guarantee</span></div>
+        </div>
+        <div class="svc-price">From $499</div>
+        <div class="svc-btn">Book a Repair</div>
+      </div>
+      <!-- Full replacement -->
+      <div class="svc-card sc-replace">
+        <div class="svc-icon">🏠</div>
+        <div class="svc-title">Full Replacement</div>
+        <div class="svc-desc">Complete tear-off and re-roof with premium materials.</div>
+        <div class="svc-features">
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">Material options included</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">10-year workmanship warranty</span></div>
+          <div class="svc-feat"><div class="svc-check"></div><span class="svc-feat" style="font-size:10px;color:var(--color-text-secondary);">Full clean-up included</span></div>
+        </div>
+        <div class="svc-price">Free estimate</div>
+        <div class="svc-btn">Get an Estimate</div>
+      </div>
+    </div>
+    <!-- Urgency banner -->
+    <div class="urgency-banner ub-storm">
+      <div class="ub-dot"></div>
+      <div class="ub-text">Storm damage in [City] this week? We have same-day emergency slots available — call now before they fill.</div>
+      <button class="ub-btn">Call Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- THE 3 SERVICE CARDS -->
+<div class="divider-label"><span>Part 1 — the 3 service cards · anatomy of each one</span></div>
+
+<div class="el-card amber-card spacer">
+  <div class="el-tag">The most important structural rule</div>
+  <h3>Exactly 3 services — not 2, not 5, not a list of 8</h3>
+  <p>Your notes said "too many options paralyze, too few limit revenue — 3 tiers hit the sweet spot." The same principle applies here. A visitor who sees 8 service types has to work to find their situation. A visitor who sees 3 instantly self-selects: "I need an inspection," "I have a leak," or "I need a full replacement." Three options map to three homeowner situations, and every roofing homeowner is in one of those three situations.</p>
+  <div class="why">Analysis paralysis is real. Three cards = one decision. Eight bullet points = eight decisions. Fewer decisions = more calls.</div>
+</div>
+
+<div class="anatomy-box ab-purple spacer">
+  <div class="anatomy-row">
+    <div class="anat-label">Icon</div>
+    <div class="anat-desc">One simple, recognisable icon per card. Not decorative — functional. It lets the eye scan all three cards in under 2 seconds and identify which one applies to their situation.
+      <div class="anat-example">🔍 Inspection · 🔧 Repair · 🏠 Full replacement — instantly understood without reading</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Service title</div>
+    <div class="anat-desc">Plain language — name the situation, not the technical service. "Roof Inspection" not "Diagnostic Assessment." "Repair & Patch" not "Remediation Services."
+      <div class="anat-example">The homeowner should see the title and immediately know if this is their situation.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">1-line description</div>
+    <div class="anat-desc">One sentence that tells them exactly what they get. No jargon. Written for someone who has never hired a roofer before.
+      <div class="anat-example">"Fix leaks, damaged shingles, flashing — fast and clean." Simple, specific, scannable.</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">3 feature bullets</div>
+    <div class="anat-desc">Three specific, verifiable features. Each bullet should kill a different doubt. Include at least one timeframe and one guarantee.
+      <div class="anat-example">"Same-day emergency option" · "Insurance claims handled" · "5-year workmanship guarantee"</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">Price anchor</div>
+    <div class="anat-desc">Show a price or price range — even a "starting from" or "free estimate." Hiding prices makes homeowners feel like they're going to be ambushed. Showing even a starting point builds trust.
+      <div class="anat-example">"From $499" · "Free estimate" · "Free" — even "free" counts as a price signal</div>
+    </div>
+  </div>
+  <div class="anatomy-row">
+    <div class="anat-label">CTA button</div>
+    <div class="anat-desc">One direct action button per card. Named after the specific service — not a generic "Contact Us." This is the action a visitor takes the moment they identify their situation.
+      <div class="anat-example">"Book Inspection" · "Book a Repair" · "Get an Estimate" — never "Learn More"</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE FEATURED CARD -->
+<div class="divider-label"><span>The featured card — how to make one card stand out</span></div>
+
+<div class="grid-2 spacer">
+  <div class="el-card purple-card" onclick="sendPrompt('Which of my roofing services should be the featured card in the pricing section?')">
+    <div class="el-tag">Which card gets featured</div>
+    <h3>Feature your most profitable or most commonly booked service</h3>
+    <p>For most roofers this is the repair/patch card — it's the most common need and the highest volume. For others it might be the full replacement. Feature whichever service you want to attract most, because the visual contrast will pull 60–70% of visitors toward it automatically.</p>
+    <div class="why">Your notes: "Put the recommended tier on a high-contrast dark background to draw the eye." Visual hierarchy does the selling before a word is read.</div>
+  </div>
+  <div class="el-card purple-card">
+    <div class="el-tag">How to make it stand out</div>
+    <h3>Dark background + "Most popular" badge + slightly taller card</h3>
+    <p>Three things make the featured card pop: a dark background while the others are light, a small "Most popular" or "Recommended" badge in the top corner, and making it very slightly taller than the flanking cards. The eye goes to the dark card first, every time.</p>
+    <div class="why">The other two cards exist to make the featured card feel like the safe, obvious choice — not to compete equally with it.</div>
+  </div>
+</div>
+
+<!-- PART 2: URGENCY -->
+<div class="divider-label"><span>Part 2 — urgency messaging · the "act today not next week" trigger</span></div>
+
+<div class="el-card coral-card spacer">
+  <div class="el-tag">The most critical rule in this entire section</div>
+  <h3>Urgency must be contextual and real — generic urgency destroys trust completely</h3>
+  <p>There is a hard line between urgency that converts and urgency that repels. Generic urgency — "Limited time offer!", "Act now!", countdown timers ticking toward nothing — feels like a used car salesman and immediately signals to the homeowner that you're desperate. Your notes were explicit: "Contextual urgency tied to real events." For roofing this is easy because the urgency is always genuinely real. A storm just hit. Winter is coming. Slots fill up in peak season. A leak that isn't fixed today will cost three times as much in six months. These are all real, and saying them plainly is not manipulation — it's information the homeowner needs.</p>
+  <div class="why">The test: "Is this urgency true?" If yes, say it directly. If you're inventing it — don't. A homeowner who calls and finds out the "limited slots" were fake will never refer anyone to you.</div>
+</div>
+
+<!-- URGENCY COMPARISONS -->
+<div class="divider-label"><span>Generic urgency vs contextual urgency — real examples</span></div>
+
+<div class="urg-compare spacer">
+  <div class="urg-card uc-bad">
+    <div class="urg-label">Generic — repels visitors</div>
+    <div class="urg-example">"Limited time offer! Book now and save 10%!"</div>
+    <div class="urg-why">Invented scarcity with no real basis. The homeowner knows there's no actual deadline. Their brain flags this as a sales tactic and trust drops immediately. Every competitor uses this phrasing.</div>
+  </div>
+  <div class="urg-card uc-good">
+    <div class="urg-label">Contextual — converts hard</div>
+    <div class="urg-example">"Storm damage in [City] this week? We have same-day emergency slots — call before they fill."</div>
+    <div class="urg-why">Tied to a real local event. Specific to their situation. The scarcity (slots filling) is genuinely true. Reads as helpful information, not a sales push. The homeowner thinks "that's actually true."</div>
+  </div>
+</div>
+
+<!-- SEASONAL URGENCY LIBRARY -->
+<div class="divider-label"><span>Seasonal urgency copy — rotate these throughout the year</span></div>
+
+<div class="season-grid spacer">
+  <div class="season-card ss-spring">
+    <div class="season-name">Spring (storm season)</div>
+    <div class="season-copy">"Spring storms hit [City] hard this year. If you saw any damage — even small — get it inspected before summer rain turns it into a $10,000 problem."</div>
+    <div class="season-why">Real: Spring storms are genuinely the #1 roofing damage cause. The cost escalation is real.</div>
+  </div>
+  <div class="season-card ss-summer">
+    <div class="season-name">Summer (peak season)</div>
+    <div class="season-copy">"Summer is our busiest season — inspection slots this month are filling fast. Book now and get your assessment before the rush."</div>
+    <div class="season-why">Real: Summer is genuinely peak season. Slots genuinely do fill. This is information, not manipulation.</div>
+  </div>
+  <div class="season-card ss-fall">
+    <div class="season-name">Fall (pre-winter prep)</div>
+    <div class="season-copy">"Winter is 6 weeks away. Any existing damage will get significantly worse under snow and ice — now is the last easy window to fix it affordably."</div>
+    <div class="season-why">Real: Winter genuinely worsens existing roof damage. The "last window" framing is accurate and serves the homeowner.</div>
+  </div>
+  <div class="season-card ss-winter">
+    <div class="season-name">Winter (emergency focus)</div>
+    <div class="season-copy">"Ice dams and heavy snow can collapse a weakened roof section overnight. If you've seen any sagging or interior water stains — call us today."</div>
+    <div class="season-why">Real: Ice dams are a genuine emergency risk. "Today" is the right timeframe for this situation.</div>
+  </div>
+</div>
+
+<!-- PLACEMENT OF URGENCY -->
+<div class="divider-label"><span>Where exactly the urgency copy lives on the page</span></div>
+
+<div class="grid-2 spacer">
+  <div class="el-card teal-card">
+    <div class="el-tag">Option 1 — urgency banner below service cards</div>
+    <h3>A single high-contrast banner directly below the 3 cards</h3>
+    <p>A dark or warm-colored strip running the full width of the section below the service cards. One sentence of contextual urgency + one CTA button. This is the cleanest placement — the visitor sees the services, self-selects, then gets the push to act now.</p>
+    <div class="why">Full-width banners are hard to miss and feel more authoritative than inline text. The contrast against the card section creates a natural visual break.</div>
+  </div>
+  <div class="el-card teal-card">
+    <div class="el-tag">Option 2 — urgency inside the featured card</div>
+    <h3>A small urgency line inside the most popular service card</h3>
+    <p>If the urgency is specific to one service (e.g. emergency repairs), place it as a line inside that card rather than a banner. "Same-day emergency slots available this week" inside the repair card is more targeted than a generic banner.</p>
+    <div class="why">More specific = more believable. If the urgency is genuinely tied to one service, keeping it inside that card prevents it from feeling like a site-wide sales tactic.</div>
+  </div>
+</div>
+
+<!-- WORDS TO AVOID -->
+<div class="divider-label"><span>Words that kill urgency — cut all of these</span></div>
+
+<div class="pills">
+  <span class="pill pill-red">Limited time offer</span>
+  <span class="pill pill-red">Act now</span>
+  <span class="pill pill-red">Don't miss out</span>
+  <span class="pill pill-red">Special discount</span>
+  <span class="pill pill-red">For a limited time only</span>
+  <span class="pill pill-red">Today only</span>
+  <span class="pill pill-red">Hurry</span>
+  <span class="pill pill-red">Last chance</span>
+  <span class="pill pill-red">Exclusive offer</span>
+  <span class="pill pill-red">While supplies last</span>
+</div>
+
+<div class="pills" style="margin-top:8px;">
+  <span class="pill pill-green">Storm damage in [City] this week?</span>
+  <span class="pill pill-green">Winter is 6 weeks away</span>
+  <span class="pill pill-green">Same-day slots available today</span>
+  <span class="pill pill-green">Peak season booking up fast</span>
+  <span class="pill pill-green">Small leaks become big ones in winter</span>
+  <span class="pill pill-green">Emergency repairs within 24 hours</span>
+</div>
+
+<!-- SECTION HEADLINE -->
+<div class="divider-label"><span>The section headline — set the right frame before they read</span></div>
+
+<div class="el-card gray-card spacer">
+  <div class="el-tag">Headline options — ranked</div>
+  <h3>The headline should help the visitor self-select, not describe what the section is</h3>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Best:</strong> "Choose the service that fits your situation" — invites self-selection</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Strong:</strong> "Whatever your roof needs — we have you covered" — broad reassurance</div>
+    <div style="background:#C0DD97;border-radius:6px;padding:8px 12px;font-size:12px;color:#173404;"><strong>Good:</strong> "From a small leak to a full replacement — here's how we help" — spans all situations</div>
+    <div style="background:#FAC775;border-radius:6px;padding:8px 12px;font-size:12px;color:#412402;"><strong>Weak:</strong> "Our Services" — a label, not a message</div>
+    <div style="background:#F7C1C1;border-radius:6px;padding:8px 12px;font-size:12px;color:#501313;"><strong>Worst:</strong> "Services We Provide" — corporate, cold, says nothing</div>
+  </div>
+</div>
+
+<!-- CTA AFTER SECTION -->
+<div class="cta-strip spacer">
+  <p>Not sure which service you need? Every visit starts with a free inspection — we'll tell you exactly what your roof needs and what it'll cost.</p>
+  <button class="cta-btn" onclick="sendPrompt('What should the CTA button say below the services section?')">Book a Free Inspection →</button>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Exactly 3 service cards — no more</li>
+      <li>Feature one card with dark background</li>
+      <li>Put a "Most popular" badge on the featured card</li>
+      <li>Show a price or "free estimate" on every card</li>
+      <li>Use direct CTA buttons named after the service</li>
+      <li>Include a timeframe in at least one feature bullet</li>
+      <li>Tie urgency copy to a real seasonal or local event</li>
+      <li>Update the urgency banner each season</li>
+      <li>Add a CTA button directly inside the urgency banner</li>
+      <li>Write a headline that helps visitors self-select</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>List 5, 6, or 8 services — it paralyzes visitors</li>
+      <li>Give all cards equal visual weight</li>
+      <li>Use "Contact Us" as the button on every card</li>
+      <li>Hide prices entirely — it creates anxiety</li>
+      <li>Use generic urgency: "limited time offer"</li>
+      <li>Use fake countdown timers</li>
+      <li>Write features as vague adjectives ("high quality work")</li>
+      <li>Title the section "Our Services" — use a message instead</li>
+      <li>Put this section before the reviews — trust first, offer second</li>
+      <li>Have no CTA after the section ends</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why this section goes after reviews, not before</h3>
+  <p>It might feel logical to show services early — "let them know what you do before they see the reviews." But your notes established the correct psychological order: trust is built first, offer comes second. A homeowner who sees your services before they trust you evaluates them with skepticism. A homeowner who sees your services after 6 sections of evidence — badges, photos, video, process, deep reviews — evaluates them as a convinced buyer choosing between options. The same three cards convert at a completely different rate depending on where they sit in the page order.</p>
+</div>

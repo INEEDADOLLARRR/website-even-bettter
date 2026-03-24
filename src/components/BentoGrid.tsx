@@ -4,8 +4,8 @@ import { useRef } from 'react';
 // Brand Typography Tokens:
 // Titles: font-display (serif)
 // Descriptions: font-sans (sans-serif)
-// Glassmorphism: bg-white/5 backdrop-blur-2xl border border-white/10
-// Hover Glow: hover:border-white/30
+// Glassmorphism: bg-white/5 backdrop-blur-2xl border border-border-default
+// Hover Glow: hover:border-border-hover
 // Interaction: group-hover:scale-110 (image), -translate-y-2 (text)
 
 const bentoItems = [
@@ -213,12 +213,12 @@ export function BentoGrid() {
     */
 
     return (
-        <section className="bg-brand-black px-6 py-24 min-h-screen flex items-center justify-center relative z-10">
+        <section className="bg-bg-base px-6 py-sp-54 min-h-screen flex items-center justify-center relative z-10">
             <div className="max-w-7xl w-full mx-auto" ref={containerRef}>
 
-                <div className="mb-16">
+                <div className="mb-sp-8">
                     <motion.p
-                        className="text-brand-silver text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+                        className="text-text-secondary text-xs font-semibold tracking-[0.2em] uppercase mb-4"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
@@ -226,7 +226,7 @@ export function BentoGrid() {
                         Capabilities
                     </motion.p>
                     <motion.h2
-                        className="font-display text-4xl md:text-5xl font-bold text-brand-white tracking-tight"
+                        className="font-display text-4xl md:text-5xl font-bold text-text-primary tracking-tight"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
@@ -236,12 +236,12 @@ export function BentoGrid() {
                     </motion.h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:auto-rows-[250px] md:auto-rows-[300px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-sp-6 lg:auto-rows-[250px] md:auto-rows-[300px]">
                     {orderedItems.map((item, index) => (
                         <motion.div
                             key={item.id}
                             className={`group relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer
-                         bg-white/5 backdrop-blur-2xl border border-white/10 hover:border-white/30 
+                         bg-white/5 backdrop-blur-2xl border border-border-default hover:border-border-hover 
                          transition-colors duration-500 ease-out flex flex-col justify-end
                          ${item.className}`}
                             initial={{ opacity: 0, y: 30 }}
@@ -263,10 +263,10 @@ export function BentoGrid() {
                                 {/* Text-Confined Gradient Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none rounded-b-2xl md:rounded-b-[2rem] -z-10" />
 
-                                <h3 className="font-display text-xl md:text-2xl text-white font-medium tracking-tight mb-2">
+                                <h3 className="font-display text-xl md:text-2xl text-text-primary font-medium tracking-tight mb-2">
                                     {item.title}
                                 </h3>
-                                <p className="font-sans text-brand-silver/90 text-[13px] leading-relaxed">
+                                <p className="font-sans text-text-secondary/90 text-[13px] leading-[1.7]">
                                     {item.description}
                                 </p>
                             </div>

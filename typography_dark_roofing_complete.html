@@ -1,0 +1,631 @@
+
+<!DOCTYPE html>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:var(--font-sans); background:transparent; padding:24px 16px 40px; }
+
+  h1 { font-size:20px; font-weight:500; color:var(--color-text-primary); text-align:center; margin-bottom:6px; }
+  .subtitle { font-size:13px; color:var(--color-text-secondary); text-align:center; margin-bottom:28px; line-height:1.6; }
+
+  .divider-label { display:flex; align-items:center; gap:10px; margin:24px 0 14px; }
+  .divider-label span { font-size:12px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; white-space:nowrap; color:var(--color-text-secondary); }
+  .divider-label::before,.divider-label::after { content:''; flex:1; height:1px; background:var(--color-border-tertiary); }
+
+  .note-box { background:var(--color-background-secondary); border:1px solid var(--color-border-tertiary); border-radius:10px; padding:16px; margin-top:10px; }
+  .note-box h3 { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:8px; }
+  .note-box p  { font-size:12px; color:var(--color-text-secondary); line-height:1.7; }
+
+  .el-card { border-radius:10px; border:1px solid; padding:14px; cursor:pointer; transition:transform 0.15s; }
+  .el-card:hover { transform:translateX(3px); }
+  .el-tag { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+  .el-card h3 { font-size:14px; font-weight:500; margin-bottom:5px; }
+  .el-card p  { font-size:12px; line-height:1.6; }
+  .el-card .why { margin-top:8px; font-size:11px; border-radius:6px; padding:6px 10px; line-height:1.5; }
+
+  .amber-card  { background:#FAEEDA; border-color:#EF9F27; }
+  .amber-card  .el-tag{color:#854F0B;} .amber-card h3{color:#412402;} .amber-card p{color:#854F0B;} .amber-card .why{background:#FAC775;color:#412402;}
+  .teal-card   { background:#E1F5EE; border-color:#5DCAA5; }
+  .teal-card   .el-tag{color:#0F6E56;} .teal-card h3{color:#04342C;} .teal-card p{color:#0F6E56;} .teal-card .why{background:#9FE1CB;color:#04342C;}
+  .green-card  { background:#EAF3DE; border-color:#97C459; }
+  .green-card  .el-tag{color:#3B6D11;} .green-card h3{color:#173404;} .green-card p{color:#3B6D11;} .green-card .why{background:#C0DD97;color:#173404;}
+  .blue-card   { background:#E6F1FB; border-color:#85B7EB; }
+  .blue-card   .el-tag{color:#185FA5;} .blue-card h3{color:#042C53;} .blue-card p{color:#185FA5;} .blue-card .why{background:#B5D4F4;color:#042C53;}
+  .purple-card { background:#EEEDFE; border-color:#AFA9EC; }
+  .purple-card .el-tag{color:#534AB7;} .purple-card h3{color:#26215C;} .purple-card p{color:#534AB7;} .purple-card .why{background:#CECBF6;color:#26215C;}
+  .red-card    { background:#FCEBEB; border-color:#F09595; }
+  .red-card    .el-tag{color:#A32D2D;} .red-card h3{color:#501313;} .red-card p{color:#A32D2D;} .red-card .why{background:#F7C1C1;color:#501313;}
+  .gray-card   { background:#F1EFE8; border-color:#B4B2A9; }
+  .gray-card   .el-tag{color:#5F5E5A;} .gray-card h3{color:#2C2C2A;} .gray-card p{color:#5F5E5A;} .gray-card .why{background:#D3D1C7;color:#2C2C2A;}
+
+  @media (prefers-color-scheme:dark){
+    .amber-card{background:#412402;border-color:#BA7517;} .amber-card h3{color:#FAC775;} .amber-card p{color:#EF9F27;} .amber-card .why{background:#633806;color:#FAC775;}
+    .teal-card{background:#04342C;border-color:#1D9E75;} .teal-card h3{color:#9FE1CB;} .teal-card p{color:#5DCAA5;} .teal-card .why{background:#085041;color:#9FE1CB;}
+    .green-card{background:#173404;border-color:#639922;} .green-card h3{color:#C0DD97;} .green-card p{color:#97C459;} .green-card .why{background:#27500A;color:#C0DD97;}
+    .blue-card{background:#042C53;border-color:#378ADD;} .blue-card h3{color:#B5D4F4;} .blue-card p{color:#85B7EB;} .blue-card .why{background:#0C447C;color:#B5D4F4;}
+    .purple-card{background:#26215C;border-color:#7F77DD;} .purple-card h3{color:#CECBF6;} .purple-card p{color:#AFA9EC;} .purple-card .why{background:#3C3489;color:#CECBF6;}
+    .red-card{background:#501313;border-color:#E24B4A;} .red-card h3{color:#F7C1C1;} .red-card p{color:#F09595;} .red-card .why{background:#791F1F;color:#F7C1C1;}
+    .gray-card{background:#2C2C2A;border-color:#888780;} .gray-card h3{color:#D3D1C7;} .gray-card p{color:#888780;} .gray-card .why{background:#444441;color:#D3D1C7;}
+  }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .spacer  { margin-top:10px; }
+
+  /* ── FONT PAIR DEMOS ON DARK ── */
+  .pair-demo { background:#050505; border-radius:14px; padding:20px; border:1px solid rgba(255,255,255,0.06); margin-bottom:10px; }
+  .pd-badge  { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; display:inline-block; border-radius:20px; padding:3px 10px; }
+  .pd-rec  { background:rgba(29,181,116,0.15); color:#1DB574; }
+  .pd-alt  { background:rgba(232,160,32,0.15); color:#E8A020; }
+  .pd-skip { background:rgba(226,75,74,0.15); color:#E24B4A; }
+
+  .pd-heading { margin-bottom:8px; }
+  .pd-body    { font-size:14px; color:rgba(255,255,255,0.55); line-height:1.7; margin-bottom:12px; max-width:480px; }
+  .pd-micro   { font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:12px; }
+  .pd-btn     { display:inline-block; background:#1DB574; color:#04342C; border-radius:7px; padding:10px 20px; font-size:13px; font-weight:600; }
+  .pd-note    { font-size:11px; color:rgba(255,255,255,0.3); margin-top:12px; line-height:1.6; border-top:1px solid rgba(255,255,255,0.04); padding-top:10px; }
+
+  /* Pair 1: Inter headings + Inter body (system pairing) */
+  .f-inter { font-family:'Inter','Helvetica Neue',sans-serif; }
+  /* Pair 2: Plus Jakarta Sans */
+  .f-jakarta { font-family:'Plus Jakarta Sans','Inter',sans-serif; }
+  /* Pair 3: Outfit */
+  .f-outfit { font-family:'Outfit','Inter',sans-serif; }
+  /* Pair 4: Syne display + Inter body */
+  .f-syne { font-family:'Syne','Inter',sans-serif; }
+  /* Pair 5: DM Sans */
+  .f-dm { font-family:'DM Sans','Inter',sans-serif; }
+
+  /* ── TYPE SCALE TABLE ── */
+  .scale-demo { background:#050505; border-radius:14px; padding:24px; border:1px solid rgba(255,255,255,0.06); }
+  .sd-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:16px; }
+  .sd-row   { display:flex; align-items:baseline; gap:16px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .sd-row:last-child { border-bottom:none; }
+  .sd-meta  { min-width:200px; flex-shrink:0; }
+  .sd-role  { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:rgba(255,255,255,0.25); margin-bottom:2px; }
+  .sd-spec  { font-size:10px; font-family:monospace; color:rgba(255,255,255,0.2); }
+  .sd-sample{ flex:1; }
+
+  /* ── WEIGHT COMPARISON ── */
+  .weight-demo { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .wd-title  { font-size:10px; font-weight:500; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; }
+  .wd-rows   { display:flex; flex-direction:column; gap:8px; }
+  .wd-row    { display:grid; grid-template-columns:100px 1fr 80px; gap:10px; align-items:center; }
+  .wd-label  { font-size:10px; color:rgba(255,255,255,0.25); font-family:monospace; }
+  .wd-verdict{ font-size:10px; border-radius:20px; padding:2px 8px; text-align:center; }
+  .wv-good  { background:rgba(29,181,116,0.15); color:#1DB574; }
+  .wv-bad   { background:rgba(226,75,74,0.15); color:#E24B4A; }
+  .wv-ok    { background:rgba(232,160,32,0.15); color:#E8A020; }
+
+  /* ── LINE HEIGHT DEMO ── */
+  .lh-demo  { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .lh-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; }
+  .lh-cols  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .lh-col   { }
+  .lh-label { font-size:9px; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+  .lh-text  { font-size:13px; color:rgba(255,255,255,0.55); }
+  .lh-badge { font-size:9px; border-radius:20px; padding:2px 7px; margin-top:6px; display:inline-block; }
+
+  /* ── LETTER SPACING DEMO ── */
+  .ls-demo  { background:#050505; border-radius:12px; padding:20px; border:1px solid rgba(255,255,255,0.06); }
+  .ls-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; }
+  .ls-rows  { display:flex; flex-direction:column; gap:12px; }
+  .ls-row   { display:flex; gap:12px; align-items:flex-start; }
+  .ls-meta  { min-width:140px; font-size:10px; font-family:monospace; color:rgba(255,255,255,0.25); padding-top:2px; flex-shrink:0; }
+  .ls-sample{ flex:1; }
+  .ls-verdict { font-size:10px; border-radius:20px; padding:2px 8px; flex-shrink:0; margin-top:2px; }
+
+  /* ── SECTION TYPOGRAPHY PREVIEW ── */
+  .section-preview { background:#050505; border-radius:14px; padding:24px; border:1px solid rgba(255,255,255,0.06); }
+  .sp-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.25); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:16px; text-align:center; }
+
+  .sp-hero { padding:24px; background:#050505; border:1px solid rgba(255,255,255,0.04); border-radius:10px; margin-bottom:8px; }
+  .sp-trust { padding:14px; background:#0a0a0a; border-radius:8px; margin-bottom:8px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .sp-card-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px; }
+  .sp-card { background:#111111; border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:12px; }
+
+  /* ── GOOGLE FONTS GUIDE ── */
+  .fonts-table { border:1px solid var(--color-border-tertiary); border-radius:12px; overflow:hidden; }
+  .ft-header { display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; background:var(--color-background-secondary); border-bottom:1px solid var(--color-border-tertiary); }
+  .ft-row    { display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; border-bottom:1px solid var(--color-border-tertiary); }
+  .ft-row:last-child { border-bottom:none; }
+  .ft-cell   { padding:9px 12px; font-size:11px; color:var(--color-text-secondary); border-right:1px solid var(--color-border-tertiary); line-height:1.5; }
+  .ft-cell:last-child { border-right:none; }
+  .ft-cell.head { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; color:var(--color-text-tertiary); }
+  .ft-cell.name { font-weight:500; color:var(--color-text-primary); font-size:12px; }
+  .ft-cell.rec  { color:#0F6E56; font-weight:500; font-size:11px; }
+  .ft-cell.ok   { color:#854F0B; font-size:11px; }
+  .ft-cell.bad  { color:#A32D2D; font-size:11px; }
+  @media (prefers-color-scheme:dark){
+    .ft-cell.rec{color:#9FE1CB;} .ft-cell.ok{color:#FAC775;} .ft-cell.bad{color:#F09595;}
+  }
+
+  /* ── CSS OUTPUT ── */
+  .code-wrap { background:#0a0a0a; border-radius:10px; padding:14px; border:1px solid rgba(255,255,255,0.06); overflow-x:auto; }
+  .code-title { font-size:10px; font-weight:500; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px; }
+  .code-block { font-family:var(--font-mono); font-size:11px; line-height:1.9; }
+  .c-c{color:#5F5E5A;} .c-k{color:#AFA9EC;} .c-s{color:#9FE1CB;} .c-f{color:#FAC775;} .c-v{color:#B5D4F4;} .c-p{color:#D3D1C7;}
+
+  /* do/dont */
+  .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .do-box   { background:#EAF3DE; border:1px solid #97C459; border-radius:10px; padding:14px; }
+  .do-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#3B6D11; margin-bottom:8px; }
+  .do-box li { font-size:12px; color:#3B6D11; line-height:1.8; margin-left:14px; }
+  .dont-box { background:#FCEBEB; border:1px solid #F09595; border-radius:10px; padding:14px; }
+  .dont-box .dd-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; color:#A32D2D; margin-bottom:8px; }
+  .dont-box li { font-size:12px; color:#A32D2D; line-height:1.8; margin-left:14px; }
+  @media (prefers-color-scheme:dark){
+    .do-box{background:#173404;border-color:#639922;} .do-box .dd-label,.do-box li{color:#C0DD97;}
+    .dont-box{background:#501313;border-color:#E24B4A;} .dont-box .dd-label,.dont-box li{color:#F7C1C1;}
+  }
+
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .pill  { font-size:11px; padding:3px 10px; border-radius:20px; }
+  .pill-green { background:#C0DD97; color:#173404; }
+  .pill-red   { background:#F7C1C1; color:#501313; }
+  .pill-amber { background:#FAC775; color:#412402; }
+  @media (prefers-color-scheme:dark){
+    .pill-green{background:#27500A;color:#C0DD97;} .pill-red{background:#791F1F;color:#F7C1C1;} .pill-amber{background:#633806;color:#FAC775;}
+  }
+</style>
+
+<!-- Load Google Fonts for demos -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Syne:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<h1>Typography for your dark roofing website — the complete system</h1>
+<p class="subtitle">Font pairing · sizing scale · weights · line height · letter spacing · all on #050505<br>Every demo below uses the actual fonts — pick your pair and copy the CSS</p>
+
+<!-- WHY TYPOGRAPHY MATTERS ON DARK -->
+<div class="el-card amber-card" style="margin-bottom:10px;">
+  <div class="el-tag">Why dark sites need special typography attention</div>
+  <h3>On a light site, whitespace and content do the heavy lifting. On a dark site, typography IS the design.</h3>
+  <p>When your background is near-black, there are almost no visual elements to create hierarchy — no colored section backgrounds, no bold dividers, no contrasting panels. The entire visual hierarchy of your page is created by font size, font weight, and text opacity alone. If your type system is weak, every section collapses into a flat wall of similar-looking text. Your notes said "the right fonts make a site feel more sophisticated than the brand actually is" — on a dark site this effect is 2× stronger because fonts are the primary visual element.</p>
+  <div class="why">On #050505, a well-chosen font at the right size hierarchy creates the perception of premium quality before a single word is read. A default font at muddled sizes creates "AI slop" — the appearance of a site that wasn't designed, just generated.</div>
+</div>
+
+<!-- FONT PAIR RECOMMENDATIONS -->
+<div class="divider-label"><span>Font pair options — all free on Google Fonts · ranked best to worst for your site</span></div>
+
+<!-- PAIR 1 — Recommended -->
+<div class="pair-demo">
+  <div class="pd-badge pd-rec">Recommended — best overall for dark roofing</div>
+  <div class="pd-heading">
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:700;color:#F5F5F0;line-height:1.15;margin-bottom:6px;">Protect Your Home<br>From Leaks — Guaranteed</div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1DB574;margin-bottom:10px;">★★★★★ Rated #1 Roofer in [City]</div>
+  </div>
+  <div class="pd-body f-jakarta">Emergency repairs within 24 hours. 10-year workmanship warranty in writing. We handle all insurance claims directly — you pay only your deductible. Serving Oak Park and surrounding areas since 2004.</div>
+  <div class="pd-micro f-jakarta">FREE · NO OBLIGATION · SAME-DAY AVAILABLE</div>
+  <div class="pd-btn f-jakarta">Book Free Inspection →</div>
+  <div class="pd-note">
+    <strong style="color:rgba(255,255,255,0.5);">Plus Jakarta Sans</strong> — Use for both headings AND body. Geometric sans with slightly rounded terminals that feels modern without being trendy. The slight roundness adds warmth on cold dark backgrounds. Font weight 700 for headlines, 500 for subheadlines, 400 for body. Available free on Google Fonts. Pairs with itself perfectly — no second font needed.
+  </div>
+</div>
+
+<!-- PAIR 2 — Strong Alternative -->
+<div class="pair-demo">
+  <div class="pd-badge pd-rec">Strong alternative — more premium feel</div>
+  <div class="pd-heading">
+    <div style="font-family:'Outfit',sans-serif;font-size:36px;font-weight:700;color:#F5F5F0;line-height:1.15;margin-bottom:6px;">Protect Your Home<br>From Leaks — Guaranteed</div>
+    <div style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1DB574;margin-bottom:10px;">★★★★★ Rated #1 Roofer in [City]</div>
+  </div>
+  <div class="pd-body f-outfit">Emergency repairs within 24 hours. 10-year workmanship warranty in writing. We handle all insurance claims directly — you pay only your deductible. Serving Oak Park and surrounding areas since 2004.</div>
+  <div class="pd-micro f-outfit">FREE · NO OBLIGATION · SAME-DAY AVAILABLE</div>
+  <div class="pd-btn f-outfit">Book Free Inspection →</div>
+  <div class="pd-note">
+    <strong style="color:rgba(255,255,255,0.5);">Outfit</strong> — Extremely clean geometric sans. Feels slightly more premium and architectural than Jakarta — the letterforms have a structural quality that suits a trade business well. Very slightly wider than Jakarta which improves readability at small sizes. Use weight 700 headlines, 400 body.
+  </div>
+</div>
+
+<!-- PAIR 3 — Display + Body combination -->
+<div class="pair-demo">
+  <div class="pd-badge pd-alt">Bold option — high visual impact headlines</div>
+  <div class="pd-heading">
+    <div style="font-family:'Syne',sans-serif;font-size:36px;font-weight:700;color:#F5F5F0;line-height:1.1;margin-bottom:6px;">Protect Your Home<br>From Leaks — Guaranteed</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1DB574;margin-bottom:10px;">★★★★★ Rated #1 Roofer in [City]</div>
+  </div>
+  <div class="pd-body f-dm">Emergency repairs within 24 hours. 10-year workmanship warranty in writing. We handle all insurance claims directly — you pay only your deductible. Serving Oak Park and surrounding areas since 2004.</div>
+  <div class="pd-micro f-dm">FREE · NO OBLIGATION · SAME-DAY AVAILABLE</div>
+  <div class="pd-btn f-dm">Book Free Inspection →</div>
+  <div class="pd-note">
+    <strong style="color:rgba(255,255,255,0.5);">Syne (headings) + DM Sans (body)</strong> — Syne is a display font with unique wide letterforms that look striking on dark backgrounds at large sizes. DM Sans is a clean, readable workhorse for body copy. This is a two-font pairing — use Syne ONLY for H1 and H2, never for body. The contrast between the expressive headline and clean body creates sophisticated visual tension.
+  </div>
+</div>
+
+<!-- PAIR 4 — What to avoid -->
+<div class="pair-demo" style="border:1px solid rgba(226,75,74,0.3);">
+  <div class="pd-badge pd-skip">Avoid these — common mistakes on dark sites</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:10px;">
+    <div>
+      <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.5);line-height:1.2;margin-bottom:6px;">Protect Your Home</div>
+      <div style="font-size:10px;color:#E24B4A;text-transform:uppercase;letter-spacing:0.05em;">Georgia / Times — serif fonts on dark feel dated and heavy. The serifs fill in and blur at dark backgrounds.</div>
+    </div>
+    <div>
+      <div style="font-family:Arial,sans-serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.5);line-height:1.2;margin-bottom:6px;">Protect Your Home</div>
+      <div style="font-size:10px;color:#E24B4A;text-transform:uppercase;letter-spacing:0.05em;">Arial / Helvetica system default — no personality, signals no design investment was made.</div>
+    </div>
+  </div>
+  <div style="font-family:Roboto,sans-serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.5);line-height:1.2;margin-bottom:4px;">Protect Your Home</div>
+  <div style="font-size:10px;color:#E24B4A;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0;">Roboto — the most overused Google Font. Instantly recognisable as a default choice. Zero premium signal.</div>
+</div>
+
+<!-- GOOGLE FONTS TABLE -->
+<div class="divider-label"><span>The complete font ranking — every option evaluated for dark roofing sites</span></div>
+
+<div class="fonts-table spacer">
+  <div class="ft-header">
+    <div class="ft-cell head">Font</div>
+    <div class="ft-cell head">Dark bg rating</div>
+    <div class="ft-cell head">Use for</div>
+    <div class="ft-cell head">Verdict</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Plus Jakarta Sans</div>
+    <div class="ft-cell rec">★★★★★ Best</div>
+    <div class="ft-cell">Everything — headings + body</div>
+    <div class="ft-cell rec">Top pick. Geometric warmth. Free.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Outfit</div>
+    <div class="ft-cell rec">★★★★★ Best</div>
+    <div class="ft-cell">Everything — headings + body</div>
+    <div class="ft-cell rec">Premium feel. Architectural quality. Free.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">DM Sans</div>
+    <div class="ft-cell rec">★★★★☆ Great</div>
+    <div class="ft-cell">Body copy, subheadlines</div>
+    <div class="ft-cell rec">Excellent readability at small sizes.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Syne</div>
+    <div class="ft-cell rec">★★★★☆ Great</div>
+    <div class="ft-cell">H1 and H2 only — display use</div>
+    <div class="ft-cell ok">Pair with DM Sans for body. Bold impact.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Inter</div>
+    <div class="ft-cell ok">★★★☆☆ Good</div>
+    <div class="ft-cell">Body copy, UI elements</div>
+    <div class="ft-cell ok">Safe and readable. Slightly overused in 2025.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Manrope</div>
+    <div class="ft-cell ok">★★★★☆ Great</div>
+    <div class="ft-cell">Everything — similar to Jakarta</div>
+    <div class="ft-cell ok">Less common than Inter, feels fresher.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Space Grotesk</div>
+    <div class="ft-cell ok">★★★☆☆ Good</div>
+    <div class="ft-cell">Headings only</div>
+    <div class="ft-cell ok">Quirky details. Strong at large sizes only.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Roboto</div>
+    <div class="ft-cell bad">★★☆☆☆ Avoid</div>
+    <div class="ft-cell">—</div>
+    <div class="ft-cell bad">Most overused font. Zero premium signal.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Open Sans</div>
+    <div class="ft-cell bad">★★☆☆☆ Avoid</div>
+    <div class="ft-cell">—</div>
+    <div class="ft-cell bad">Friendly but generic. Signals no design care.</div>
+  </div>
+  <div class="ft-row">
+    <div class="ft-cell name">Any serif (Georgia, Merriweather)</div>
+    <div class="ft-cell bad">★☆☆☆☆ Never</div>
+    <div class="ft-cell">—</div>
+    <div class="ft-cell bad">Serifs fill in on dark backgrounds. Looks dated.</div>
+  </div>
+</div>
+
+<!-- TYPE SCALE -->
+<div class="divider-label"><span>The complete type scale — exact sizes for every element on your site</span></div>
+
+<div class="scale-demo spacer">
+  <div class="sd-title">Complete type scale — Plus Jakarta Sans on #050505</div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Hero H1</div>
+      <div class="sd-spec">48–56px · weight 700 · line-height 1.1</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:700;color:#F5F5F0;line-height:1.1;">Protect Your Home</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Section H2</div>
+      <div class="sd-spec">32–36px · weight 600 · line-height 1.2</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:600;color:#F5F5F0;line-height:1.2;">What homeowners say about us</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Card / section H3</div>
+      <div class="sd-spec">20–24px · weight 600 · line-height 1.3</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:600;color:#F5F5F0;line-height:1.3;">Book a Free Roof Inspection</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Subheadline / lead</div>
+      <div class="sd-spec">17–18px · weight 400 · line-height 1.6</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:400;color:rgba(255,255,255,0.65);line-height:1.6;">Emergency repairs within 24 hours. 10-year guarantee in writing.</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Body copy</div>
+      <div class="sd-spec">15–16px · weight 400 · line-height 1.7</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,0.55);line-height:1.7;max-width:460px;">We handle all insurance claims directly at no extra cost. Most homeowners pay only their deductible. Same-day inspections available for storm damage.</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Button text</div>
+      <div class="sd-spec">13–14px · weight 600 · line-height 1</div>
+    </div>
+    <div class="sd-sample">
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;background:#1DB574;color:#04342C;padding:10px 20px;border-radius:7px;display:inline-block;">Book Free Inspection →</span>
+    </div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Card title</div>
+      <div class="sd-spec">14px · weight 600 · line-height 1.3</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:#F5F5F0;line-height:1.3;">Full Roof Replacement</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Card body / description</div>
+      <div class="sd-spec">12–13px · weight 400 · line-height 1.6</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:400;color:rgba(255,255,255,0.4);line-height:1.6;">Complete tear-off and re-roof. Premium materials. 1–2 days. Full clean-up included.</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Eyebrow / badge label</div>
+      <div class="sd-spec">10–11px · weight 600 · letter-spacing 0.08em · UPPERCASE</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1DB574;">Free · No obligation · Same-day available</div>
+  </div>
+
+  <div class="sd-row">
+    <div class="sd-meta">
+      <div class="sd-role">Caption / meta text</div>
+      <div class="sd-spec">11px · weight 400 · color opacity 30%</div>
+    </div>
+    <div class="sd-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:400;color:rgba(255,255,255,0.30);line-height:1.5;">Oak Park · Full replacement · June 2024 · Posted on Google</div>
+  </div>
+</div>
+
+<!-- WEIGHT SYSTEM -->
+<div class="divider-label"><span>The weight system — only 3 weights, never more</span></div>
+
+<div class="weight-demo spacer">
+  <div class="wd-title">Font weight usage on dark backgrounds</div>
+  <div class="wd-rows">
+    <div class="wd-row">
+      <div class="wd-label">weight: 400</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:400;color:rgba(255,255,255,0.55);">Body copy, card descriptions, FAQ answers, form labels</div>
+      <div class="wd-verdict wv-good">Use freely</div>
+    </div>
+    <div class="wd-row">
+      <div class="wd-label">weight: 500</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:500;color:rgba(255,255,255,0.75);">Card titles, nav links, section subtitles, trust badges</div>
+      <div class="wd-verdict wv-good">Use freely</div>
+    </div>
+    <div class="wd-row">
+      <div class="wd-label">weight: 600</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:600;color:#F5F5F0;">Section H2, H3, button text, eyebrow labels, key stats</div>
+      <div class="wd-verdict wv-good">Use sparingly</div>
+    </div>
+    <div class="wd-row">
+      <div class="wd-label">weight: 700</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:#F5F5F0;">Hero H1 ONLY — one instance per page maximum</div>
+      <div class="wd-verdict wv-ok">Hero H1 only</div>
+    </div>
+    <div class="wd-row">
+      <div class="wd-label">weight: 800+</div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:rgba(255,255,255,0.4);">Never. Looks heavy and aggressive on dark backgrounds.</div>
+      <div class="wd-verdict wv-bad">Never use</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box spacer">
+  <h3>Why 800+ weight looks wrong on dark specifically</h3>
+  <p>On a white background, 800 weight looks bold. On a near-black background, 800 weight looks aggressive and corporate — the extra thick strokes create too much visual tension against the dark. The eye reads heavy weight on dark as "shouting" rather than "authoritative." Stick to 700 maximum for the hero headline, 600 for everything else that needs emphasis. The contrast between 700 headline and 400 body on dark creates more than enough visual hierarchy.</p>
+</div>
+
+<!-- LINE HEIGHT -->
+<div class="divider-label"><span>Line height — the spacing inside your text blocks</span></div>
+
+<div class="lh-demo spacer">
+  <div class="lh-title">Line height comparison — same font, same size, different feel</div>
+  <div class="lh-cols">
+    <div class="lh-col">
+      <div class="lh-label">line-height: 1.3 — too tight</div>
+      <div class="lh-text" style="font-family:'Plus Jakarta Sans',sans-serif;line-height:1.3;">Emergency repairs within 24 hours. We handle all insurance claims directly. 10-year guarantee in writing on every job.</div>
+      <div class="lh-badge" style="background:rgba(226,75,74,0.15);color:#E24B4A;">cramped · anxious</div>
+    </div>
+    <div class="lh-col">
+      <div class="lh-label">line-height: 1.7 — correct</div>
+      <div class="lh-text" style="font-family:'Plus Jakarta Sans',sans-serif;line-height:1.7;">Emergency repairs within 24 hours. We handle all insurance claims directly. 10-year guarantee in writing on every job.</div>
+      <div class="lh-badge" style="background:rgba(29,181,116,0.15);color:#1DB574;">premium · readable</div>
+    </div>
+    <div class="lh-col">
+      <div class="lh-label">line-height: 2.0 — too loose</div>
+      <div class="lh-text" style="font-family:'Plus Jakarta Sans',sans-serif;line-height:2.0;">Emergency repairs within 24 hours. We handle all insurance claims directly. 10-year guarantee in writing.</div>
+      <div class="lh-badge" style="background:rgba(232,160,32,0.15);color:#E8A020;">too airy · disconnected</div>
+    </div>
+  </div>
+</div>
+
+<!-- LETTER SPACING -->
+<div class="divider-label"><span>Letter spacing — where to use it and where never to</span></div>
+
+<div class="ls-demo spacer">
+  <div class="ls-title">Letter spacing rules on dark — the most abused property in dark site design</div>
+  <div class="ls-rows">
+    <div class="ls-row">
+      <div class="ls-meta">letter-spacing: 0<br>body text</div>
+      <div class="ls-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:rgba(255,255,255,0.55);letter-spacing:0;">Emergency repairs within 24 hours. We handle all insurance claims directly so you don't have to deal with adjusters.</div>
+      <div class="ls-verdict" style="background:rgba(29,181,116,0.15);color:#1DB574;">Correct</div>
+    </div>
+    <div class="ls-row">
+      <div class="ls-meta">letter-spacing: 0.08em<br>10px UPPERCASE labels</div>
+      <div class="ls-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;color:#1DB574;letter-spacing:0.08em;">FREE · NO OBLIGATION · SAME-DAY AVAILABLE</div>
+      <div class="ls-verdict" style="background:rgba(29,181,116,0.15);color:#1DB574;">Correct</div>
+    </div>
+    <div class="ls-row">
+      <div class="ls-meta">letter-spacing: 0.05em<br>nav links (optional)</div>
+      <div class="ls-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.6);letter-spacing:0.05em;">Home &nbsp;&nbsp; Services &nbsp;&nbsp; Reviews &nbsp;&nbsp; Contact</div>
+      <div class="ls-verdict" style="background:rgba(232,160,32,0.15);color:#E8A020;">Optional</div>
+    </div>
+    <div class="ls-row">
+      <div class="ls-meta">letter-spacing: 0.1em<br>HEADLINE — wrong</div>
+      <div class="ls-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.1em;">Protect Your Home</div>
+      <div class="ls-verdict" style="background:rgba(226,75,74,0.15);color:#E24B4A;">Never</div>
+    </div>
+    <div class="ls-row">
+      <div class="ls-meta">letter-spacing: 0.05em<br>BODY TEXT — wrong</div>
+      <div class="ls-sample" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;">Letter spacing on body copy looks like AI-generated design. It reduces readability and signals amateur choices.</div>
+      <div class="ls-verdict" style="background:rgba(226,75,74,0.15);color:#E24B4A;">Never</div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL CSS OUTPUT -->
+<div class="divider-label"><span>Complete CSS — copy this into your stylesheet and you're done</span></div>
+
+<div class="code-wrap spacer">
+  <div class="code-title">Typography system — paste into your CSS file</div>
+  <div class="code-block">
+<span class="c-c">/* ── GOOGLE FONTS IMPORT (put in &lt;head&gt; or top of CSS) ── */</span><br>
+<span class="c-k">@import</span> <span class="c-f">url</span>(<span class="c-s">'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap'</span>);<br>
+<br>
+<span class="c-c">/* ── FONT VARIABLES ── */</span><br>
+<span class="c-k">:root</span> {<br>
+&nbsp;&nbsp;<span class="c-v">--font-primary</span>: <span class="c-s">'Plus Jakarta Sans', -apple-system, sans-serif</span>;<br>
+&nbsp;&nbsp;<span class="c-c">/* Use same font for both — no second font needed */</span><br>
+}<br>
+<br>
+<span class="c-c">/* ── BASE ── */</span><br>
+<span class="c-k">body</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-family</span>: <span class="c-s">var(--font-primary)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">15px</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">400</span>;<br>
+&nbsp;&nbsp;<span class="c-v">line-height</span>: <span class="c-s">1.7</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">rgba(255,255,255,0.55)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">-webkit-font-smoothing</span>: <span class="c-s">antialiased</span>; <span class="c-c">/* critical on dark */</span><br>
+&nbsp;&nbsp;<span class="c-v">-moz-osx-font-smoothing</span>: <span class="c-s">grayscale</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── HEADINGS ── */</span><br>
+<span class="c-k">h1</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">clamp(36px, 5vw, 56px)</span>; <span class="c-c">/* fluid — big on desktop, right on mobile */</span><br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">700</span>;<br>
+&nbsp;&nbsp;<span class="c-v">line-height</span>: <span class="c-s">1.1</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">#F5F5F0</span>;<br>
+&nbsp;&nbsp;<span class="c-v">letter-spacing</span>: <span class="c-s">-0.02em</span>; <span class="c-c">/* slight tighten on large display sizes */</span><br>
+}<br>
+<span class="c-k">h2</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">clamp(24px, 3vw, 36px)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">600</span>;<br>
+&nbsp;&nbsp;<span class="c-v">line-height</span>: <span class="c-s">1.2</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">#F5F5F0</span>;<br>
+&nbsp;&nbsp;<span class="c-v">letter-spacing</span>: <span class="c-s">-0.01em</span>;<br>
+}<br>
+<span class="c-k">h3</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">clamp(18px, 2vw, 22px)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">600</span>;<br>
+&nbsp;&nbsp;<span class="c-v">line-height</span>: <span class="c-s">1.3</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">#F5F5F0</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── TEXT UTILITY CLASSES ── */</span><br>
+<span class="c-k">.text-primary</span>   { <span class="c-v">color</span>: <span class="c-s">#F5F5F0</span>; }<br>
+<span class="c-k">.text-secondary</span> { <span class="c-v">color</span>: <span class="c-s">rgba(255,255,255,0.55)</span>; }<br>
+<span class="c-k">.text-muted</span>     { <span class="c-v">color</span>: <span class="c-s">rgba(255,255,255,0.30)</span>; }<br>
+<span class="c-k">.text-accent</span>    { <span class="c-v">color</span>: <span class="c-s">#1DB574</span>; }<br>
+<br>
+<span class="c-c">/* ── EYEBROW / LABEL ── */</span><br>
+<span class="c-k">.eyebrow</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">10px</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">600</span>;<br>
+&nbsp;&nbsp;<span class="c-v">letter-spacing</span>: <span class="c-s">0.08em</span>;<br>
+&nbsp;&nbsp;<span class="c-v">text-transform</span>: <span class="c-s">uppercase</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">#1DB574</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── SUBHEADLINE ── */</span><br>
+<span class="c-k">.subheadline</span> {<br>
+&nbsp;&nbsp;<span class="c-v">font-size</span>: <span class="c-s">17px</span>;<br>
+&nbsp;&nbsp;<span class="c-v">font-weight</span>: <span class="c-s">400</span>;<br>
+&nbsp;&nbsp;<span class="c-v">line-height</span>: <span class="c-s">1.6</span>;<br>
+&nbsp;&nbsp;<span class="c-v">color</span>: <span class="c-s">rgba(255,255,255,0.65)</span>;<br>
+&nbsp;&nbsp;<span class="c-v">max-width</span>: <span class="c-s">580px</span>;<br>
+}<br>
+<br>
+<span class="c-c">/* ── ONE CRITICAL RULE FOR DARK SITES ── */</span><br>
+<span class="c-k">* </span>{<br>
+&nbsp;&nbsp;<span class="c-v">-webkit-font-smoothing</span>: <span class="c-s">antialiased</span>;<br>
+&nbsp;&nbsp;<span class="c-v">-moz-osx-font-smoothing</span>: <span class="c-s">grayscale</span>;<br>
+}
+  </div>
+</div>
+
+<!-- THE FONT SMOOTHING RULE -->
+<div class="el-card teal-card spacer" onclick="sendPrompt('What is webkit font smoothing and why does it matter on dark websites?')">
+  <div class="el-tag">The most overlooked CSS property for dark sites</div>
+  <h3>-webkit-font-smoothing: antialiased — the single line that makes all fonts look premium on dark</h3>
+  <p>By default, browsers use "subpixel antialiasing" which renders fonts slightly heavier by using red/green/blue subpixels. On white backgrounds this looks fine. On dark backgrounds it makes text look slightly blurry, thick, and cheap — especially on Retina/HiDPI screens. Setting <code style="background:rgba(0,0,0,0.2);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">-webkit-font-smoothing: antialiased</code> tells the browser to use pure grey antialiasing, which makes text look razor-sharp and thin on dark backgrounds. This is what makes Apple's dark mode text look crisp. Without it, even a premium font looks slightly off on your #050505 background.</p>
+  <div class="why">Add this to both * and body. It costs nothing, takes 2 seconds, and immediately improves every single text element on your site on dark backgrounds. It is the hidden reason premium dark sites look different from amateur ones.</div>
+</div>
+
+<!-- DO/DONT -->
+<div class="divider-label"><span>Do this / never do this</span></div>
+
+<div class="do-dont">
+  <div class="do-box">
+    <div class="dd-label">Do this</div>
+    <ul>
+      <li>Use Plus Jakarta Sans or Outfit — both free on Google Fonts</li>
+      <li>Add -webkit-font-smoothing: antialiased to body and *</li>
+      <li>Use clamp() for fluid font sizes that scale with viewport</li>
+      <li>letter-spacing: -0.02em on H1 (tightens large display type)</li>
+      <li>letter-spacing: 0.08em only on 10px uppercase eyebrow labels</li>
+      <li>line-height: 1.7 on all body copy — non-negotiable</li>
+      <li>line-height: 1.1 on hero H1 — tight is correct at large sizes</li>
+      <li>Use 3 weights max: 400 · 600 · 700 (hero only)</li>
+      <li>Set max-width: 600–680px on all paragraph text blocks</li>
+      <li>Load fonts with display=swap to prevent flash of unstyled text</li>
+    </ul>
+  </div>
+  <div class="dont-box">
+    <div class="dd-label">Never do this</div>
+    <ul>
+      <li>Use Roboto, Open Sans, or Lato — too generic, zero premium signal</li>
+      <li>Use any serif font on a dark background</li>
+      <li>Use font-weight 800 or 900 on dark — looks aggressive</li>
+      <li>Use letter-spacing on body text — looks like AI design</li>
+      <li>Use letter-spacing on headlines — breaks the optical fit</li>
+      <li>Use more than 2 typefaces (1 is ideal, 2 maximum)</li>
+      <li>Set body font-size below 15px on a dark background</li>
+      <li>Use line-height below 1.6 on any paragraph text</li>
+      <li>Skip font smoothing — it ruins text on dark backgrounds</li>
+      <li>Use pure white (#ffffff) for text — use #F5F5F0 instead</li>
+    </ul>
+  </div>
+</div>

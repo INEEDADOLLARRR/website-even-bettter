@@ -36,7 +36,7 @@ function ExpertiseCard({ item, index }: { item: typeof expertiseItems[0], index:
     const isEven = index % 2 === 0;
 
     return (
-        <div ref={ref} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-stretch gap-7 lg:gap-20 mb-14 md:mb-24`}>
+        <div ref={ref} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-stretch gap-7 lg:gap-20 mb-[56px] md:mb-sp-9`}>
             <motion.div
                 initial={{ opacity: 0, x: isEven ? -40 : 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -65,23 +65,23 @@ function ExpertiseCard({ item, index }: { item: typeof expertiseItems[0], index:
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                 >
                     <div className="flex items-center gap-3 mb-5">
-                        <span className="text-surface-muted/30 font-display text-xs uppercase tracking-widest">0{index + 1}</span>
+                        <span className="text-text-secondary/30 font-display text-xs uppercase tracking-widest">0{index + 1}</span>
                         <div className="h-[1px] w-10 bg-surface-muted/15" />
                     </div>
 
-                    <h3 className="font-display text-2xl lg:text-4xl font-medium tracking-tight mb-5 text-surface-text">{item.title}</h3>
-                    <p className="text-surface-muted/60 text-sm leading-relaxed mb-7 max-w-lg font-light">{item.description}</p>
+                    <h3 className="font-display text-2xl lg:text-4xl font-medium tracking-tight mb-5 text-text-primary">{item.title}</h3>
+                    <p className="text-text-secondary/60 text-sm leading-[1.7] mb-7 max-w-lg font-light">{item.description}</p>
 
-                    <ul className="space-y-3 mb-8" role="list">
+                    <ul className="space-y-3 mb-sp-6" role="list">
                         {item.features.map((feature, i) => (
-                            <li key={i} className="flex items-center gap-2.5 text-xs font-medium tracking-wide text-surface-text/80">
+                            <li key={i} className="flex items-center gap-2.5 text-xs font-medium tracking-wide text-text-primary/80">
                                 <div className="w-1 h-1 rounded-full bg-brand-blue" />
                                 {feature}
                             </li>
                         ))}
                     </ul>
 
-                    <a href="#contact" className="group inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-wider text-[10px] md:text-xs hover:text-surface-text transition-colors duration-300">
+                    <a href="#contact" className="group inline-flex items-center gap-2 text-brand-blue font-semibold uppercase tracking-wider text-[10px] md:text-xs hover:text-text-primary transition-colors duration-300">
                         Explore Capabilities
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                     </a>
@@ -93,17 +93,17 @@ function ExpertiseCard({ item, index }: { item: typeof expertiseItems[0], index:
 
 export function ExpertiseGallery() {
     return (
-        <section id="expertise" aria-label="Our expertise" className="py-14 md:py-24 bg-surface text-surface-text overflow-hidden relative border-t border-surface-muted/5 transition-colors duration-300">
+        <section id="expertise" aria-label="Our expertise" className="py-14 md:py-sp-54 bg-bg-base text-text-primary overflow-hidden relative border-t border-surface-muted/5 transition-colors duration-300">
             <SectionSettle className="container mx-auto px-5 md:px-6 max-w-6xl">
-                <div className="max-w-2xl mb-12 md:mb-20">
+                <div className="max-w-2xl mb-sp-7 md:mb-[80px]">
                     <BlurReveal delay={0}>
                         <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight mb-4 text-balance">
                             <span className="block">Uncompromising Quality.</span>
-                            <span className="text-surface-muted/50">Exceptional Execution.</span>
+                            <span className="text-text-secondary/50">Exceptional Execution.</span>
                         </h2>
                     </BlurReveal>
                     <BlurReveal delay={0.1}>
-                        <p className="text-surface-muted/50 text-sm leading-relaxed max-w-lg font-light">
+                        <p className="text-text-secondary/50 text-sm leading-[1.7] max-w-lg font-light">
                             We deliver gorgeous designs using the very best frameworks and materials available in the industry.
                         </p>
                     </BlurReveal>
